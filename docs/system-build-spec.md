@@ -48,7 +48,9 @@
 | **AI Service** | Python 3.11+, FastAPI, Pydantic v2 | 12-stage multi-agent pipeline, Dataset Builder, Evidence Verification, GeoCausal, GeoFork, Strategy Risk Gate |
 | **Primary Database** | MySQL 8.x / PostgreSQL (Relational with Flyway migrations) | Identity, RBAC, Sessions, Questions, Analysis Runs, Evidence, Events, Sources, Strategies, Audit Logs |
 | **Knowledge Graph** | Relational / In-Memory Graph Abstraction (Optional Neo4j) | Entity-Event-Evidence causal and dependency relationships, session-isolated temporary graph |
-| **Infrastructure** | Docker Compose, Maven Wrapper, npm/vite, pytest | Reproducible local execution, environment-based configuration, health probes |
+| **Infrastructure** | Native Windows PowerShell scripts, Maven Wrapper, npm/vite, pytest | Reproducible local execution without Docker, environment-based configuration, health probes |
+
+> **Technology Version Flexibility Policy (ADR-008)**: Per project policy, the system does not enforce fixed technology versions unless strictly required for compatibility or security. Java/JDK, Spring Boot, Python, FastAPI, React, Vite, Node.js, npm, MySQL, and Maven may use any compatible, stable version available in the local environment (e.g., OpenJDK 26, Python 3.14, Node 24, Vite 5, MySQL 8.0). Technologies must not be artificially upgraded or downgraded solely to match legacy version numbers. Stack components, security, functionality, and the Zero-Cost Policy remain mandatory.
 
 ---
 
