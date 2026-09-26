@@ -14,9 +14,9 @@ This independent verification audit evaluated the actual workspace state across 
 1. **Zero-Cost Policy**: **100% COMPLIANT**. No paid APIs, cloud services, commercial LLMs, or billing hooks exist.
 2. **Architecture**: **100% NATIVE WINDOWS (Zero Docker)**. Docker compose has been completely removed; PowerShell launchers control native local processes.
 3. **Canonical 12-Stage Pipeline**: **VERIFIED_COMPLETE**. Stages 1 through 12 execute sequentially; unreviewed strategies are structurally withheld by the Stage 11 Red Team gate.
-4. **Research Readiness Distinction**:
-   - **ForecastLab Software Engine**: `VERIFIED_COMPLETE`. The historical replay service, temporal integrity cutoffs, and Brier scoring mathematical routines are fully implemented and verified via automated unit tests.
-   - **Large-Scale Empirical Research Evaluation**: `RESEARCH_IN_PROGRESS`. Distinguishing the software module from empirical science: while the reference test cases execute cleanly (Brier score 0.044 vs. 0.250 baseline), a multi-hundred case longitudinal geopolitical study remains an ongoing research activity rather than a closed software task.
+4. **Research Readiness & Forecast Integrity Distinction**:
+   - **ForecastLab Software Engine**: `VERIFIED_COMPLETE`. The historical replay service, temporal integrity cutoffs, and mathematical scoring routines are fully implemented and verified via automated tests.
+   - **Empirical Research & Benchmark Corpus**: `RESEARCH_IN_PROGRESS`. 6 reference cases are implemented (Brier score: 0.0390 vs. uninformative 0.2500 baseline and observed-prevalence 0.2222 baseline). Contamination / partial contemporaneous observability is explicitly disclosed for 2024 Red Sea and Hormuz cases. 4 additional cases remain pending curation. Neither baseline comparison is claimed as proof of predictive superiority over human analysts.
 
 ---
 
