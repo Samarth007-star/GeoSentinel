@@ -66,6 +66,18 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
             <Activity className="w-4 h-4" />
             <span>Connectors</span>
           </button>
+
+          <button
+            onClick={() => setActiveTab('scenarios')}
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
+              activeTab === 'scenarios'
+                ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30 shadow-sm'
+                : 'text-slate-300 hover:text-white hover:bg-sentinel-800'
+            }`}
+          >
+            <Globe className="w-4 h-4" />
+            <span>Scenarios & Lab</span>
+          </button>
         </nav>
 
         {/* System Status Indicators */}

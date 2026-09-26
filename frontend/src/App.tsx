@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar';
 import { AskInterface } from './features/ask/AskInterface';
 import { AnalysisResultView } from './features/analysis/AnalysisResultView';
 import { ConnectorStatusView } from './features/connectors/ConnectorStatusView';
+import { ScenarioLaboratoryView } from './features/scenarios/ScenarioLaboratoryView';
 import { AnalysisResult } from './types';
 import { Shield } from 'lucide-react';
 
@@ -54,6 +55,10 @@ export const App: React.FC = () => {
 
         {activeTab === 'connectors' && (
           <ConnectorStatusView />
+        )}
+
+        {activeTab === 'scenarios' && (
+          <ScenarioLaboratoryView />
         )}
       </main>
 
