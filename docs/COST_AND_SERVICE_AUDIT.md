@@ -50,6 +50,12 @@ Every data connector utilized by the GeoSentinel Dataset Builder has been audite
 
 *Zero external paid LLM calls (e.g., OpenAI `gpt-4`, Anthropic `claude-3`, Google Cloud Vertex AI) are made. All inference runs locally and deterministically.*
 
+### 3.1 Local Ollama & Local Model Endpoint Audit
+- **Default Mode**: Operates out-of-the-box via `DeterministicRuleBasedFallback` requiring zero external services or model downloads.
+- **Ollama Endpoint**: Configured to `http://localhost:11434` (`LOCAL_MODEL_BASE_URL`).
+- **Cloud Fallback Policy**: If local Ollama is offline or uninstalled, the system falls back strictly to the local deterministic engine. It **never** falls back to a paid or cloud-hosted endpoint.
+- **Data Transmission**: User queries, prompts, and session contexts are processed 100% on localhost. Zero analytical data or prompt tokens are transmitted across external networks.
+
 ---
 
 ## 4. Local Infrastructure & Hosting Audit
@@ -57,9 +63,15 @@ Every data connector utilized by the GeoSentinel Dataset Builder has been audite
 | Tier | Technology | Hosting Location | Licensing | Cloud Cost |
 | :--- | :--- | :--- | :--- | :--- |
 | **Frontend** | React 18, Vite, Tailwind CSS | Localhost (Port 5173) | MIT / Open Source | $0.00 |
-| **Backend** | Java 21, Spring Boot 3.2.5 | Localhost (Port 8080) | Apache 2.0 / Open Source | $0.00 |
+| **Backend** | Java 21 / 26, Spring Boot 3.2.5 | Localhost (Port 8080) | Apache 2.0 / Open Source | $0.00 |
 | **AI Service** | Python 3.14, FastAPI, Pydantic v2 | Localhost (Port 8000) | MIT / Open Source | $0.00 |
 | **Database** | MySQL Community Server 8.0 | Local Windows Service (Port 3306) | GPL v2 / FOSS Community Edition | $0.00 |
+
+### 4.1 Secrets & Credential Management
+- **JWT Secret**: Configured locally via `JWT_SECRET` environment variable or local default.
+- **Internal Service Key**: Configured locally via `INTERNAL_SERVICE_KEY` (`geosentinel-internal-secret-token-2026`) protecting backend-to-AI communication.
+- **Zero Cloud Key Managers**: No AWS Secrets Manager, GCP Secret Manager, or HashiCorp Vault cloud services are utilized.
+- **Zero Telemetry**: No third-party tracking, Google Analytics, PostHog, or Sentry tokens exist.
 
 ---
 
