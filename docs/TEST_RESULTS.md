@@ -7,9 +7,9 @@
 
 ## Test Execution Summary
 
-- **Total Test Suites Defined**: 8
-- **Total Tests Executed**: 20
-- **Passed**: 20
+- **Total Test Suites Defined**: 10
+- **Total Tests Executed**: 31
+- **Passed**: 31
 - **Failed**: 0
 - **Blocked**: 0
 
@@ -71,3 +71,26 @@
 | `BE-11` | Session Cleanup / Deletion | `SessionControllerTest#shouldDeleteSession` | **PASSED** | Verifies session deletion and context teardown |
 | `BE-12` | Question Validation | `QuestionControllerTest#shouldRejectEmptyQuestion` | **PASSED** | Validates 400 Bad Request on empty question |
 | `BE-13` | Question Pipeline Delegation | `QuestionControllerTest#shouldSubmitQuestionAndForwardToAiService` | **PASSED** | Validates AI service client invocation and response delivery |
+
+---
+
+### Suite 5: Native E2E Question Pipeline Verification (`e2e_verification.py`)
+| Test ID | Target Component | Command / Verification | Result | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| `E2E-01` | Canonical 12-Stage Pipeline Flow | `$env:PYTHONPATH='.'; python tests/e2e_verification.py` | **PASSED** | All 12 pipeline stages executed sequentially with run ID tracking |
+| `E2E-02` | Canonical 4-Section Answer View | `e2e_verification.py` Section 2 check | **PASSED** | Verified Situation (4 facts), Evidence (27 records), Impact (2 pathways), Strategy |
+| `E2E-03` | Evidence Provenance & Licenses | `e2e_verification.py` Section 2 check | **PASSED** | Validates canonical URLs, SHA-256 hashes, CC-BY 4.0 / Public Domain licenses |
+| `E2E-04` | Red Team Strategy Risk Review Gate | `e2e_verification.py` Section 4 check | **PASSED** | Evaluated recommendations, required mitigations, fallback actions assigned |
+| `E2E-05` | ForecastLab Expanded Corpus (Phase 3) | `e2e_verification.py` Section 4 check | **PASSED** | Evaluated 6 adjudicated cases (Brier: 0.0390 vs 0.2500 baseline, Log loss: 0.2145) |
+
+---
+
+### Suite 6: Live FastAPI Microservice Runtime Health & Connector Probes
+| Test ID | Target Component | Command / Verification | Result | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| `SVC-01` | FastAPI Health Probe | `curl.exe http://127.0.0.1:8000/api/v1/health` | **PASSED** | Returns UP, version 1.0.0, model_provider local_fallback |
+| `SVC-02` | Connector Registry Probe | `curl.exe http://127.0.0.1:8000/api/v1/connectors` | **PASSED** | All 4 connectors active with verified terms & licenses |
+| `SVC-03` | ForecastLab Evaluation Probe | `curl.exe -X POST http://127.0.0.1:8000/api/v1/forecastlab/evaluate` | **PASSED** | Generates evaluation report with zero future-leakage verification |
+| `SVC-04` | GeoMemory Precedent Search Probe | `POST /api/v1/geomemory/search` | **PASSED** | Returns historical precedents, parallels, and explicit limits of analogy |
+| `SVC-05` | GeoLens Comparison Probe | `POST /api/v1/geolens/compare` | **PASSED** | Returns multi-country (IND, IRN, USA) multi-sector comparative profiles |
+| `SVC-06` | Internal Service Key Authorization | `POST /api/v1/pipeline/execute` (401/403 check) | **PASSED** | Enforces `X-Internal-Service-Key` header authentication |

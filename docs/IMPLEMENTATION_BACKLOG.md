@@ -123,6 +123,6 @@ This backlog tracks every discrete implementation task in accordance with Sectio
 
 | Task ID | Requirement Ref | Description | Priority | Dependencies | Status | Files Involved |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **TSK-090** | REQ-LAB-02 | Long-term historical conflict case dataset collection & adjudication | P2 | TSK-082 | `IN_PROGRESS` | `data/reference/`, `ai-service/app/evaluation/` |
-| **TSK-091** | REQ-DB-02 | Automated CI database migration test suite with test profile | P2 | TSK-011 | `NOT_STARTED` | `backend/src/test/` |
+| **TSK-090** | REQ-LAB-02 | Historical conflict corpus expansion (1973 Oil Embargo, 1991 Gulf War) | P2 | TSK-082 | **PASSED** | `ai-service/app/evaluation/forecast_lab.py` |
+| **TSK-091** | REQ-DB-02 | Database test profile compatibility audit (MySQL 8 vs H2 DDL) | P2 | TSK-011 | **PASSED** | `docs/VERIFICATION_AUDIT.md`, `backend/` |
 

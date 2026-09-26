@@ -23,9 +23,10 @@ Start-Sleep -Seconds 2
 
 # 2. Spring Boot Backend
 Write-Host "`n[2/3] Starting Spring Boot Backend API on http://localhost:8080..." -ForegroundColor Green
+$JavaExe = if (Test-Path 'C:\Program Files\Java\jdk-26\bin\java.exe') { 'C:\Program Files\Java\jdk-26\bin\java.exe' } else { 'java' }
 $BackendJar = Join-Path $BackendPath "target\geosentinel-backend-1.0.0.jar"
 if (Test-Path $BackendJar) {
-    Start-Process -FilePath "java" -ArgumentList "-jar target\geosentinel-backend-1.0.0.jar" -WorkingDirectory $BackendPath
+    Start-Process -FilePath $JavaExe -ArgumentList "-jar target\geosentinel-backend-1.0.0.jar" -WorkingDirectory $BackendPath
 } else {
     Start-Process -FilePath "powershell" -ArgumentList "-Command `".\mvnw.cmd spring-boot:run`"" -WorkingDirectory $BackendPath
 }

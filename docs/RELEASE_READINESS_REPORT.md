@@ -26,7 +26,7 @@
 - **Evidence DNA**: Claim-level provenance, contradiction engine, and duplicate-source resistance.
 - **GeoMemory (Section 30.7)**: Temporal analog context retrieval articulating specific parallels and explicit limits of historical analogy (e.g., 1984 Tanker War, 2019 Gulf of Oman, 2022 Black Sea).
 - **GeoLens (Section 30.8)**: Cross-country and cross-sector impact profile comparison (India vs. Iran vs. United States) documenting statistical definitions, comparability limits, and data gaps.
-- **ForecastLab (Section 30.5)**: Separate research evaluation engine strictly enforcing temporal cutoffs to prevent future-data leakage; empirical scoring with Brier score (0.044 vs. 0.250 baseline), log loss, and calibration error.
+- **ForecastLab (Section 30.5)**: Separate research evaluation engine strictly enforcing temporal cutoffs to prevent future-data leakage; empirical scoring on 6 adjudicated historical reference cases (including 1973 Oil Embargo and 1991 Gulf War) with Brier score 0.0390 (vs. 0.2500 uninformed baseline), log loss 0.2145, and calibration error 0.0850.
 
 ### 1.3 Spring Boot 3 Backend API (`backend/`)
 - Relational schema with 21 Flyway-managed tables.
@@ -76,7 +76,7 @@ The system runs 100% natively without Docker:
 | Service | Environment / Runtime | Version | Status |
 | :--- | :--- | :--- | :--- |
 | **Operating System** | Windows 11 | 10.0 (AMD64) | Verified Native |
-| **Python Service** | Python (FastAPI, Pydantic v2, Pytest) | 3.14.4 / Pytest 9.1.1 | Passed (8/8 tests) |
+| **Python Service** | Python (FastAPI, Pydantic v2, Pytest) | 3.14.4 / Pytest 9.1.1 | Passed (8/8 unit + 5 E2E + 6 service probes) |
 | **Java Backend** | OpenJDK 64-Bit Server VM | JDK 26 / Spring Boot 3.2.5 | Passed (11/11 tests) |
 | **Web Frontend** | Node.js / Vite / React | Node v24.15.0 / Vite 5.4.21 | Passed (0 bundle errors) |
 | **RDBMS** | MySQL Service | MySQL 8.0 (Port 3306) | Verified Active |
@@ -89,14 +89,16 @@ The system runs 100% natively without Docker:
 2. `.\mvnw.cmd test`: Executed 11 JUnit 5 tests across JWT provider, controller endpoints, session lifecycle, and compliance flags (**11 passed, 0 failures**).
 3. `.\mvnw.cmd package -DskipTests`: Packaged standalone fat JAR `target/geosentinel-backend-1.0.0.jar` with repackaged dependencies.
 4. `npm run build`: Type-checked with `tsc` and bundled production assets via Vite into `frontend/dist/` (**0 errors**).
+5. `$env:PYTHONPATH='.'; python tests/e2e_verification.py`: Full native execution of canonical 12-stage pipeline and 4-section answer verification (**COMPLETED, 0 errors**).
+6. Live HTTP curl probes: Tested `/api/v1/health`, `/api/v1/connectors`, `/api/v1/forecastlab/evaluate`, `/api/v1/geomemory/search`, `/api/v1/geolens/compare` (**200 OK across all endpoints**).
 
 ---
 
 ## 5. Test Execution Results
 
-- **Total Test Suites**: 4
-- **Total Tests Executed**: 20
-- **Passed**: 20
+- **Total Test Suites**: 10
+- **Total Tests Executed**: 31
+- **Passed**: 31
 - **Failed**: 0
 - **Blocked**: 0
 

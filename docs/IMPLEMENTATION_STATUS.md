@@ -25,7 +25,7 @@
 | **Phase 9** | End-to-End Testing, Security Hardening, Verification Scenarios | **PASSED** | 100% |
 | **Phase 10** | Release Readiness Audit, Documentation, Native Windows Run Scripts | **PASSED** | 100% |
 | **Phase 11 (Section 30)** | Section 30 Extensions (ForecastLab Engine, GeoMemory, GeoLens) | **PASSED** | 100% |
-| **Research Validation** | Longitudinal Multi-Year Geopolitical Evaluation Dataset Expansion | **IN_PROGRESS** | 40% |
+| **Research Validation** | Longitudinal Historical Evaluation Dataset Expansion (1973 & 1991 Cases Added) | **IN_PROGRESS** | 65% |
 
 ---
 
