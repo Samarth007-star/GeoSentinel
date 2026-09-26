@@ -105,3 +105,24 @@ This backlog tracks every discrete implementation task in accordance with Sectio
 | **TSK-073** | REQ-FE-04 | Implement 4-Section Answer View (Situation, Evidence, Impact, Strategy Matrix) | P0 | TSK-072 | **PASSED** | `frontend/src/features/analysis/AnalysisResultView.tsx` |
 | **TSK-074** | REQ-FE-05 | Implement Evidence Explorer and Provenance Tree | P1 | TSK-073 | **PASSED** | `frontend/src/features/analysis/AnalysisResultView.tsx` |
 | **TSK-075** | REQ-FE-06 | Implement Source Registry, Connector Health, and Status Views | P1 | TSK-071 | **PASSED** | `frontend/src/features/connectors/ConnectorStatusView.tsx` |
+
+---
+
+## Phase 8: Section 30 Research Capabilities
+
+| Task ID | Requirement Ref | Description | Priority | Dependencies | Status | Files Involved |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **TSK-080** | REQ-MEM-01 | Implement GeoMemory historical analog retrieval and limits of analogy | P1 | TSK-052 | **PASSED** | `ai-service/app/agents/geomemory.py` |
+| **TSK-081** | REQ-LENS-01 | Implement GeoLens multi-country and multi-sector comparison engine | P1 | TSK-053 | **PASSED** | `ai-service/app/agents/geolens.py` |
+| **TSK-082** | REQ-LAB-01 | Implement ForecastLab historical replay, temporal cutoffs & scoring | P1 | TSK-054 | **PASSED** | `ai-service/app/evaluation/forecast_lab.py` |
+| **TSK-083** | REQ-UI-07 | Implement Research Laboratory UI (GeoFork, GeoLens, ForecastLab) | P1 | TSK-072 | **PASSED** | `frontend/src/features/scenarios/ScenarioLaboratoryView.tsx` |
+
+---
+
+## Phase 9: Research Benchmarking & Empirical Expansion
+
+| Task ID | Requirement Ref | Description | Priority | Dependencies | Status | Files Involved |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **TSK-090** | REQ-LAB-02 | Long-term historical conflict case dataset collection & adjudication | P2 | TSK-082 | `IN_PROGRESS` | `data/reference/`, `ai-service/app/evaluation/` |
+| **TSK-091** | REQ-DB-02 | Automated CI database migration test suite with test profile | P2 | TSK-011 | `NOT_STARTED` | `backend/src/test/` |
+

@@ -8,8 +8,8 @@
 ## Test Execution Summary
 
 - **Total Test Suites Defined**: 8
-- **Total Tests Executed**: 17
-- **Passed**: 17
+- **Total Tests Executed**: 20
+- **Passed**: 20
 - **Failed**: 0
 - **Blocked**: 0
 
@@ -27,13 +27,17 @@
 
 ---
 
-### Suite 1: AI Multi-Agent Pipeline & Risk Review Gate (pytest)
+### Suite 1: AI Multi-Agent Pipeline & Section 30 Capabilities (pytest)
 | Test ID | Target Component | Command / Verification | Result | Notes |
 | :--- | :--- | :--- | :--- | :--- |
 | `AI-01` | Connector Registry & Licensing | `pytest test_connectors.py::test_connector_registry_and_licensing` | **PASSED** | Validates 4+ open connectors with active terms |
 | `AI-02` | Connector Content Hashing | `pytest test_connectors.py::test_base_connector_content_hash` | **PASSED** | SHA-256 deterministic payload provenance hashing |
 | `AI-03` | 12-Stage Pipeline Execution | `pytest test_pipeline.py::test_canonical_12_stage_pipeline_execution` | **PASSED** | Verified all 4 answer sections, GeoCausal, and GeoFork |
 | `AI-04` | Mandatory Strategy Risk Gate | `pytest test_strategy_risk_gate.py::test_unreviewed_strategy_blocked` | **PASSED** | Unreviewed strategies structurally blocked/withheld |
+| `AI-05` | ForecastLab Scoring Engine | `pytest test_section30_capabilities.py::test_forecast_lab_evaluation_metrics` | **PASSED** | Verifies Brier score (0.044 vs 0.250 baseline) & log loss |
+| `AI-06` | ForecastLab Temporal Integrity | `pytest test_section30_capabilities.py::test_forecast_lab_temporal_integrity` | **PASSED** | Verifies cutoff timestamps block future data leakage |
+| `AI-07` | GeoMemory Precedents & Limits | `pytest test_section30_capabilities.py::test_geomemory_analogs_and_limits_of_analogy` | **PASSED** | Verifies historical analog parallels & limits of analogy |
+| `AI-08` | GeoLens Cross-Country Profiles | `pytest test_section30_capabilities.py::test_geolens_comparative_profiles` | **PASSED** | Verifies IND, IRN, USA profiles & data gap disclosures |
 
 ---
 
@@ -41,7 +45,7 @@
 | Test ID | Target Component | Command / Verification | Result | Notes |
 | :--- | :--- | :--- | :--- | :--- |
 | `FE-01` | TypeScript Type Checking | `tsc` via `npm run build` | **PASSED** | 0 type errors across all UI features & types |
-| `FE-02` | Vite Production Packaging | `vite build` | **PASSED** | 1502 modules transformed, CSS/JS bundle generated |
+| `FE-02` | Vite Production Packaging | `vite build` | **PASSED** | 1503 modules transformed, bundle generated in `dist/` |
 
 ---
 

@@ -141,7 +141,8 @@ In accordance with Section 28.2 of `Prompt.md`:
 | **REQ-FORK-01** | GeoFork counterfactual scenarios | **VERIFIED_COMPLETE** |
 | **REQ-MEM-01** | GeoMemory historical analog retrieval & limits | **VERIFIED_COMPLETE** |
 | **REQ-LENS-01** | GeoLens cross-country and cross-sector comparison | **VERIFIED_COMPLETE** |
-| **REQ-LAB-01** | ForecastLab historical replay & Brier evaluation | **VERIFIED_COMPLETE** |
+| **REQ-LAB-01** | ForecastLab Software Engine (Replay, Cutoffs, Scoring) | **VERIFIED_COMPLETE** |
+| **REQ-LAB-02** | ForecastLab Long-Term Longitudinal Empirical Study | **PARTIALLY_IMPLEMENTED** (Reference cases pass; full empirical corpus ongoing) |
 | **REQ-STRAT-01** | Strategy generation with mechanisms & trade-offs | **VERIFIED_COMPLETE** |
 | **REQ-GATE-01** | Mandatory Strategy Risk Review Gate (Red Team) | **VERIFIED_COMPLETE** |
 | **REQ-RESP-01** | 4-Section response composition | **VERIFIED_COMPLETE** |
