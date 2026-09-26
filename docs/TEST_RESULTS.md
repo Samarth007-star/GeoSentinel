@@ -8,8 +8,8 @@
 ## Test Execution Summary
 
 - **Total Test Suites Defined**: 10
-- **Total Tests Executed**: 31
-- **Passed**: 31
+- **Total Tests Executed**: 39
+- **Passed**: 39
 - **Failed**: 0
 - **Blocked**: 0
 
@@ -32,12 +32,20 @@
 | :--- | :--- | :--- | :--- | :--- |
 | `AI-01` | Connector Registry & Licensing | `pytest test_connectors.py::test_connector_registry_and_licensing` | **PASSED** | Validates 4+ open connectors with active terms |
 | `AI-02` | Connector Content Hashing | `pytest test_connectors.py::test_base_connector_content_hash` | **PASSED** | SHA-256 deterministic payload provenance hashing |
-| `AI-03` | 12-Stage Pipeline Execution | `pytest test_pipeline.py::test_canonical_12_stage_pipeline_execution` | **PASSED** | Verified all 4 answer sections, GeoCausal, and GeoFork |
-| `AI-04` | Mandatory Strategy Risk Gate | `pytest test_strategy_risk_gate.py::test_unreviewed_strategy_blocked` | **PASSED** | Unreviewed strategies structurally blocked/withheld |
-| `AI-05` | ForecastLab Scoring Engine | `pytest test_section30_capabilities.py::test_forecast_lab_evaluation_metrics` | **PASSED** | Verifies Brier score (0.044 vs 0.250 baseline) & log loss |
-| `AI-06` | ForecastLab Temporal Integrity | `pytest test_section30_capabilities.py::test_forecast_lab_temporal_integrity` | **PASSED** | Verifies cutoff timestamps block future data leakage |
-| `AI-07` | GeoMemory Precedents & Limits | `pytest test_section30_capabilities.py::test_geomemory_analogs_and_limits_of_analogy` | **PASSED** | Verifies historical analog parallels & limits of analogy |
-| `AI-08` | GeoLens Cross-Country Profiles | `pytest test_section30_capabilities.py::test_geolens_comparative_profiles` | **PASSED** | Verifies IND, IRN, USA profiles & data gap disclosures |
+| `AI-03` | Circuit Breaker & 5 Failures | `pytest test_connectors.py::test_circuit_breaker_and_failure_handling` | **PASSED** | Verifies 5-failure threshold, ERROR state, and recovery |
+| `AI-04` | Connector Disabled & License | `pytest test_connectors.py::test_connector_disabled_status` | **PASSED** | Confirms DISABLED and LICENSE_CHECK block availability |
+| `AI-05` | World Bank Normalization | `pytest test_connectors.py::test_world_bank_normalization` | **PASSED** | Verifies economic indicator mapping and hash generation |
+| `AI-06` | USGS Hazard Normalization | `pytest test_connectors.py::test_usgs_normalization` | **PASSED** | Verifies geophysical event mapping and verified status |
+| `AI-07` | NASA EONET Normalization | `pytest test_connectors.py::test_nasa_eonet_normalization` | **PASSED** | Verifies satellite disaster signal mapping |
+| `AI-08` | ReliefWeb Normalization | `pytest test_connectors.py::test_reliefweb_normalization` | **PASSED** | Verifies humanitarian report mapping and source referenced status |
+| `AI-09` | DatasetBuilder Fallback/Dedup | `pytest test_connectors.py::test_dataset_builder_fallback_and_deduplication` | **PASSED** | Verifies reference dataset fallback & content-hash deduplication |
+| `AI-10` | Evidence Verification States | `pytest test_connectors.py::test_evidence_verification_engine_states` | **PASSED** | Verifies REJECTED, VERIFIED, CONFLICTING with cross-references |
+| `AI-11` | 12-Stage Pipeline Execution | `pytest test_pipeline.py::test_canonical_12_stage_pipeline_execution` | **PASSED** | Verified all 4 answer sections, GeoCausal, and GeoFork |
+| `AI-12` | ForecastLab Scoring Engine | `pytest test_section30_capabilities.py::test_forecast_lab_evaluation_metrics` | **PASSED** | Verifies Brier score (0.0390 vs 0.250 baseline) & log loss |
+| `AI-13` | ForecastLab Temporal Integrity | `pytest test_section30_capabilities.py::test_forecast_lab_temporal_integrity` | **PASSED** | Verifies cutoff timestamps block future data leakage |
+| `AI-14` | GeoMemory Precedents & Limits | `pytest test_section30_capabilities.py::test_geomemory_analogs_and_limits_of_analogy` | **PASSED** | Verifies historical analog parallels & limits of analogy |
+| `AI-15` | GeoLens Cross-Country Profiles | `pytest test_section30_capabilities.py::test_geolens_comparative_profiles` | **PASSED** | Verifies IND, IRN, USA profiles & data gap disclosures |
+| `AI-16` | Mandatory Strategy Risk Gate | `pytest test_strategy_risk_gate.py::test_unreviewed_strategy_blocked` | **PASSED** | Unreviewed strategies structurally blocked/withheld |
 
 ---
 
@@ -52,12 +60,12 @@
 ### Suite 3: Backend Java 26 Compilation & Spring Boot Packaging
 | Test ID | Target Component | Command / Verification | Result | Notes |
 | :--- | :--- | :--- | :--- | :--- |
-| `BE-01` | Java 26 Native Compile | `.\mvnw.cmd compile` | **PASSED** | 23 source files compiled cleanly for JDK 26 |
+| `BE-01` | Java 26 Native Compile | `.\mvnw.cmd compile` | **PASSED** | 30 source files compiled cleanly for JDK 26 |
 | `BE-02` | Executable Fat JAR Repackage | `.\mvnw.cmd package -DskipTests` | **PASSED** | Repackaged `geosentinel-backend-1.0.0.jar` created |
 
 ---
 
-### Suite 4: Backend Security, Session & Domain Unit Tests (JUnit 5)
+### Suite 4: Backend Security, Session & Master Data Tests (JUnit 5)
 | Test ID | Target Component | Command / Verification | Result | Notes |
 | :--- | :--- | :--- | :--- | :--- |
 | `BE-03` | JWT Generation & Token Verification | `JwtTokenProviderTest#shouldGenerateAndValidateValidToken` | **PASSED** | Verifies signature, expiry, and claim retrieval |
@@ -71,6 +79,9 @@
 | `BE-11` | Session Cleanup / Deletion | `SessionControllerTest#shouldDeleteSession` | **PASSED** | Verifies session deletion and context teardown |
 | `BE-12` | Question Validation | `QuestionControllerTest#shouldRejectEmptyQuestion` | **PASSED** | Validates 400 Bad Request on empty question |
 | `BE-13` | Question Pipeline Delegation | `QuestionControllerTest#shouldSubmitQuestionAndForwardToAiService` | **PASSED** | Validates AI service client invocation and response delivery |
+| `BE-14` | Countries REST Endpoint | `MasterDataControllerTest#shouldReturnCountryListing` | **PASSED** | Verifies `/api/v1/countries` listing and JSON payload |
+| `BE-15` | Events REST Endpoint | `MasterDataControllerTest#shouldReturnEventListing` | **PASSED** | Verifies `/api/v1/events` listing and JSON payload |
+| `BE-16` | Unified Global Search Endpoint | `MasterDataControllerTest#shouldExecuteGlobalSearch` | **PASSED** | Verifies `/api/v1/search?q={query}` multi-entity search |
 
 ---
 

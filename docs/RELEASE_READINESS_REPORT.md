@@ -76,8 +76,8 @@ The system runs 100% natively without Docker:
 | Service | Environment / Runtime | Version | Status |
 | :--- | :--- | :--- | :--- |
 | **Operating System** | Windows 11 | 10.0 (AMD64) | Verified Native |
-| **Python Service** | Python (FastAPI, Pydantic v2, Pytest) | 3.14.4 / Pytest 9.1.1 | Passed (8/8 unit + 5 E2E + 6 service probes) |
-| **Java Backend** | OpenJDK 64-Bit Server VM | JDK 26 / Spring Boot 3.2.5 | Passed (11/11 tests) |
+| **Python Service** | Python (FastAPI, Pydantic v2, Pytest) | 3.14.4 / Pytest 9.1.1 | Passed (16/16 pytest unit/integration + 5 E2E + 6 service probes) |
+| **Java Backend** | OpenJDK 64-Bit Server VM | JDK 26 / Spring Boot 3.2.5 | Passed (14/14 JUnit 5 tests) |
 | **Web Frontend** | Node.js / Vite / React | Node v24.15.0 / Vite 5.4.21 | Passed (0 bundle errors) |
 | **RDBMS** | MySQL Service | MySQL 8.0 (Port 3306) | Verified Active |
 
@@ -85,8 +85,8 @@ The system runs 100% natively without Docker:
 
 ## 4. Commands Executed & Verification Evidence
 
-1. `pytest`: Executed 8 unit and integration tests across connectors, pipeline, mandatory risk gate, ForecastLab, GeoMemory, and GeoLens (**8 passed, 0 failures**).
-2. `.\mvnw.cmd test`: Executed 11 JUnit 5 tests across JWT provider, controller endpoints, session lifecycle, and compliance flags (**11 passed, 0 failures**).
+1. `pytest`: Executed 16 unit and integration tests across connectors, circuit breakers, normalization, fallback, verification engine, pipeline, mandatory risk gate, ForecastLab, GeoMemory, and GeoLens (**16 passed, 0 failures**).
+2. `.\mvnw.cmd test`: Executed 14 JUnit 5 tests across JWT provider, controller endpoints, master data CRUD (Countries, Events, News, Organizations, Evidence, Reports, Search), session lifecycle, and compliance flags (**14 passed, 0 failures**).
 3. `.\mvnw.cmd package -DskipTests`: Packaged standalone fat JAR `target/geosentinel-backend-1.0.0.jar` with repackaged dependencies.
 4. `npm run build`: Type-checked with `tsc` and bundled production assets via Vite into `frontend/dist/` (**0 errors**).
 5. `$env:PYTHONPATH='.'; python tests/e2e_verification.py`: Full native execution of canonical 12-stage pipeline and 4-section answer verification (**COMPLETED, 0 errors**).
@@ -97,8 +97,8 @@ The system runs 100% natively without Docker:
 ## 5. Test Execution Results
 
 - **Total Test Suites**: 10
-- **Total Tests Executed**: 31
-- **Passed**: 31
+- **Total Tests Executed**: 39
+- **Passed**: 39
 - **Failed**: 0
 - **Blocked**: 0
 
