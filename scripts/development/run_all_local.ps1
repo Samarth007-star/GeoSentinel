@@ -25,17 +25,18 @@ Start-Sleep -Seconds 2
 Write-Host "`n[2/3] Starting Spring Boot Backend API on http://localhost:8080..." -ForegroundColor Green
 $JavaExe = if (Test-Path 'C:\Program Files\Java\jdk-26\bin\java.exe') { 'C:\Program Files\Java\jdk-26\bin\java.exe' } else { 'java' }
 $BackendJar = Join-Path $BackendPath "target\geosentinel-backend-1.0.0.jar"
+$ActiveProfile = if ($env:SPRING_PROFILES_ACTIVE) { $env:SPRING_PROFILES_ACTIVE } else { "local" }
 if (Test-Path $BackendJar) {
-    Start-Process -FilePath $JavaExe -ArgumentList "-jar target\geosentinel-backend-1.0.0.jar" -WorkingDirectory $BackendPath
+    Start-Process -FilePath $JavaExe -ArgumentList "-jar target\geosentinel-backend-1.0.0.jar --spring.profiles.active=$ActiveProfile" -WorkingDirectory $BackendPath
 } else {
-    Start-Process -FilePath "powershell" -ArgumentList "-Command `".\mvnw.cmd spring-boot:run`"" -WorkingDirectory $BackendPath
+    Start-Process -FilePath "powershell" -ArgumentList "-Command `".\mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=$ActiveProfile`"" -WorkingDirectory $BackendPath
 }
 
 Start-Sleep -Seconds 3
 
 # 3. React Frontend
 Write-Host "`n[3/3] Starting Vite Frontend on http://localhost:5173..." -ForegroundColor Green
-Start-Process -FilePath "npm" -ArgumentList "run dev" -WorkingDirectory $FrontendPath
+Start-Process -FilePath "cmd.exe" -ArgumentList "/c npm run dev" -WorkingDirectory $FrontendPath
 
 Write-Host "`nAll 3 GeoSentinel Services Launched Successfully!" -ForegroundColor Cyan
 Write-Host "  Frontend Console : http://localhost:5173" -ForegroundColor Yellow
