@@ -25,7 +25,7 @@ class GeoSentinelPipeline:
         q_id = f"q_{uuid.uuid4().hex[:8]}"
 
         # Stages 1, 2, 3: Intake, Intent Classification, Entity Extraction
-        intent_out, entity_out = question_understanding_agent.process(request)
+        intent_out, entity_out = await question_understanding_agent.process(request)
 
         # Stage 4: Retrieval Planning
         plan = retrieval_planning_agent.create_plan(request, intent_out, entity_out)
