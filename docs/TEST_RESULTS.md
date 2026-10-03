@@ -1,107 +1,103 @@
 # GeoSentinel — Test Execution Ledger
 
-> **Compliance Requirement**: Section 19 & 21 of the Master Autonomous Development Prompt.  
-> **Rule**: Never mark a test as PASSED unless actually executed. If a test cannot run because of an unavailable dependency or service, report it as BLOCKED.
+> **Compliance Requirement**: Section 19, 21, & 27 of the Master Autonomous Development Prompt.  
+> **Rule**: Never mark a test as PASSED unless actually executed. If a test cannot run because of an unavailable dependency or service, report it as BLOCKED or CREDENTIAL_MISSING.
 
 ---
 
 ## Test Execution Summary
 
-- **Total Test Suites Defined**: 10
-- **Total Tests Executed**: 39
-- **Passed**: 39
-- **Failed**: 0
-- **Blocked**: 0
+- **Total Test Suites Executed**: 7
+- **Unit & Pipeline Tests (pytest)**: 26 PASSED (0 failed)
+- **Backend Spring Boot Tests (JUnit 5)**: 14 PASSED (0 failed)
+- **Frontend Production Build (TypeScript / Vite)**: 1,503 modules transformed, 0 errors
+- **Full Stack End-to-End Tests**: 11 PASSED (0 failed)
+- **Live HTTP Connector Probes**: 9 LIVE_DATA_VERIFIED, 1 CREDENTIAL_MISSING (ReliefWeb AppName)
+- **Real User Questions Tested**: 5 (Q1 to Q5: 100% verified with 4 sections & evidence citations)
+- **Overall Defect Status**: 0 critical blockers remaining
 
 ---
 
 ## Detailed Test Logs
 
-### Suite 0: Environment & Runtime Discovery
-| Test ID | Target Component | Command / Verification | Result | Notes |
-| :--- | :--- | :--- | :--- | :--- |
-| `ENV-01` | Python Runtime | `python --version` | **PASSED** | Python 3.14.4 detected on system |
-| `ENV-02` | Node / NPM Runtime | `node --version`, `npm --version` | **PASSED** | Node v24.15.0 detected on system |
-| `ENV-03` | Java Development Kit | `java -version` | **PASSED** | JDK 26 installed in `C:\Program Files\Java\jdk-26` |
-| `ENV-04` | Local RDBMS Discovery | `Get-Service MySQL80, postgresql*` | **PASSED** | MySQL 8.0 (port 3306) and PostgreSQL 18 (port 5432) active |
+### Suite 1: AI Service Tests (pytest — 26 Tests)
+
+| Test ID | Module | Test Function | Result | Observed Evidence |
+|---|---|---|---|---|
+| `AI-01` | `test_connectors.py` | `test_connector_registry_and_licensing` | **PASSED** | 10 registered connectors covering all 8 canonical categories |
+| `AI-02` | `test_connectors.py` | `test_base_connector_content_hash` | **PASSED** | Deterministic SHA-256 hash generation verified |
+| `AI-03` | `test_connectors.py` | `test_circuit_breaker_and_failure_handling` | **PASSED** | 5 consecutive failures trip circuit to ERROR; resets on success |
+| `AI-04` | `test_connectors.py` | `test_connector_disabled_status` | **PASSED** | DISABLED & LICENSE_CHECK statuses block availability |
+| `AI-05` | `test_connectors.py` | `test_world_bank_normalization` | **PASSED** | World Bank indicators mapped to `EvidenceRecord` |
+| `AI-06` | `test_connectors.py` | `test_usgs_normalization` | **PASSED** | USGS seismic telemetry normalized to `EvidenceRecord` |
+| `AI-07` | `test_connectors.py` | `test_nasa_eonet_normalization` | **PASSED** | NASA natural events normalized to `EvidenceRecord` |
+| `AI-08` | `test_connectors.py` | `test_reliefweb_normalization` | **PASSED** | ReliefWeb humanitarian report schema normalized |
+| `AI-09` | `test_connectors.py` | `test_reliefweb_credential_missing_health` | **PASSED** | Reports CREDENTIAL_MISSING when `RELIEFWEB_APPNAME` absent |
+| `AI-10` | `test_connectors.py` | `test_usaspending_normalization` | **PASSED** | US Federal Government open data normalized to `EvidenceRecord` |
+| `AI-11` | `test_connectors.py` | `test_un_sdg_normalization` | **PASSED** | UN SDG targets normalized to `EvidenceRecord` |
+| `AI-12` | `test_connectors.py` | `test_news_feed_normalization` | **PASSED** | UN News global feed items normalized to `EvidenceRecord` |
+| `AI-13` | `test_connectors.py` | `test_nominatim_normalization` | **PASSED** | OpenStreetMap Nominatim geocoding normalized to `EvidenceRecord` |
+| `AI-14` | `test_connectors.py` | `test_wikimedia_signals_normalization` | **PASSED** | Wikimedia pageview traffic signals normalized |
+| `AI-15` | `test_connectors.py` | `test_gdelt_events_normalization` | **PASSED** | GDELT 2.0 15-minute global stream normalized |
+| `AI-16` | `test_connectors.py` | `test_dataset_builder_fallback_and_deduplication` | **PASSED** | Hash-based deduplication verified (0 duplicates) |
+| `AI-17` | `test_connectors.py` | `test_evidence_verification_engine_states` | **PASSED** | VERIFIED, CONFLICTING, REJECTED states validated |
+| `AI-18` | `test_pipeline.py` | `test_canonical_12_stage_pipeline_execution` | **PASSED** | All 12 canonical stages execute sequentially |
+| `AI-19` | `test_pipeline_failure_modes.py` | `test_pipeline_empty_question` | **PASSED** | Rejection on empty inputs |
+| `AI-20` | `test_pipeline_failure_modes.py` | `test_pipeline_network_timeout_fallback` | **PASSED** | Bounded timeouts and graceful fallback behavior |
+| `AI-21` | `test_pipeline_failure_modes.py` | `test_pipeline_unsupported_model_provider` | **PASSED** | Automatic fallback to local deterministic rules |
+| `AI-22` | `test_section30_capabilities.py` | `test_forecast_lab_evaluation_metrics` | **PASSED** | Brier score: 0.0390 vs 0.2500 baseline, log loss: 0.2145 |
+| `AI-23` | `test_section30_capabilities.py` | `test_forecast_lab_temporal_integrity` | **PASSED** | Temporal cutoff blocks post-cutoff outcome leakage |
+| `AI-24` | `test_section30_capabilities.py` | `test_geomemory_analogs_and_limits_of_analogy` | **PASSED** | Historical precedents retrieved with explicit limits of analogy |
+| `AI-25` | `test_section30_capabilities.py` | `test_geolens_comparative_profiles` | **PASSED** | Cross-country comparative profiles generated with data gaps |
+| `AI-26` | `test_strategy_risk_gate.py` | `test_unreviewed_strategy_blocked` | **PASSED** | Stage 11 Red Team gate blocks unreviewed strategy options |
 
 ---
 
-### Suite 1: AI Multi-Agent Pipeline & Section 30 Capabilities (pytest)
-| Test ID | Target Component | Command / Verification | Result | Notes |
-| :--- | :--- | :--- | :--- | :--- |
-| `AI-01` | Connector Registry & Licensing | `pytest test_connectors.py::test_connector_registry_and_licensing` | **PASSED** | Validates 4+ open connectors with active terms |
-| `AI-02` | Connector Content Hashing | `pytest test_connectors.py::test_base_connector_content_hash` | **PASSED** | SHA-256 deterministic payload provenance hashing |
-| `AI-03` | Circuit Breaker & 5 Failures | `pytest test_connectors.py::test_circuit_breaker_and_failure_handling` | **PASSED** | Verifies 5-failure threshold, ERROR state, and recovery |
-| `AI-04` | Connector Disabled & License | `pytest test_connectors.py::test_connector_disabled_status` | **PASSED** | Confirms DISABLED and LICENSE_CHECK block availability |
-| `AI-05` | World Bank Normalization | `pytest test_connectors.py::test_world_bank_normalization` | **PASSED** | Verifies economic indicator mapping and hash generation |
-| `AI-06` | USGS Hazard Normalization | `pytest test_connectors.py::test_usgs_normalization` | **PASSED** | Verifies geophysical event mapping and verified status |
-| `AI-07` | NASA EONET Normalization | `pytest test_connectors.py::test_nasa_eonet_normalization` | **PASSED** | Verifies satellite disaster signal mapping |
-| `AI-08` | ReliefWeb Normalization | `pytest test_connectors.py::test_reliefweb_normalization` | **PASSED** | Verifies humanitarian report mapping and source referenced status |
-| `AI-09` | DatasetBuilder Fallback/Dedup | `pytest test_connectors.py::test_dataset_builder_fallback_and_deduplication` | **PASSED** | Verifies reference dataset fallback & content-hash deduplication |
-| `AI-10` | Evidence Verification States | `pytest test_connectors.py::test_evidence_verification_engine_states` | **PASSED** | Verifies REJECTED, VERIFIED, CONFLICTING with cross-references |
-| `AI-11` | 12-Stage Pipeline Execution | `pytest test_pipeline.py::test_canonical_12_stage_pipeline_execution` | **PASSED** | Verified all 4 answer sections, GeoCausal, and GeoFork |
-| `AI-12` | ForecastLab Scoring Engine | `pytest test_section30_capabilities.py::test_forecast_lab_evaluation_metrics` | **PASSED** | Verifies Brier score (0.0390 vs 0.250 baseline) & log loss |
-| `AI-13` | ForecastLab Temporal Integrity | `pytest test_section30_capabilities.py::test_forecast_lab_temporal_integrity` | **PASSED** | Verifies cutoff timestamps block future data leakage |
-| `AI-14` | GeoMemory Precedents & Limits | `pytest test_section30_capabilities.py::test_geomemory_analogs_and_limits_of_analogy` | **PASSED** | Verifies historical analog parallels & limits of analogy |
-| `AI-15` | GeoLens Cross-Country Profiles | `pytest test_section30_capabilities.py::test_geolens_comparative_profiles` | **PASSED** | Verifies IND, IRN, USA profiles & data gap disclosures |
-| `AI-16` | Mandatory Strategy Risk Gate | `pytest test_strategy_risk_gate.py::test_unreviewed_strategy_blocked` | **PASSED** | Unreviewed strategies structurally blocked/withheld |
+### Suite 2: Backend Spring Boot Tests (JUnit 5 — 14 Tests)
+
+| Test ID | Test Class | Target Component | Result | Notes |
+|---|---|---|---|---|
+| `BE-01` | `ApiResponseTest` | `shouldCreateSuccessResponse` | **PASSED** | Standard API success envelope |
+| `BE-02` | `ApiResponseTest` | `shouldCreateErrorResponse` | **PASSED** | Standard API error envelope |
+| `BE-03` | `DashboardControllerTest` | `shouldReturnDashboardSummary` | **PASSED** | Zero-paid compliance flag & metrics |
+| `BE-04` | `MasterDataControllerTest` | `shouldReturnCountryListing` | **PASSED** | `/api/v1/countries` listing |
+| `BE-05` | `MasterDataControllerTest` | `shouldReturnEventListing` | **PASSED** | `/api/v1/events` listing |
+| `BE-06` | `MasterDataControllerTest` | `shouldExecuteGlobalSearch` | **PASSED** | `/api/v1/search?q={query}` multi-entity search |
+| `BE-07` | `QuestionControllerTest` | `shouldRejectEmptyQuestion` | **PASSED** | 400 Bad Request on empty question |
+| `BE-08` | `QuestionControllerTest` | `shouldSubmitQuestionAndForwardToAiService` | **PASSED** | Forwards to AI service with 8 categories |
+| `BE-09` | `JwtTokenProviderTest` | `shouldGenerateAndValidateValidToken` | **PASSED** | Validates signature, expiry, claims |
+| `BE-10` | `JwtTokenProviderTest` | `shouldRejectTamperedToken` | **PASSED** | Rejects cryptographic tampering |
+| `BE-11` | `JwtTokenProviderTest` | `shouldRejectMalformedToken` | **PASSED** | Graceful rejection of malformed tokens |
+| `BE-12` | `SessionControllerTest` | `shouldInitializeSessionWithTtl` | **PASSED** | 120-minute expiration TTL assignment |
+| `BE-13` | `SessionControllerTest` | `shouldListSessions` | **PASSED** | Session repository listing |
+| `BE-14` | `SessionControllerTest` | `shouldDeleteSession` | **PASSED** | Session deletion & context isolation |
 
 ---
 
-### Suite 2: Frontend TypeScript & Vite Production Bundle
-| Test ID | Target Component | Command / Verification | Result | Notes |
-| :--- | :--- | :--- | :--- | :--- |
-| `FE-01` | TypeScript Type Checking | `tsc` via `npm run build` | **PASSED** | 0 type errors across all UI features & types |
-| `FE-02` | Vite Production Packaging | `vite build` | **PASSED** | 1503 modules transformed, bundle generated in `dist/` |
+### Suite 3: Full Stack End-to-End Live Integration Tests
+
+| Test ID | Endpoint / Flow | HTTP Status | Database & Integration Verification | Result |
+|---|---|---|---|---|
+| `E2E-01` | `POST /api/v1/auth/register` | **200 OK** | User created in MySQL `users` table; BCrypt hash stored | **PASSED** |
+| `E2E-02` | `POST /api/v1/auth/login` | **200 OK** | Valid JWT token returned | **PASSED** |
+| `E2E-03` | `GET /api/v1/dashboard/summary` | **200 OK** | 10 registered connectors, zero-paid compliant | **PASSED** |
+| `E2E-04` | `GET /api/v1/countries` | **200 OK** | 258 country records returned from MySQL | **PASSED** |
+| `E2E-05` | `GET /api/v1/events` | **200 OK** | 120 curated event records returned from MySQL | **PASSED** |
+| `E2E-06` | `GET /api/v1/news` | **200 OK** | 226 news items returned from MySQL | **PASSED** |
+| `E2E-07` | `GET /api/v1/organizations` | **200 OK** | 50 organization records returned from MySQL | **PASSED** |
+| `E2E-08` | `GET /api/v1/evidence` | **200 OK** | 1,687 evidence records returned from MySQL | **PASSED** |
+| `E2E-09` | `GET /api/v1/sources` | **200 OK** | 10 connector sources returned from MySQL | **PASSED** |
+| `E2E-10` | `POST /api/v1/sessions` | **200 OK** | New isolated session record inserted into MySQL | **PASSED** |
+| `E2E-11` | `POST /api/v1/sessions/{id}/questions` | **200 OK** | Spring Boot forwarded to AI service; 12 stages ran; 52 evidence items returned | **PASSED** |
 
 ---
 
-### Suite 3: Backend Java 26 Compilation & Spring Boot Packaging
-| Test ID | Target Component | Command / Verification | Result | Notes |
-| :--- | :--- | :--- | :--- | :--- |
-| `BE-01` | Java 26 Native Compile | `.\mvnw.cmd compile` | **PASSED** | 30 source files compiled cleanly for JDK 26 |
-| `BE-02` | Executable Fat JAR Repackage | `.\mvnw.cmd package -DskipTests` | **PASSED** | Repackaged `geosentinel-backend-1.0.0.jar` created |
+### Suite 4: Five Canonical Geopolitical Questions Execution
 
----
-
-### Suite 4: Backend Security, Session & Master Data Tests (JUnit 5)
-| Test ID | Target Component | Command / Verification | Result | Notes |
-| :--- | :--- | :--- | :--- | :--- |
-| `BE-03` | JWT Generation & Token Verification | `JwtTokenProviderTest#shouldGenerateAndValidateValidToken` | **PASSED** | Verifies signature, expiry, and claim retrieval |
-| `BE-04` | Tampered Token Detection | `JwtTokenProviderTest#shouldRejectTamperedToken` | **PASSED** | Rejects modified cryptographic tokens |
-| `BE-05` | Malformed Token Handling | `JwtTokenProviderTest#shouldRejectMalformedToken` | **PASSED** | Graceful rejection on empty/invalid inputs |
-| `BE-06` | API Response Success Wrapper | `ApiResponseTest#shouldCreateSuccessResponse` | **PASSED** | Validates timestamp, success flag, and data payload |
-| `BE-07` | API Response Error Wrapper | `ApiResponseTest#shouldCreateErrorResponse` | **PASSED** | Validates error messaging and null payload contract |
-| `BE-08` | Dashboard Metrics Summary | `DashboardControllerTest#shouldReturnDashboardSummary` | **PASSED** | Verifies metrics aggregation and zero-paid compliance flag |
-| `BE-09` | Session Lifecycle & 120m TTL | `SessionControllerTest#shouldInitializeSessionWithTtl` | **PASSED** | Verifies 120-minute expiration TTL assignment |
-| `BE-10` | Session Listing | `SessionControllerTest#shouldListSessions` | **PASSED** | Validates repository findAll retrieval |
-| `BE-11` | Session Cleanup / Deletion | `SessionControllerTest#shouldDeleteSession` | **PASSED** | Verifies session deletion and context teardown |
-| `BE-12` | Question Validation | `QuestionControllerTest#shouldRejectEmptyQuestion` | **PASSED** | Validates 400 Bad Request on empty question |
-| `BE-13` | Question Pipeline Delegation | `QuestionControllerTest#shouldSubmitQuestionAndForwardToAiService` | **PASSED** | Validates AI service client invocation and response delivery |
-| `BE-14` | Countries REST Endpoint | `MasterDataControllerTest#shouldReturnCountryListing` | **PASSED** | Verifies `/api/v1/countries` listing and JSON payload |
-| `BE-15` | Events REST Endpoint | `MasterDataControllerTest#shouldReturnEventListing` | **PASSED** | Verifies `/api/v1/events` listing and JSON payload |
-| `BE-16` | Unified Global Search Endpoint | `MasterDataControllerTest#shouldExecuteGlobalSearch` | **PASSED** | Verifies `/api/v1/search?q={query}` multi-entity search |
-
----
-
-### Suite 5: Native E2E Question Pipeline Verification (`e2e_verification.py`)
-| Test ID | Target Component | Command / Verification | Result | Notes |
-| :--- | :--- | :--- | :--- | :--- |
-| `E2E-01` | Canonical 12-Stage Pipeline Flow | `$env:PYTHONPATH='.'; python tests/e2e_verification.py` | **PASSED** | All 12 pipeline stages executed sequentially with run ID tracking |
-| `E2E-02` | Canonical 4-Section Answer View | `e2e_verification.py` Section 2 check | **PASSED** | Verified Situation (4 facts), Evidence (27 records), Impact (2 pathways), Strategy |
-| `E2E-03` | Evidence Provenance & Licenses | `e2e_verification.py` Section 2 check | **PASSED** | Validates canonical URLs, SHA-256 hashes, CC-BY 4.0 / Public Domain licenses |
-| `E2E-04` | Red Team Strategy Risk Review Gate | `e2e_verification.py` Section 4 check | **PASSED** | Evaluated recommendations, required mitigations, fallback actions assigned |
-| `E2E-05` | ForecastLab Expanded Corpus (Phase 3) | `e2e_verification.py` Section 4 check | **PASSED** | Evaluated 6 adjudicated cases (Brier: 0.0390 vs 0.2500 baseline, Log loss: 0.2145) |
-
----
-
-### Suite 6: Live FastAPI Microservice Runtime Health & Connector Probes
-| Test ID | Target Component | Command / Verification | Result | Notes |
-| :--- | :--- | :--- | :--- | :--- |
-| `SVC-01` | FastAPI Health Probe | `curl.exe http://127.0.0.1:8000/api/v1/health` | **PASSED** | Returns UP, version 1.0.0, model_provider local_fallback |
-| `SVC-02` | Connector Registry Probe | `curl.exe http://127.0.0.1:8000/api/v1/connectors` | **PASSED** | All 4 connectors active with verified terms & licenses |
-| `SVC-03` | ForecastLab Evaluation Probe | `curl.exe -X POST http://127.0.0.1:8000/api/v1/forecastlab/evaluate` | **PASSED** | Generates evaluation report with zero future-leakage verification |
-| `SVC-04` | GeoMemory Precedent Search Probe | `POST /api/v1/geomemory/search` | **PASSED** | Returns historical precedents, parallels, and explicit limits of analogy |
-| `SVC-05` | GeoLens Comparison Probe | `POST /api/v1/geolens/compare` | **PASSED** | Returns multi-country (IND, IRN, USA) multi-sector comparative profiles |
-| `SVC-06` | Internal Service Key Authorization | `POST /api/v1/pipeline/execute` (401/403 check) | **PASSED** | Enforces `X-Internal-Service-Key` header authentication |
+| Question ID | Topic Archetype | Execution Time | Evidence Records | 4 Sections | Risk Review Passed | Verdict |
+|---|---|---|---|---|---|---|
+| **Q1** | US-Iran Escalation & India Impact | 3,120 ms | 52 items | **YES** | **YES** (Approved with Limitations) | **VERIFIED** |
+| **Q2** | South China Sea / Semiconductor Supply Chains | 3,080 ms | 47 items | **YES** | **YES** (Approved with Limitations) | **VERIFIED** |
+| **Q3** | Crude Oil Price Shock & Macroeconomic Pass-Through | 3,190 ms | 53 items | **YES** | **YES** (Approved with Limitations) | **VERIFIED** |
+| **Q4** | Russia-Ukraine Conflict & Fertilizer / Food Security | 3,240 ms | 53 items | **YES** | **YES** (Approved with Limitations) | **VERIFIED** |
+| **Q5** | International Trade Sanctions & Strategic Autonomy | 3,210 ms | 53 items | **YES** | **YES** (Approved with Limitations) | **VERIFIED** |

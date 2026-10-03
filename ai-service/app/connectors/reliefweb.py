@@ -19,12 +19,27 @@ class ReliefWebConnector(BaseConnector):
         self.base_url = settings.RELIEFWEB_BASE_URL
 
     async def check_health(self) -> Dict[str, Any]:
+        appname = settings.RELIEFWEB_APPNAME
+        if not appname:
+            return {
+                "status": "CREDENTIAL_MISSING",
+                "credential_type": "Approved Application Name (appname)",
+                "registration_page": "https://apidoc.reliefweb.int/parameters#appname",
+                "required_env_var": "RELIEFWEB_APPNAME",
+                "message": "ReliefWeb API v2 requires an approved appname registered with UN OCHA. Add RELIEFWEB_APPNAME in .env"
+            }
         try:
             async with httpx.AsyncClient(timeout=self.timeout) as client:
-                res = await client.get(f"{self.base_url}/reports?appname=geosentinel&limit=1")
+                res = await client.get(f"{self.base_url}/reports?appname={appname}&limit=1")
                 if res.status_code == 200:
                     self.record_success()
                     return {"status": "HEALTHY", "latency_ms": res.elapsed.total_seconds() * 1000}
+                elif res.status_code == 403:
+                    return {
+                        "status": "CREDENTIAL_INVALID",
+                        "http_code": 403,
+                        "message": "The supplied RELIEFWEB_APPNAME was rejected by ReliefWeb API v2."
+                    }
                 self.record_failure()
                 return {"status": "DEGRADED", "http_code": res.status_code}
         except Exception as e:
@@ -32,14 +47,14 @@ class ReliefWebConnector(BaseConnector):
             return {"status": "UNHEALTHY", "error": str(e)}
 
     async def fetch(self, target_entities: List[str], target_geographies: List[str]) -> List[Dict[str, Any]]:
-        if not self.is_available():
+        appname = settings.RELIEFWEB_APPNAME
+        if not appname or not self.is_available():
             return []
 
         results = []
         try:
-            # Query recent humanitarian situation reports
             query_str = " OR ".join(target_geographies) if target_geographies else "humanitarian"
-            url = f"{self.base_url}/reports?appname=geosentinel&query[value]={query_str}&limit=4&preset=latest"
+            url = f"{self.base_url}/reports?appname={appname}&query[value]={query_str}&limit=4"
             async with httpx.AsyncClient(timeout=self.timeout) as client:
                 res = await client.get(url)
                 if res.status_code == 200:

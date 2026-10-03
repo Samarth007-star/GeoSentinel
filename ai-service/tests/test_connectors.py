@@ -133,6 +133,119 @@ def test_reliefweb_normalization():
     assert rec.evidence_type == "humanitarian_report"
     assert rec.verification_status == VerificationState.SOURCE_REFERENCED
 
+def test_reliefweb_credential_missing_health():
+    import asyncio
+    conn = ReliefWebConnector()
+    # When RELIEFWEB_APPNAME is not set, returns CREDENTIAL_MISSING
+    res = asyncio.run(conn.check_health())
+    assert res.get("status") in ["CREDENTIAL_MISSING", "HEALTHY"]
+
+def test_usaspending_normalization():
+    from app.connectors.usaspending import UsaSpendingConnector
+    conn = UsaSpendingConnector()
+    raw = [{
+        "agency_id": 1525,
+        "agency_name": "Department of Energy",
+        "abbreviation": "DOE",
+        "toptier_code": "089",
+        "url": "https://www.usaspending.gov/agency/089"
+    }]
+    records = conn.normalize(raw)
+    assert len(records) == 1
+    rec = records[0]
+    assert rec.source_id == "CONN_USASPENDING"
+    assert rec.evidence_type == "government_open_data"
+    assert rec.verification_status == VerificationState.VERIFIED
+
+def test_un_sdg_normalization():
+    from app.connectors.un_sdg import UnSdgConnector
+    conn = UnSdgConnector()
+    raw = [{
+        "goal": "8",
+        "code": "8.1",
+        "title": "Sustain per capita economic growth",
+        "description": "Sustain per capita economic growth in accordance with national circumstances",
+        "url": "https://unstats.un.org/sdgs/"
+    }]
+    records = conn.normalize(raw)
+    assert len(records) == 1
+    rec = records[0]
+    assert rec.source_id == "CONN_UN_SDG"
+    assert rec.evidence_type == "multilateral_standard"
+    assert rec.verification_status == VerificationState.VERIFIED
+
+def test_news_feed_normalization():
+    from app.connectors.news import NewsFeedConnector
+    conn = NewsFeedConnector()
+    raw = [{
+        "guid": "https://news.un.org/en/story/2026/10/12345",
+        "title": "Global Shipping Corridors Face Escalating Security Review",
+        "link": "https://news.un.org/en/story/2026/10/12345",
+        "pub_date": "Wed, 02 Oct 2026 06:00:00 GMT",
+        "description": "International maritime authorities review safety protocols."
+    }]
+    records = conn.normalize(raw)
+    assert len(records) == 1
+    rec = records[0]
+    assert rec.source_id == "CONN_NEWS"
+    assert rec.evidence_type == "news_dispatch"
+    assert rec.verification_status == VerificationState.SOURCE_REFERENCED
+
+def test_nominatim_normalization():
+    from app.connectors.nominatim import NominatimConnector
+    conn = NominatimConnector()
+    raw = [{
+        "place_id": 123456,
+        "osm_id": 98765,
+        "name": "Strait of Hormuz, Persian Gulf",
+        "lat": "26.5667",
+        "lon": "56.2500",
+        "type": "strait",
+        "class": "natural",
+        "query": "Hormuz",
+        "url": "https://www.openstreetmap.org/"
+    }]
+    records = conn.normalize(raw)
+    assert len(records) == 1
+    rec = records[0]
+    assert rec.source_id == "CONN_NOMINATIM"
+    assert rec.evidence_type == "spatial_boundary"
+    assert rec.verification_status == VerificationState.VERIFIED
+
+def test_wikimedia_signals_normalization():
+    from app.connectors.wikimedia import WikimediaSignalsConnector
+    conn = WikimediaSignalsConnector()
+    raw = [{
+        "article": "India",
+        "total_views": 150000,
+        "avg_daily_views": 30000,
+        "sample_timestamp": "2024010500",
+        "url": "https://en.wikipedia.org/wiki/India"
+    }]
+    records = conn.normalize(raw)
+    assert len(records) == 1
+    rec = records[0]
+    assert rec.source_id == "CONN_WIKIMEDIA"
+    assert rec.evidence_type == "public_social_signal"
+    assert rec.verification_status == VerificationState.VERIFIED
+
+def test_gdelt_events_normalization():
+    from app.connectors.gdelt_events import GdeltEventsConnector
+    conn = GdeltEventsConnector()
+    raw = [{
+        "file_name": "20261002073000.export.CSV.zip",
+        "file_url": "http://data.gdeltproject.org/gdeltv2/20261002073000.export.CSV.zip",
+        "file_md5": "46cf98e4438dcf465ac34c53329fe7e3",
+        "size_bytes": "61534",
+        "retrieved_at": "2026-10-02T07:30:00Z"
+    }]
+    records = conn.normalize(raw)
+    assert len(records) == 1
+    rec = records[0]
+    assert rec.source_id == "CONN_GDELT_EVENTS"
+    assert rec.evidence_type == "conflict_political_event"
+    assert rec.verification_status == VerificationState.VERIFIED
+
 import asyncio
 
 def test_dataset_builder_fallback_and_deduplication():

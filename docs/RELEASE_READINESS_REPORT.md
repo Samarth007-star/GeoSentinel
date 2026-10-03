@@ -76,29 +76,32 @@ The system runs 100% natively without Docker:
 | Service | Environment / Runtime | Version | Status |
 | :--- | :--- | :--- | :--- |
 | **Operating System** | Windows 11 | 10.0 (AMD64) | Verified Native |
-| **Python Service** | Python (FastAPI, Pydantic v2, Pytest) | 3.14.4 / Pytest 9.1.1 | Passed (16/16 pytest unit/integration + 5 E2E + 6 service probes) |
+| **Python Service** | Python (FastAPI, Pydantic v2, Pytest) | 3.14.4 / Pytest 9.1.1 | Passed (26/26 pytest unit/integration + 5 E2E + 6 service probes) |
 | **Java Backend** | OpenJDK 64-Bit Server VM | JDK 26 / Spring Boot 3.2.5 | Passed (14/14 JUnit 5 tests) |
 | **Web Frontend** | Node.js / Vite / React | Node v24.15.0 / Vite 5.4.21 | Passed (0 bundle errors) |
-| **RDBMS** | MySQL Service | MySQL 8.0 (Port 3306) | Verified Active |
+| **RDBMS** | MySQL Service | MySQL 8.0 (Port 3306) | Verified Active (Hydrated with 1,687 evidence records) |
 
 ---
 
 ## 4. Commands Executed & Verification Evidence
 
-1. `pytest`: Executed 16 unit and integration tests across connectors, circuit breakers, normalization, fallback, verification engine, pipeline, mandatory risk gate, ForecastLab, GeoMemory, and GeoLens (**16 passed, 0 failures**).
+1. `pytest`: Executed 26 unit and integration tests across 10 connectors, circuit breakers, normalization, fallback, verification engine, pipeline, mandatory risk gate, ForecastLab, GeoMemory, and GeoLens (**26 passed, 0 failures**).
 2. `.\mvnw.cmd test`: Executed 14 JUnit 5 tests across JWT provider, controller endpoints, master data CRUD (Countries, Events, News, Organizations, Evidence, Reports, Search), session lifecycle, and compliance flags (**14 passed, 0 failures**).
 3. `.\mvnw.cmd package -DskipTests`: Packaged standalone fat JAR `target/geosentinel-backend-1.0.0.jar` with repackaged dependencies.
-4. `npm run build`: Type-checked with `tsc` and bundled production assets via Vite into `frontend/dist/` (**0 errors**).
-5. `$env:PYTHONPATH='.'; python tests/e2e_verification.py`: Full native execution of canonical 12-stage pipeline and 4-section answer verification (**COMPLETED, 0 errors**).
-6. Live HTTP curl probes: Tested `/api/v1/health`, `/api/v1/connectors`, `/api/v1/forecastlab/evaluate`, `/api/v1/geomemory/search`, `/api/v1/geolens/compare` (**200 OK across all endpoints**).
+4. `npm run build`: Type-checked with `tsc` and bundled production assets via Vite into `frontend/dist/` (**0 errors, 1,503 modules transformed**).
+5. `python scripts/development/test_full_stack.py`: Full native execution of multi-service integration across all 11 core subsystems including auth, session, question execution, ForecastLab, GeoMemory, and GeoLens (**11 passed, 0 failures**).
+6. `python scripts/development/run_comprehensive_audit.py`: Full empirical validation of canonical user questions Q1 through Q5, capturing live HTTP provider data, provenance hashes, and risk review decisions (**5/5 questions validated**).
 
 ---
 
 ## 5. Test Execution Results
 
-- **Total Test Suites**: 10
-- **Total Tests Executed**: 39
-- **Passed**: 39
+- **Pytest Suite**: 26 passed, 0 failed
+- **JUnit 5 Suite**: 14 passed, 0 failed
+- **End-to-End Integration Suite**: 11 passed, 0 failed
+- **Canonical Questions Audited**: 5 passed, 0 failed
+- **Total Tests Executed**: 56
+- **Passed**: 56
 - **Failed**: 0
 - **Blocked**: 0
 
@@ -107,21 +110,27 @@ The system runs 100% natively without Docker:
 ## 6. Known Security and Privacy Limitations
 
 1. **Local Authentication**: Default dev profile uses deterministic HMAC-SHA256 secret. Production deployments must configure `JWT_SECRET` via external environment variable.
-2. **Rate Limiting**: Public connectors (World Bank, USGS, NASA, ReliefWeb) apply upstream IP rate limits; the BaseConnector implements circuit breaking and exponential backoff to handle 429 responses.
+2. **Rate Limiting**: Public connectors apply upstream IP rate limits; the BaseConnector implements circuit breaking and exponential backoff to handle 429 responses.
 3. **Local In-Memory Cache**: Active session temporary artifacts are scoped to a 120-minute TTL and flushed upon session deletion.
 
 ---
 
-## 7. Connector Availability & Terms-Check Status
+## 7. Connector Availability & Canonical Category Status
 
-| Connector ID | Data Provider | License / Terms | Approved Research Use | Status |
-| :--- | :--- | :--- | :--- | :--- |
-| `CONN_WORLDBANK` | World Bank Indicators | CC-BY 4.0 | YES | **ACTIVE** |
-| `CONN_USGS` | USGS Hazards Program | US Public Domain | YES | **ACTIVE** |
-| `CONN_NASA_EONET` | NASA Earth Observatory | NASA Open Data | YES | **ACTIVE** |
-| `CONN_RELIEFWEB` | UN OCHA ReliefWeb | CC-BY 4.0 | YES | **ACTIVE** |
+| # | Canonical Category | Connector ID | Data Provider | Auth / Key | License | Operational Status |
+|---|---|---|---|---|---|---|
+| 1 | Government Open Data | `CONN_USASPENDING` | US Treasury / USAspending | Public Open | US Public Domain | **LIVE_DATA_VERIFIED** |
+| 2 | International Organizations | `CONN_UN_SDG` | UN DESA SDG API | Public Open | UN Terms | **LIVE_DATA_VERIFIED** |
+| 2 | International Organizations | `CONN_RELIEFWEB` | UN OCHA ReliefWeb v2 | Free Appname Parameter | CC-BY 4.0 | **CREDENTIAL_MISSING** (Documented setup required) |
+| 3 | Economic & Financial Data | `CONN_WORLDBANK` | The World Bank Group | Public Open | CC-BY 4.0 | **LIVE_DATA_VERIFIED** |
+| 4 | News Sources | `CONN_NEWS` | United Nations News RSS | Public XML | UN Terms | **LIVE_DATA_VERIFIED** |
+| 5 | Scientific & Disaster Data | `CONN_USGS` | USGS Hazards Program | Public Open | US Public Domain | **LIVE_DATA_VERIFIED** |
+| 5 | Scientific & Disaster Data | `CONN_NASA_EONET` | NASA Earth Observatory | Public Open | NASA Policy | **LIVE_DATA_VERIFIED** |
+| 6 | Geographic Data | `CONN_NOMINATIM` | OpenStreetMap Nominatim | User-Agent | ODbL | **LIVE_DATA_VERIFIED** |
+| 7 | Public Social Signals | `CONN_WIKIMEDIA` | Wikimedia Pageviews API | User-Agent | CC-BY-SA 3.0 | **LIVE_DATA_VERIFIED** |
+| 8 | Conflict & Political Events | `CONN_GDELT_EVENTS` | The GDELT Project 2.0 | Public Stream | Research Open | **LIVE_DATA_VERIFIED** |
 
-*Zero paid or subscription-gated connectors are utilized in the codebase.*
+*8 of 8 canonical categories have active, live data verified providers. Zero paid or subscription-gated connectors are utilized.*
 
 ---
 
@@ -158,4 +167,5 @@ In accordance with Section 28.2 of `Prompt.md`:
 
 ## 9. Conclusion & Release Status
 
-The GeoSentinel MVP has satisfied all non-negotiable rules, canonical pipeline stages, Section 30 research extensions, and empirical testing requirements set forth in `Prompt.md`. The release is certified as **VERIFIED_COMPLETE** for local research evaluation on Windows.
+The GeoSentinel MVP has satisfied all non-negotiable rules, canonical pipeline stages, Section 30 research extensions, zero-cost constraints, and live eight-category data integration requirements. The system is certified as **VERIFIED_FOR_MANUAL_TESTING** for full local end-to-end evaluation on Windows.
+

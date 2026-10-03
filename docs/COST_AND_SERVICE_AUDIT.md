@@ -21,17 +21,24 @@
 
 Every data connector utilized by the GeoSentinel Dataset Builder has been audited for pricing, billing requirements, authentication, and licensing terms:
 
-| Connector ID | Data Provider | Endpoint URL | Pricing / Fee Structure | Billing / Payment Required? | Authentication / Key Required? | License / Terms of Use | Current Operational Status |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `CONN_WORLDBANK` | The World Bank Group | `https://api.worldbank.org/v2` | Genuinely Free Public Open Data | **NO** (Zero billing mechanisms exist) | None (Open access) | Creative Commons Attribution 4.0 (CC-BY 4.0) | **ACTIVE** |
-| `CONN_USGS` | United States Geological Survey | `https://earthquake.usgs.gov/fdsnws/event/1/` | US Federal Public Domain | **NO** (Funded by US Government) | None (Open access) | US Public Domain (USGS Open Data Policy) | **ACTIVE** |
-| `CONN_NASA_EONET` | NASA Earth Observatory | `https://eonet.gsfc.nasa.gov/api/v3/events` | US Federal Public Open Data | **NO** (Zero payment options) | None (Open access) | NASA Open Data & Information Policy | **ACTIVE** |
-| `CONN_RELIEFWEB` | United Nations OCHA | `https://api.reliefweb.int/v1` | Humanitarian Public API | **NO** (Funded by United Nations) | None (Free academic/humanitarian use) | Creative Commons Attribution 4.0 (CC-BY 4.0) | **ACTIVE** |
+| Connector ID | Data Provider | Canonical Category | Endpoint URL | Pricing / Fee Structure | Billing / Payment Required? | Authentication / Key Required? | License / Terms of Use | Current Operational Status |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `CONN_USASPENDING` | US Treasury / USAspending | 1. Government Open Data | `https://api.usaspending.gov/api/v2` | US Federal Open Data | **NO** | None (Public open access) | US Public Domain | **LIVE_DATA_VERIFIED** |
+| `CONN_UN_SDG` | United Nations DESA SDG API | 2. International Organizations | `https://unstats.un.org/sdgapi/v1` | UN Official Statistics | **NO** | None (Public open access) | Open Access / UN Terms | **LIVE_DATA_VERIFIED** |
+| `CONN_RELIEFWEB` | UN OCHA ReliefWeb | 2. International Organizations | `https://api.reliefweb.int/v2` | Humanitarian Public API | **NO** | Free Appname Parameter Required | CC-BY 4.0 | **CREDENTIAL_MISSING** (Free appname not configured) |
+| `CONN_WORLDBANK` | The World Bank Group | 3. Economic & Financial Data | `https://api.worldbank.org/v2` | Genuinely Free Public Open Data | **NO** | None (Open access) | CC-BY 4.0 | **LIVE_DATA_VERIFIED** |
+| `CONN_NEWS` | United Nations News RSS Feed | 4. News Sources | `https://news.un.org/feed/subscribe/en/news/all/rss.xml` | Public UN RSS News Service | **NO** | None (Public XML feed) | UN Copyright / Open Reading | **LIVE_DATA_VERIFIED** |
+| `CONN_USGS` | United States Geological Survey | 5. Scientific & Disaster Data | `https://earthquake.usgs.gov/fdsnws/event/1` | US Federal Public Domain | **NO** | None (Open access) | US Public Domain | **LIVE_DATA_VERIFIED** |
+| `CONN_NASA_EONET` | NASA Earth Observatory | 5. Scientific & Disaster Data | `https://eonet.gsfc.nasa.gov/api/v3` | US Federal Public Open Data | **NO** | None (Open access) | NASA Open Data Policy | **LIVE_DATA_VERIFIED** |
+| `CONN_NOMINATIM` | OpenStreetMap / Nominatim | 6. Geographic Data | `https://nominatim.openstreetmap.org` | OpenStreetMap Open Data | **NO** | User-Agent Header Required | ODbL (Open Database License) | **LIVE_DATA_VERIFIED** |
+| `CONN_WIKIMEDIA` | Wikimedia Foundation | 7. Public Social Signals | `https://wikimedia.org/api/rest_v1` | Public Wikimedia REST API | **NO** | Descriptive User-Agent Required | CC-BY-SA 3.0 / Wikimedia Terms | **LIVE_DATA_VERIFIED** |
+| `CONN_GDELT_EVENTS` | The GDELT Project | 8. Conflict & Political Events | `http://data.gdeltproject.org/gdeltv2` | Open Academic Conflict Feed | **NO** | None (15-min Public CSV Stream) | Open Access / Research Use | **LIVE_DATA_VERIFIED** |
 
 ### Safe Failure & Quota Protection:
 1. **No Automatic Overage**: BaseConnector (`ai-service/app/connectors/base.py`) has hardcoded max timeout (10s), rate-limit backoff, and circuit-breaker threshold (3 failures).
 2. **Deterministic Offline Fallbacks**: If internet connectivity is disconnected or an API returns HTTP 429/500, the connector falls back to pre-seeded local research reference fixtures (`data/reference/`).
 3. **No Commercial Paywalls**: No connectors for commercial Twitter/X API, paid ACLED subscription tiers, or paid Bloomberg/Reuters feeds are present.
+4. **Zero Billing Hooks**: No credit cards, banking info, or financial accounts are used anywhere in the architecture. All 10 audited providers are 100% cost-free.
 
 ---
 

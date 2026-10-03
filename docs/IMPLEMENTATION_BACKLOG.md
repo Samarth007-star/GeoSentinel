@@ -126,3 +126,22 @@ This backlog tracks every discrete implementation task in accordance with Sectio
 | **TSK-090** | REQ-LAB-02 | Historical conflict corpus expansion (1973 Oil Embargo, 1991 Gulf War) | P2 | TSK-082 | **PASSED** | `ai-service/app/evaluation/forecast_lab.py` |
 | **TSK-091** | REQ-DB-02 | Database test profile compatibility audit (MySQL 8 vs H2 DDL) | P2 | TSK-011 | **PASSED** | `docs/VERIFICATION_AUDIT.md`, `backend/` |
 
+---
+
+## Phase 10: Canonical Eight-Category Live Connector Integration & Full Pipeline Verification
+
+| Task ID | Requirement Ref | Description | Priority | Dependencies | Status | Files Involved |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **TSK-100** | REQ-CONN-06 | Implement USASpending Connector (Cat 1: Government Open Data) | P0 | TSK-030 | **PASSED** | `ai-service/app/connectors/usaspending.py` |
+| **TSK-101** | REQ-CONN-07 | Implement UN SDG Indicator Connector (Cat 2: International Organizations) | P0 | TSK-030 | **PASSED** | `ai-service/app/connectors/un_sdg.py` |
+| **TSK-102** | REQ-CONN-08 | Implement UN News Connector (Cat 4: News Sources) | P0 | TSK-030 | **PASSED** | `ai-service/app/connectors/news.py` |
+| **TSK-103** | REQ-CONN-09 | Implement Nominatim Connector (Cat 6: Geographic Data) | P0 | TSK-030 | **PASSED** | `ai-service/app/connectors/nominatim.py` |
+| **TSK-104** | REQ-CONN-10 | Implement Wikimedia Pageviews Connector (Cat 7: Public Social Signals) | P0 | TSK-030 | **PASSED** | `ai-service/app/connectors/wikimedia.py` |
+| **TSK-105** | REQ-CONN-11 | Implement GDELT 2.0 Live Events Feed Connector (Cat 8: Conflict & Political Events) | P0 | TSK-030 | **PASSED** | `ai-service/app/connectors/gdelt_events.py` |
+| **TSK-106** | REQ-CONN-12 | Credential handling and registration for ReliefWeb v2 and UCDP API | P1 | TSK-030 | **PASSED** | `ai-service/app/connectors/reliefweb.py`, `.env.example` |
+| **TSK-107** | REQ-DSB-02 | Expand Dataset Builder to ingest all 8 canonical categories concurrently | P0 | TSK-100 | **PASSED** | `ai-service/app/dataset_builder/builder.py`, `retrieval_planning.py` |
+| **TSK-108** | REQ-DB-03 | Hydrate MySQL 8.0 relational tables with canonical reference data | P0 | TSK-011 | **PASSED** | `scripts/setup/hydrate_database.py` |
+| **TSK-109** | REQ-VAL-01 | Execute and validate canonical user questions Q1 through Q5 through 12-stage pipeline | P0 | TSK-107 | **PASSED** | `scripts/development/run_comprehensive_audit.py`, `docs/LIVE_AUDIT_OUTPUT.json` |
+| **TSK-110** | REQ-REL-01 | Full-stack live readiness audit across all 18 UI/API modules | P0 | TSK-109 | **PASSED** | `scripts/development/test_full_stack.py`, `docs/RELEASE_READINESS_REPORT.md` |
+
+

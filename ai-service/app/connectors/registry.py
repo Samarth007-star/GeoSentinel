@@ -4,15 +4,34 @@ from .world_bank import WorldBankConnector
 from .usgs import UsgsConnector
 from .nasa_eonet import NasaEonetConnector
 from .reliefweb import ReliefWebConnector
+from .usaspending import UsaSpendingConnector
+from .un_sdg import UnSdgConnector
+from .news import NewsFeedConnector
+from .nominatim import NominatimConnector
+from .wikimedia import WikimediaSignalsConnector
+from .gdelt_events import GdeltEventsConnector
 
 class ConnectorRegistry:
     def __init__(self):
         self._connectors: Dict[str, BaseConnector] = {}
-        # Register core free public connectors
+        # 1. Government Open Data
+        self.register(UsaSpendingConnector())
+        # 2. International Organizations
+        self.register(UnSdgConnector())
+        self.register(ReliefWebConnector())
+        # 3. Economic & Financial Data
         self.register(WorldBankConnector())
+        # 4. News Sources
+        self.register(NewsFeedConnector())
+        # 5. Scientific & Disaster Data
         self.register(UsgsConnector())
         self.register(NasaEonetConnector())
-        self.register(ReliefWebConnector())
+        # 6. Geographic Data
+        self.register(NominatimConnector())
+        # 7. Public Social Signals
+        self.register(WikimediaSignalsConnector())
+        # 8. Conflict & Political Events
+        self.register(GdeltEventsConnector())
 
     def register(self, connector: BaseConnector):
         self._connectors[connector.connector_id] = connector

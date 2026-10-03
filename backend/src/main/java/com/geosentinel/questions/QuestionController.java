@@ -50,7 +50,9 @@ public class QuestionController {
         aiRequest.put("question", questionText);
         aiRequest.put("time_horizon", horizon);
         aiRequest.put("geographies", requestPayload.getOrDefault("geographies", Arrays.asList("IND", "IRN", "USA")));
-        aiRequest.put("include_categories", requestPayload.getOrDefault("includeCategories", Arrays.asList("economic", "scientific", "international")));
+        aiRequest.put("include_categories", requestPayload.getOrDefault("includeCategories", Arrays.asList(
+                "government", "international", "economic", "news", "scientific", "geographic", "social", "conflict"
+        )));
 
         try {
             Map<String, Object> aiResult = aiServiceClient.executePipeline(aiRequest);

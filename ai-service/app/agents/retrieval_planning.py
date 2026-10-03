@@ -23,7 +23,11 @@ class RetrievalPlanningAgent:
         if not geos and request.geographies:
             geos = request.geographies
 
-        candidate_connectors = ["economic", "scientific", "international"]
+        canonical_categories = [
+            "government", "international", "economic", "news", 
+            "scientific", "geographic", "social", "conflict"
+        ]
+        candidate_connectors = canonical_categories
         if request.include_categories:
             candidate_connectors = request.include_categories
 
