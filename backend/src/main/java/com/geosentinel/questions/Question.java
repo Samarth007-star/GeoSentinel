@@ -3,8 +3,8 @@ package com.geosentinel.questions;
 import jakarta.persistence.*;
 
 import java.time.Instant;
-@Entity
-@Table(name = "questions")
+
+
 public class Question {
 
     @Id
