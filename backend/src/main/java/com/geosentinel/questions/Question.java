@@ -30,13 +30,7 @@ public class Question {
     public Question() {
     }
 
-    public Question(String id, String sessionId, String questionText, String intent, String requestedTimeRange, Instant createdAt) {
-        this.id = id;
-        this.sessionId = sessionId;
-        this.questionText = questionText;
-        this.intent = intent;
-        this.requestedTimeRange = requestedTimeRange;
-        this.createdAt = createdAt != null ? createdAt : Instant.now();
+   
     }
 
     public static QuestionBuilder builder() {
