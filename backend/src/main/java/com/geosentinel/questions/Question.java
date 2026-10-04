@@ -13,8 +13,10 @@ public class Question {
 
     @Column(name = "session_id", nullable = false, length = 64)
     private String sessionId;
+ 
+    @Column(name = "question_text", nullable = false, columnDefinition = "TEXT")
+    private String questionText;
 
-  
     @Column(length = 64)
     private String intent;
 
