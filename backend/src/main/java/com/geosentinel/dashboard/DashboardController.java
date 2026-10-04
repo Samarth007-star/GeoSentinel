@@ -36,7 +36,7 @@ public class DashboardController {
         summary.put("registeredConnectors", sourceRepository.count());
         summary.put("zeroPaidApiCompliance", true);
         summary.put("strategyRiskReviewGateStatus", "ENFORCED");
-       
+        summary.put("canonicalPipelineVersion", "1.0.0");
 
         return ResponseEntity.ok(ApiResponse.success("Dashboard metrics retrieved", summary));
     }
