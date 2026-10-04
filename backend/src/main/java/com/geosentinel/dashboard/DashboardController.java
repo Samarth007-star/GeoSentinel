@@ -1,4 +1,4 @@
-package com.geosentinel.dashboard;
+
 package com.geosentinel.dashboard;
 import com.geosentinel.common.ApiResponse;
 import com.geosentinel.questions.QuestionRepository;
@@ -32,7 +32,7 @@ public class DashboardController {
     public ResponseEntity<ApiResponse<Map<String, Object>>> getSummary() {
         Map<String, Object> summary = new HashMap<>();
         summary.put("activeSessions", sessionRepository.count());
-        summary.put("totalQuestionsProcessed", questionRepository.count());
+        
         summary.put("registeredConnectors", sourceRepository.count());
         summary.put("zeroPaidApiCompliance", true);
         summary.put("strategyRiskReviewGateStatus", "ENFORCED");
