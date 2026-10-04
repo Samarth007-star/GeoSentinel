@@ -8,6 +8,10 @@ import java.time.Instant;
 public class Question {
 
 
+    @Id
+    @Column(length = 64)
+    private String id;
+    
     @Column(name = "session_id", nullable = false, length = 64)
     private String sessionId;
  
