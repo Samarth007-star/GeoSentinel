@@ -20,6 +20,8 @@ public class Question {
 
     @Column(length = 64)
     private String intent;
+    @Column(name = "requested_time_range", length = 64)
+    private String requestedTimeRange;
 
 
     @Column(name = "created_at", updatable = false)
