@@ -29,6 +29,21 @@ This backlog tracks every discrete implementation task in accordance with Sectio
 
 ---
 
+## Phase 1 (Connectors): Six Live Public Data Connectors
+
+| Task ID | Requirement Ref | Description | Priority | Dependencies | Status | Files Involved |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **TSK-CONN-01** | REQ-RW-01 | ReliefWeb v2 Connector (`CONN_RELIEFWEB`) with AppName parameter | P0 | TSK-020 | **PASSED** | `ai-service/app/connectors/reliefweb.py` |
+| **TSK-CONN-02** | REQ-GDELT-01 | GDELT DOC 2.0 Connector (`CONN_GDELT`) with query retrieval & 5s throttle | P0 | TSK-020 | **PASSED** | `ai-service/app/connectors/gdelt.py` |
+| **TSK-CONN-03** | REQ-OONI-01 | OONI Censorship Connector (`CONN_OONI`) with ISO country code resolver | P0 | TSK-020 | **PASSED** | `ai-service/app/connectors/ooni.py` |
+| **TSK-CONN-04** | REQ-IODA-01 | IODA Outage Connector (`CONN_IODA`) with Live vs Historical timestamping | P0 | TSK-020 | **PASSED** | `ai-service/app/connectors/ioda.py` |
+| **TSK-CONN-05** | REQ-WD-01 | Wikidata SPARQL Connector (`CONN_WIKIDATA`) with semantic graph entity mapping | P0 | TSK-020 | **PASSED** | `ai-service/app/connectors/wikidata.py` |
+| **TSK-CONN-06** | REQ-WM-01 | Wikimedia Pageviews Connector (`CONN_WIKIMEDIA`) for digital attention signals | P0 | TSK-020 | **PASSED** | `ai-service/app/connectors/wikimedia.py` |
+| **TSK-CONN-07** | REQ-DSB-02 | DatasetBuilder & RetrievalPlan dynamic connector routing by inquiry domain | P0 | TSK-CONN-01..06 | **PASSED** | `app/dataset_builder/builder.py`, `app/agents/retrieval_planning.py` |
+| **TSK-CONN-08** | REQ-TEST-01 | Unit & Live Integration Test Suite (20 unit tests, 5 live question audits) | P0 | TSK-CONN-07 | **PASSED** | `tests/test_six_connectors_unit.py`, `tests/run_live_verification.py` |
+
+---
+
 ## Phase 1: Backend Foundations (Spring Boot 3.x)
 
 | Task ID | Requirement Ref | Description | Priority | Dependencies | Status | Files Involved |

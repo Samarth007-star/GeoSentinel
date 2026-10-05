@@ -22,6 +22,8 @@ class Settings(BaseModel):
     NASA_EONET_BASE_URL: str = os.getenv("NASA_EONET_BASE_URL", "https://eonet.gsfc.nasa.gov/api/v3")
     GDELT_BASE_URL: str = os.getenv("GDELT_BASE_URL", "https://api.gdeltproject.org/api/v2")
     OONI_BASE_URL: str = os.getenv("OONI_BASE_URL", "https://api.ooni.io/api/v1")
+    IODA_BASE_URL: str = os.getenv("IODA_BASE_URL", "https://api.ioda.inetintel.cc.gatech.edu/v2")
+    WIKIDATA_SPARQL_URL: str = os.getenv("WIKIDATA_SPARQL_URL", "https://query.wikidata.org/sparql")
     RELIEFWEB_BASE_URL: str = os.getenv("RELIEFWEB_BASE_URL", "https://api.reliefweb.int/v2")
     RELIEFWEB_APPNAME: str = os.getenv("RELIEFWEB_APPNAME", "")
     USASPENDING_BASE_URL: str = os.getenv("USASPENDING_BASE_URL", "https://api.usaspending.gov/api/v2")

@@ -106,6 +106,7 @@ class EvidenceRecord(BaseModel):
     license_id: str = "open_access"
     attribution: str = ""
     content_hash: str = ""
+    data_origin: str = "LIVE"
     corroboration_ids: List[str] = Field(default_factory=list)
     contradiction_ids: List[str] = Field(default_factory=list)
     limitations: Optional[str] = None
@@ -204,6 +205,7 @@ class EvidenceItemSection(BaseModel):
     retrieval_date: str
     verification_status: VerificationState
     relevance: str
+    data_origin: str = "LIVE"
     conflicts_or_limitations: Optional[str] = None
 
 class ImpactAnalysisSection(BaseModel):

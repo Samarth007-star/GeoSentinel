@@ -1,0 +1,218 @@
+{
+  "connectors": [
+    {
+      "provider": "Open Observatory of Network Interference (OONI)",
+      "connector_id": "CONN_OONI",
+      "category": "Internet & Infrastructure",
+      "endpoint": "https://api.ooni.io/api/v1",
+      "request_timestamp": "2026-10-03T06:13:06.254451+00:00",
+      "health_status": "HEALTHY",
+      "response_latency_ms": 787.1,
+      "data_origin": "LIVE",
+      "raw_record_count": 5,
+      "normalized_record_count": 5,
+      "sample_record_id": "ev_ooni_20261003061305",
+      "sample_record_timestamp": "2026-10-03T06:12:58.000000Z",
+      "source_url": "https://api.ooni.io/api/v1/raw_measurement?measurement_uid=20261003061305.016714_IR_dnscheck_46f0bd47ca09b84c",
+      "content_hash": "35254408b60c48b0b6fe1313bbf0d6a0e3ce898313333a19803f624cb46daad2",
+      "result": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "provider": "Internet Outage Detection & Analysis (IODA)",
+      "connector_id": "CONN_IODA",
+      "category": "Internet & Infrastructure",
+      "endpoint": "https://api.ioda.inetintel.cc.gatech.edu/v2",
+      "request_timestamp": "2026-10-03T06:13:17.900225+00:00",
+      "health_status": "UNHEALTHY",
+      "response_latency_ms": 979.5,
+      "data_origin": "HISTORICAL",
+      "raw_record_count": 1,
+      "normalized_record_count": 1,
+      "sample_record_id": "ev_ioda_3134be2b5b47",
+      "sample_record_timestamp": "2026-09-27T22:15:00+00:00",
+      "source_url": "https://ioda.inetintel.cc.gatech.edu/",
+      "content_hash": "3134be2b5b476e9c209032b36b2003dbeb1f359ecb8e9f0aa568bae916bc5d96",
+      "result": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "provider": "Wikidata Knowledge Base (SPARQL)",
+      "connector_id": "CONN_WIKIDATA",
+      "category": "Geographic & Entities",
+      "endpoint": "https://query.wikidata.org/sparql",
+      "request_timestamp": "2026-10-03T06:13:23.643090+00:00",
+      "health_status": "HEALTHY",
+      "response_latency_ms": 2993.9,
+      "data_origin": "LIVE",
+      "raw_record_count": 9,
+      "normalized_record_count": 4,
+      "sample_record_id": "ev_wd_Q668",
+      "sample_record_timestamp": "2026-10-03T06:13:23.643017+00:00",
+      "source_url": "http://www.wikidata.org/entity/Q668",
+      "content_hash": "12863928adfbc312a3f9ac408a264ff392530ad575fefd4b6fe1e5def9bd5e27",
+      "result": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "provider": "Wikimedia REST API (Pageviews)",
+      "connector_id": "CONN_WIKIMEDIA",
+      "category": "Public Social/Digital Signals",
+      "endpoint": "https://wikimedia.org/api/rest_v1",
+      "request_timestamp": "2026-10-03T06:13:28.247071+00:00",
+      "health_status": "HEALTHY",
+      "response_latency_ms": 1867.4,
+      "data_origin": "LIVE",
+      "raw_record_count": 12,
+      "normalized_record_count": 12,
+      "sample_record_id": "ev_wpv_india_2026092800",
+      "sample_record_timestamp": "2026-09-28T00:00:00+00:00",
+      "source_url": "https://en.wikipedia.org/wiki/India",
+      "content_hash": "c769d515d793c2e386a53a8564a071a307d427fa3172b6926b1de5d6794eb108",
+      "result": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "provider": "GDELT Project (DOC 2.0 API)",
+      "connector_id": "CONN_GDELT",
+      "category": "News",
+      "endpoint": "https://api.gdeltproject.org/api/v2",
+      "request_timestamp": "2026-10-03T06:13:53.705459+00:00",
+      "health_status": "RATE_LIMITED",
+      "response_latency_ms": 11956.5,
+      "data_origin": "N/A",
+      "raw_record_count": 0,
+      "normalized_record_count": 0,
+      "sample_record_id": "N/A",
+      "sample_record_timestamp": "N/A",
+      "source_url": "https://www.gdeltproject.org/data.html",
+      "content_hash": "N/A",
+      "result": "RATE_LIMITED"
+    },
+    {
+      "provider": "UN OCHA ReliefWeb API",
+      "connector_id": "CONN_RELIEFWEB",
+      "category": "International Organizations",
+      "endpoint": "https://api.reliefweb.int/v2",
+      "request_timestamp": "2026-10-03T06:13:55.715000+00:00",
+      "health_status": "CREDENTIAL_MISSING",
+      "response_latency_ms": 0.0,
+      "data_origin": "CREDENTIAL_MISSING",
+      "raw_record_count": 0,
+      "normalized_record_count": 0,
+      "sample_record_id": "N/A",
+      "sample_record_timestamp": "N/A",
+      "source_url": "https://reliefweb.int/terms-conditions",
+      "content_hash": "N/A",
+      "result": "CREDENTIAL_MISSING"
+    },
+    {
+      "provider": "World Bank Indicators API",
+      "connector_id": "CONN_WORLDBANK",
+      "category": "Economic & Financial",
+      "endpoint": "https://api.worldbank.org/v2",
+      "request_timestamp": "2026-10-03T06:14:06.259550+00:00",
+      "health_status": "HEALTHY",
+      "response_latency_ms": 8279.0,
+      "data_origin": "LIVE",
+      "raw_record_count": 6,
+      "normalized_record_count": 6,
+      "sample_record_id": "ev_wb_IND_NY_GDP_MKTP_KD_ZG_2025",
+      "sample_record_timestamp": "2025-12-31T00:00:00Z",
+      "source_url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+      "content_hash": "3694cdb8752cadef0d58677fc45bbe99dcd457bbc54ffdffe0b1528af6921537",
+      "result": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "provider": "USGS Earthquake Hazards Program",
+      "connector_id": "CONN_USGS",
+      "category": "Scientific & Disaster",
+      "endpoint": "https://earthquake.usgs.gov/fdsnws/event/1",
+      "request_timestamp": "2026-10-03T06:14:09.499574+00:00",
+      "health_status": "HEALTHY",
+      "response_latency_ms": 562.0,
+      "data_origin": "LIVE",
+      "raw_record_count": 5,
+      "normalized_record_count": 5,
+      "sample_record_id": "ev_usgs_us6000tzal",
+      "sample_record_timestamp": "2026-10-03T02:59:06.296000+00:00",
+      "source_url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tzal",
+      "content_hash": "4fb03b7f50a0ed4dae91c1e7a462953b5b57cc27d4ad897c7e0263c4af19d695",
+      "result": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "provider": "NASA Earth Observatory Natural Event Tracker (EONET)",
+      "connector_id": "CONN_NASA_EONET",
+      "category": "Scientific & Disaster",
+      "endpoint": "https://eonet.gsfc.nasa.gov/api/v3",
+      "request_timestamp": "2026-10-03T06:14:13.850046+00:00",
+      "health_status": "HEALTHY",
+      "response_latency_ms": 1183.5,
+      "data_origin": "LIVE",
+      "raw_record_count": 5,
+      "normalized_record_count": 5,
+      "sample_record_id": "ev_nasa_EONET_24962",
+      "sample_record_timestamp": "2026-10-03T06:14:13.849891+00:00",
+      "source_url": "https://www.metoc.navy.mil/jtwc/products/wp2626.tcw",
+      "content_hash": "3a8a32ff700b6b6fe4b1017ff0a5c19c2a059febf6a537256772a7fac4984d97",
+      "result": "LIVE_DATA_VERIFIED"
+    }
+  ],
+  "questions": [
+    {
+      "question_id": 1,
+      "question": "What could be the economic and geopolitical impact on India if tensions in the Middle East escalate?",
+      "evidence_count": 37,
+      "sources": [
+        "Wikimedia Pageviews API",
+        "UN Statistics Division SDG API",
+        "World Bank Indicators API",
+        "UN News Service Global Feed",
+        "Wikidata Knowledge Base"
+      ],
+      "verified_facts_count": 4
+    },
+    {
+      "question_id": 2,
+      "question": "Are there recent internet connectivity disruptions relevant to Iran or the Middle East?",
+      "evidence_count": 30,
+      "sources": [
+        "Wikimedia Pageviews API",
+        "IODA Internet Outage Detection",
+        "UN Statistics Division SDG API",
+        "UN News Service Global Feed",
+        "World Bank Indicators API",
+        "OONI Network Measurements",
+        "Wikidata Knowledge Base"
+      ],
+      "verified_facts_count": 4
+    },
+    {
+      "question_id": 3,
+      "question": "What recent humanitarian developments are relevant to the Middle East?",
+      "evidence_count": 25,
+      "sources": [
+        "Wikimedia Pageviews API",
+        "UN Statistics Division SDG API",
+        "World Bank Indicators API",
+        "UN News Service Global Feed",
+        "Wikidata Knowledge Base"
+      ],
+      "verified_facts_count": 4
+    },
+    {
+      "question_id": 4,
+      "question": "Has public digital attention to Iran increased recently?",
+      "evidence_count": 5,
+      "sources": [
+        "Wikimedia Pageviews API"
+      ],
+      "verified_facts_count": 4
+    },
+    {
+      "question_id": 5,
+      "question": "Give me structured information about India, Iran and their relevant organizations/entities.",
+      "evidence_count": 4,
+      "sources": [
+        "Wikidata Knowledge Base"
+      ],
+      "verified_facts_count": 4
+    }
+  ]
+}

@@ -4,34 +4,41 @@ from .world_bank import WorldBankConnector
 from .usgs import UsgsConnector
 from .nasa_eonet import NasaEonetConnector
 from .reliefweb import ReliefWebConnector
+from .gdelt import GdeltConnector
+from .ooni import OoniConnector
+from .ioda import IodaConnector
+from .wikidata import WikidataConnector
+from .wikimedia import WikimediaPageviewsConnector
 from .usaspending import UsaSpendingConnector
 from .un_sdg import UnSdgConnector
 from .news import NewsFeedConnector
 from .nominatim import NominatimConnector
-from .wikimedia import WikimediaSignalsConnector
-from .gdelt_events import GdeltEventsConnector
 
 class ConnectorRegistry:
     def __init__(self):
         self._connectors: Dict[str, BaseConnector] = {}
-        # 1. Government Open Data
-        self.register(UsaSpendingConnector())
-        # 2. International Organizations
-        self.register(UnSdgConnector())
+        # Core & Phase 1 Connectors
+        # 1. International Organizations
         self.register(ReliefWebConnector())
-        # 3. Economic & Financial Data
-        self.register(WorldBankConnector())
-        # 4. News Sources
+        self.register(UnSdgConnector())
+        # 2. News Intelligence
+        self.register(GdeltConnector())
         self.register(NewsFeedConnector())
-        # 5. Scientific & Disaster Data
+        # 3. Internet & Infrastructure Outages & Censorship
+        self.register(OoniConnector())
+        self.register(IodaConnector())
+        # 4. Geographic & Entities
+        self.register(WikidataConnector())
+        self.register(NominatimConnector())
+        # 5. Public Social & Digital Signals (Digital Attention)
+        self.register(WikimediaPageviewsConnector())
+        # 6. Economic & Financial Data
+        self.register(WorldBankConnector())
+        # 7. Scientific & Disaster Telemetry
         self.register(UsgsConnector())
         self.register(NasaEonetConnector())
-        # 6. Geographic Data
-        self.register(NominatimConnector())
-        # 7. Public Social Signals
-        self.register(WikimediaSignalsConnector())
-        # 8. Conflict & Political Events
-        self.register(GdeltEventsConnector())
+        # 8. Government Open Data
+        self.register(UsaSpendingConnector())
 
     def register(self, connector: BaseConnector):
         self._connectors[connector.connector_id] = connector
@@ -46,7 +53,10 @@ class ConnectorRegistry:
         eligible = [c for c in self._connectors.values() if c.is_available()]
         if categories:
             norm_cats = [c.lower() for c in categories]
-            eligible = [c for c in eligible if c.category.lower() in norm_cats or any(nc in c.category.lower() for nc in norm_cats)]
+            def matches(conn_cat: str) -> bool:
+                cc = conn_cat.lower()
+                return any(nc in cc or cc in nc for nc in norm_cats)
+            eligible = [c for c in eligible if matches(c.category)]
         return eligible
 
 connector_registry = ConnectorRegistry()

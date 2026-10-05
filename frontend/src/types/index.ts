@@ -91,4 +91,11 @@ export interface ConnectorInfo {
   status: string;
   license: string;
   termsUrl: string;
+  authentication?: string;
+  lastCheck?: string;
+  lastSuccess?: string;
+  recordsRetrieved?: number;
+  dataOrigin?: string;
+  error?: string;
+  endpoint?: string;
 }

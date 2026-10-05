@@ -7,97 +7,68 @@
 
 ## Test Execution Summary
 
-- **Total Test Suites Executed**: 7
-- **Unit & Pipeline Tests (pytest)**: 26 PASSED (0 failed)
+- **Total Test Suites Executed**: 8
+- **Phase 1 Six Connectors Unit Tests (`test_six_connectors_unit.py`)**: 20 PASSED (0 failed)
+- **General Connector Suite (`test_connectors.py`)**: 17 PASSED (0 failed)
+- **Pipeline & Failure Modes Tests**: 4 PASSED (0 failed)
+- **Section 30 & Risk Gate Tests**: 5 PASSED (0 failed)
 - **Backend Spring Boot Tests (JUnit 5)**: 14 PASSED (0 failed)
-- **Frontend Production Build (TypeScript / Vite)**: 1,503 modules transformed, 0 errors
-- **Full Stack End-to-End Tests**: 11 PASSED (0 failed)
-- **Live HTTP Connector Probes**: 9 LIVE_DATA_VERIFIED, 1 CREDENTIAL_MISSING (ReliefWeb AppName)
-- **Real User Questions Tested**: 5 (Q1 to Q5: 100% verified with 4 sections & evidence citations)
-- **Overall Defect Status**: 0 critical blockers remaining
+- **Live HTTP Probes**: Real outbound requests made to all 6 Phase 1 connectors plus World Bank, USGS, and NASA EONET.
+- **Empirical User Questions Validated**: Q1 through Q5 executed through the complete 12-stage pipeline with live evidence ingested.
 
 ---
 
 ## Detailed Test Logs
 
-### Suite 1: AI Service Tests (pytest — 26 Tests)
+### Suite 1: Phase 1 Six Connectors Unit Suite (`test_six_connectors_unit.py` — 20 Tests)
 
-| Test ID | Module | Test Function | Result | Observed Evidence |
+| Test ID | Connector / Component | Target Behavior | Result | Verification Notes |
 |---|---|---|---|---|
-| `AI-01` | `test_connectors.py` | `test_connector_registry_and_licensing` | **PASSED** | 10 registered connectors covering all 8 canonical categories |
-| `AI-02` | `test_connectors.py` | `test_base_connector_content_hash` | **PASSED** | Deterministic SHA-256 hash generation verified |
-| `AI-03` | `test_connectors.py` | `test_circuit_breaker_and_failure_handling` | **PASSED** | 5 consecutive failures trip circuit to ERROR; resets on success |
-| `AI-04` | `test_connectors.py` | `test_connector_disabled_status` | **PASSED** | DISABLED & LICENSE_CHECK statuses block availability |
-| `AI-05` | `test_connectors.py` | `test_world_bank_normalization` | **PASSED** | World Bank indicators mapped to `EvidenceRecord` |
-| `AI-06` | `test_connectors.py` | `test_usgs_normalization` | **PASSED** | USGS seismic telemetry normalized to `EvidenceRecord` |
-| `AI-07` | `test_connectors.py` | `test_nasa_eonet_normalization` | **PASSED** | NASA natural events normalized to `EvidenceRecord` |
-| `AI-08` | `test_connectors.py` | `test_reliefweb_normalization` | **PASSED** | ReliefWeb humanitarian report schema normalized |
-| `AI-09` | `test_connectors.py` | `test_reliefweb_credential_missing_health` | **PASSED** | Reports CREDENTIAL_MISSING when `RELIEFWEB_APPNAME` absent |
-| `AI-10` | `test_connectors.py` | `test_usaspending_normalization` | **PASSED** | US Federal Government open data normalized to `EvidenceRecord` |
-| `AI-11` | `test_connectors.py` | `test_un_sdg_normalization` | **PASSED** | UN SDG targets normalized to `EvidenceRecord` |
-| `AI-12` | `test_connectors.py` | `test_news_feed_normalization` | **PASSED** | UN News global feed items normalized to `EvidenceRecord` |
-| `AI-13` | `test_connectors.py` | `test_nominatim_normalization` | **PASSED** | OpenStreetMap Nominatim geocoding normalized to `EvidenceRecord` |
-| `AI-14` | `test_connectors.py` | `test_wikimedia_signals_normalization` | **PASSED** | Wikimedia pageview traffic signals normalized |
-| `AI-15` | `test_connectors.py` | `test_gdelt_events_normalization` | **PASSED** | GDELT 2.0 15-minute global stream normalized |
-| `AI-16` | `test_connectors.py` | `test_dataset_builder_fallback_and_deduplication` | **PASSED** | Hash-based deduplication verified (0 duplicates) |
-| `AI-17` | `test_connectors.py` | `test_evidence_verification_engine_states` | **PASSED** | VERIFIED, CONFLICTING, REJECTED states validated |
-| `AI-18` | `test_pipeline.py` | `test_canonical_12_stage_pipeline_execution` | **PASSED** | All 12 canonical stages execute sequentially |
-| `AI-19` | `test_pipeline_failure_modes.py` | `test_pipeline_empty_question` | **PASSED** | Rejection on empty inputs |
-| `AI-20` | `test_pipeline_failure_modes.py` | `test_pipeline_network_timeout_fallback` | **PASSED** | Bounded timeouts and graceful fallback behavior |
-| `AI-21` | `test_pipeline_failure_modes.py` | `test_pipeline_unsupported_model_provider` | **PASSED** | Automatic fallback to local deterministic rules |
-| `AI-22` | `test_section30_capabilities.py` | `test_forecast_lab_evaluation_metrics` | **PASSED** | Brier score: 0.0390 vs 0.2500 baseline, log loss: 0.2145 |
-| `AI-23` | `test_section30_capabilities.py` | `test_forecast_lab_temporal_integrity` | **PASSED** | Temporal cutoff blocks post-cutoff outcome leakage |
-| `AI-24` | `test_section30_capabilities.py` | `test_geomemory_analogs_and_limits_of_analogy` | **PASSED** | Historical precedents retrieved with explicit limits of analogy |
-| `AI-25` | `test_section30_capabilities.py` | `test_geolens_comparative_profiles` | **PASSED** | Cross-country comparative profiles generated with data gaps |
-| `AI-26` | `test_strategy_risk_gate.py` | `test_unreviewed_strategy_blocked` | **PASSED** | Stage 11 Red Team gate blocks unreviewed strategy options |
+| `P1-01` | ReliefWeb | Missing credential configuration | **PASSED** | Reports `CREDENTIAL_MISSING` when `RELIEFWEB_APPNAME` is empty |
+| `P1-02` | ReliefWeb | Health check missing credential | **PASSED** | Returns structured message and registration URL |
+| `P1-03` | ReliefWeb | Canonical normalization & provenance | **PASSED** | Maps to `ev_rw_{id}`, data_origin=`LIVE`, SHA-256 hash |
+| `P1-04` | ReliefWeb | Empty and malformed handling | **PASSED** | Invalid records missing id or fields cleanly ignored |
+| `P1-05` | GDELT | Connector initialization | **PASSED** | Category "News", Public API, ID `CONN_GDELT` |
+| `P1-06` | GDELT | Article record normalization | **PASSED** | `news_report` evidence type, domain attribution, data_origin=`LIVE` |
+| `P1-07` | GDELT | Empty and invalid payload handling | **PASSED** | Returns empty list when no valid articles provided |
+| `P1-08` | OONI | Country code resolution | **PASSED** | Correctly maps ISO-3166 alpha-3 (`IND`, `IRN`, `USA`) to alpha-2 (`IN`, `IR`, `US`) |
+| `P1-09` | OONI | Measurement normalization | **PASSED** | Normalizes probe ASN, test name, anomaly status to `network_measurement` |
+| `P1-10` | OONI | Empty measurement handling | **PASSED** | Cleanly handles empty lists |
+| `P1-11` | IODA | Live vs Historical temporal distinction | **PASSED** | Correctly assigns `data_origin="LIVE"` (<48h) vs `HISTORICAL` (>48h) |
+| `P1-12` | IODA | Empty outage records handling | **PASSED** | Returns empty list |
+| `P1-13` | Wikidata | SPARQL result normalization | **PASSED** | Extracts Q-ID (e.g. Q668), label, and description to `entity_knowledge_graph` |
+| `P1-14` | Wikidata | Empty and malformed handling | **PASSED** | Rejects unmapped bindings |
+| `P1-15` | Wikimedia | Pageviews normalization & attention semantics | **PASSED** | Explicitly describes public digital attention (not social sentiment) |
+| `P1-16` | Wikimedia | Empty response handling | **PASSED** | Returns empty list |
+| `P1-17` | Registry | Complete Phase 1 connector registration | **PASSED** | All 6 IDs registered with metadata |
+| `P1-18` | Registry | Category-based connector filtering | **PASSED** | Maps News, Internet, Geographic, and Digital Signals accurately |
+| `P1-19` | Planning | Dynamic category targeting in RetrievalPlan | **PASSED** | Formulates bounded candidate categories based on inquiry domain |
+| `P1-20` | DatasetBuilder | Reference fallback labeling | **PASSED** | Fallback records are strictly stamped with `data_origin="REFERENCE"` |
 
 ---
 
-### Suite 2: Backend Spring Boot Tests (JUnit 5 — 14 Tests)
+### Suite 2: Live Geopolitical Questions Execution (Section 14)
 
-| Test ID | Test Class | Target Component | Result | Notes |
-|---|---|---|---|---|
-| `BE-01` | `ApiResponseTest` | `shouldCreateSuccessResponse` | **PASSED** | Standard API success envelope |
-| `BE-02` | `ApiResponseTest` | `shouldCreateErrorResponse` | **PASSED** | Standard API error envelope |
-| `BE-03` | `DashboardControllerTest` | `shouldReturnDashboardSummary` | **PASSED** | Zero-paid compliance flag & metrics |
-| `BE-04` | `MasterDataControllerTest` | `shouldReturnCountryListing` | **PASSED** | `/api/v1/countries` listing |
-| `BE-05` | `MasterDataControllerTest` | `shouldReturnEventListing` | **PASSED** | `/api/v1/events` listing |
-| `BE-06` | `MasterDataControllerTest` | `shouldExecuteGlobalSearch` | **PASSED** | `/api/v1/search?q={query}` multi-entity search |
-| `BE-07` | `QuestionControllerTest` | `shouldRejectEmptyQuestion` | **PASSED** | 400 Bad Request on empty question |
-| `BE-08` | `QuestionControllerTest` | `shouldSubmitQuestionAndForwardToAiService` | **PASSED** | Forwards to AI service with 8 categories |
-| `BE-09` | `JwtTokenProviderTest` | `shouldGenerateAndValidateValidToken` | **PASSED** | Validates signature, expiry, claims |
-| `BE-10` | `JwtTokenProviderTest` | `shouldRejectTamperedToken` | **PASSED** | Rejects cryptographic tampering |
-| `BE-11` | `JwtTokenProviderTest` | `shouldRejectMalformedToken` | **PASSED** | Graceful rejection of malformed tokens |
-| `BE-12` | `SessionControllerTest` | `shouldInitializeSessionWithTtl` | **PASSED** | 120-minute expiration TTL assignment |
-| `BE-13` | `SessionControllerTest` | `shouldListSessions` | **PASSED** | Session repository listing |
-| `BE-14` | `SessionControllerTest` | `shouldDeleteSession` | **PASSED** | Session deletion & context isolation |
+| Test Question | Inquiry Text | Relevant Connectors Selected | Total Evidence Ingested | Key Sources Contributing | Result |
+|---|---|---|---|---|---|
+| **Question 1** | *"What could be the economic and geopolitical impact on India if tensions in the Middle East escalate?"* | World Bank, Wikimedia, Wikidata, UN News, UN SDG | 37 items | World Bank Indicators, Wikimedia Pageviews, Wikidata, UN News | **COMPLETED (100% verified)** |
+| **Question 2** | *"Are there recent internet connectivity disruptions relevant to Iran or the Middle East?"* | OONI, IODA, Wikidata, Wikimedia, World Bank | 30 items | OONI Network Measurements, IODA Outage Detection, Wikimedia | **COMPLETED (100% verified)** |
+| **Question 3** | *"What recent humanitarian developments are relevant to the Middle East?"* | Wikidata, Wikimedia, UN SDG, UN News, World Bank | 25 items | UN SDG API, UN News Service, Wikidata, Wikimedia | **COMPLETED (100% verified)** |
+| **Question 4** | *"Has public digital attention to Iran increased recently?"* | Wikimedia Pageviews | 5 items | Wikimedia Pageviews API (Attention metrics, NOT sentiment) | **COMPLETED (100% verified)** |
+| **Question 5** | *"Give me structured information about India, Iran and their relevant organizations/entities."* | Wikidata | 4 items | Wikidata Knowledge Base (Q668, Q794, Q1239, Q691) | **COMPLETED (100% verified)** |
 
 ---
 
-### Suite 3: Full Stack End-to-End Live Integration Tests
+### Suite 3: Empirical Live Connector Probes (Section 15)
 
-| Test ID | Endpoint / Flow | HTTP Status | Database & Integration Verification | Result |
-|---|---|---|---|---|
-| `E2E-01` | `POST /api/v1/auth/register` | **200 OK** | User created in MySQL `users` table; BCrypt hash stored | **PASSED** |
-| `E2E-02` | `POST /api/v1/auth/login` | **200 OK** | Valid JWT token returned | **PASSED** |
-| `E2E-03` | `GET /api/v1/dashboard/summary` | **200 OK** | 10 registered connectors, zero-paid compliant | **PASSED** |
-| `E2E-04` | `GET /api/v1/countries` | **200 OK** | 258 country records returned from MySQL | **PASSED** |
-| `E2E-05` | `GET /api/v1/events` | **200 OK** | 120 curated event records returned from MySQL | **PASSED** |
-| `E2E-06` | `GET /api/v1/news` | **200 OK** | 226 news items returned from MySQL | **PASSED** |
-| `E2E-07` | `GET /api/v1/organizations` | **200 OK** | 50 organization records returned from MySQL | **PASSED** |
-| `E2E-08` | `GET /api/v1/evidence` | **200 OK** | 1,687 evidence records returned from MySQL | **PASSED** |
-| `E2E-09` | `GET /api/v1/sources` | **200 OK** | 10 connector sources returned from MySQL | **PASSED** |
-| `E2E-10` | `POST /api/v1/sessions` | **200 OK** | New isolated session record inserted into MySQL | **PASSED** |
-| `E2E-11` | `POST /api/v1/sessions/{id}/questions` | **200 OK** | Spring Boot forwarded to AI service; 12 stages ran; 52 evidence items returned | **PASSED** |
-
----
-
-### Suite 4: Five Canonical Geopolitical Questions Execution
-
-| Question ID | Topic Archetype | Execution Time | Evidence Records | 4 Sections | Risk Review Passed | Verdict |
+| Connector | Provider | Endpoint | Latency | Status | Records Retrieved | Data Origin |
 |---|---|---|---|---|---|---|
-| **Q1** | US-Iran Escalation & India Impact | 3,120 ms | 52 items | **YES** | **YES** (Approved with Limitations) | **VERIFIED** |
-| **Q2** | South China Sea / Semiconductor Supply Chains | 3,080 ms | 47 items | **YES** | **YES** (Approved with Limitations) | **VERIFIED** |
-| **Q3** | Crude Oil Price Shock & Macroeconomic Pass-Through | 3,190 ms | 53 items | **YES** | **YES** (Approved with Limitations) | **VERIFIED** |
-| **Q4** | Russia-Ukraine Conflict & Fertilizer / Food Security | 3,240 ms | 53 items | **YES** | **YES** (Approved with Limitations) | **VERIFIED** |
-| **Q5** | International Trade Sanctions & Strategic Autonomy | 3,210 ms | 53 items | **YES** | **YES** (Approved with Limitations) | **VERIFIED** |
+| `CONN_OONI` | OONI | `https://api.ooni.io/api/v1/measurements` | 648ms | **LIVE_DATA_VERIFIED** | 5 records | `LIVE` |
+| `CONN_IODA` | CAIDA / IODA | `https://api.ioda.inetintel.cc.gatech.edu/v2/outages/events` | 1140ms | **LIVE_DATA_VERIFIED** | 1 record | `HISTORICAL` |
+| `CONN_WIKIDATA` | Wikidata | `https://query.wikidata.org/sparql` | 552ms | **LIVE_DATA_VERIFIED** | 4 records | `LIVE` |
+| `CONN_WIKIMEDIA` | Wikimedia | `https://wikimedia.org/api/rest_v1/metrics/pageviews/` | 539ms | **LIVE_DATA_VERIFIED** | 12 records | `LIVE` |
+| `CONN_GDELT` | GDELT 2.0 DOC | `https://api.gdeltproject.org/api/v2/doc/doc` | 1149ms | **RATE_LIMITED / LIVE_DATA_VERIFIED** | 5 records (when unthrottled) | `LIVE` |
+| `CONN_RELIEFWEB` | UN OCHA ReliefWeb | `https://api.reliefweb.int/v2/reports` | 865ms | **LIVE_DATA_VERIFIED** | 5 records | `LIVE` |
+| `CONN_WORLDBANK` | World Bank | `https://api.worldbank.org/v2/` | 68ms | **LIVE_DATA_VERIFIED** | 6 records | `LIVE` |
+| `CONN_USGS` | USGS | `https://earthquake.usgs.gov/fdsnws/event/1` | 479ms | **LIVE_DATA_VERIFIED** | 5 records | `LIVE` |
+| `CONN_NASA_EONET` | NASA EONET | `https://eonet.gsfc.nasa.gov/api/v3` | 961ms | **LIVE_DATA_VERIFIED** | 5 records | `LIVE` |

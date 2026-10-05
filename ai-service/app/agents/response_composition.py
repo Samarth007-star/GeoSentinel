@@ -48,6 +48,7 @@ class ResponseCompositionAgent:
                 retrieval_date=ev.retrieved_at,
                 verification_status=ev.verification_status,
                 relevance=f"Informs analysis on {ev.geography or 'regional'} indicators and impact pathways.",
+                data_origin=ev.data_origin,
                 conflicts_or_limitations=ev.limitations or "Verified under standard source license terms."
             ))
 
