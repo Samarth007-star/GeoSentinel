@@ -8,6 +8,13 @@ from ..schemas.models import (
     EntityType,
     EntityExtractionOutput
 )
+from pydantic import BaseModel
+from ..core.llm_adapter import llm_adapter
+from ..core.config import settings
+
+class QUCombinedOutput(BaseModel):
+    intent: IntentOutput
+    entities: EntityExtractionOutput
 
 class QuestionUnderstandingAgent:
     """
@@ -23,10 +30,9 @@ class QuestionUnderstandingAgent:
         "energy", "oil", "petroleum", "shipping", "logistics", "trade", "technology", "agriculture", "food"
     ]
 
-    def process(self, request: QuestionIntakeRequest) -> Tuple[IntentOutput, EntityExtractionOutput]:
+    def _fallback_process(self, request: QuestionIntakeRequest) -> Tuple[IntentOutput, EntityExtractionOutput]:
         q_lower = request.question.lower()
 
-        # Stage 2: Intent Classification
         intent = IntentCategory.IMPACT_ANALYSIS
         requires_scenario = False
         requires_strategy = True
@@ -53,7 +59,6 @@ class QuestionUnderstandingAgent:
             intent_rationale=rationale
         )
 
-        # Stage 3: Entity Extraction
         entities: List[ExtractedEntity] = []
         for name, code in self.KNOWN_COUNTRIES.items():
             pattern = r'\b' + re.escape(name) + r'\b'
@@ -65,7 +70,6 @@ class QuestionUnderstandingAgent:
                     aliases=[code]
                 ))
 
-        # Check explicit request geographies
         if request.geographies:
             for g in request.geographies:
                 g_code = g.upper()
@@ -77,7 +81,6 @@ class QuestionUnderstandingAgent:
                         aliases=[g_code]
                     ))
 
-        # Sectors
         for s in self.KNOWN_SECTORS:
             if s in q_lower:
                 entities.append(ExtractedEntity(
@@ -92,5 +95,16 @@ class QuestionUnderstandingAgent:
         )
 
         return intent_out, entity_out
+
+    async def process(self, request: QuestionIntakeRequest) -> Tuple[IntentOutput, EntityExtractionOutput]:
+        if settings.MODEL_PROVIDER == "local_fallback":
+            return self._fallback_process(request)
+
+        try:
+            prompt = f"Analyze this geopolitical question: '{request.question}'. Extract the intent and any entities (countries, sectors, organizations)."
+            result = await llm_adapter.generate_structured(prompt, QUCombinedOutput)
+            return result.intent, result.entities
+        except Exception:
+            return self._fallback_process(request)
 
 question_understanding_agent = QuestionUnderstandingAgent()

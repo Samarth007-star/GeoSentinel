@@ -1,0 +1,665 @@
+{
+  "connector_audit": {
+    "CONN_WORLDBANK": {
+      "provider": "World Bank Indicators API",
+      "category": "Economic & Financial",
+      "base_url": "https://api.worldbank.org/v2",
+      "health_status": "HEALTHY",
+      "health_detail": {
+        "status": "HEALTHY",
+        "latency_ms": 180.023
+      },
+      "request_timestamp": "2026-09-30T15:59:35.018361+00:00",
+      "latency_ms": 410.4,
+      "record_count": 6,
+      "normalized_count": 6,
+      "response_origin": "LIVE_API",
+      "data_nature": "HISTORICAL_ANNUAL",
+      "sample_record": {
+        "evidence_id": "ev_wb_IND_NY_GDP_MKTP_KD_ZG_2025",
+        "source_id": "CONN_WORLDBANK",
+        "source_name": "World Bank Indicators API",
+        "source_url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+        "title": "World Bank: GDP growth (annual %) (IND - 2025)",
+        "claim_text": "GDP growth (annual %) for IND was recorded at 7.57 in 2025.",
+        "evidence_type": "economic_indicator",
+        "published_at": "2025-12-31T00:00:00Z",
+        "retrieved_at": "2026-09-30T15:59:35.848269+00:00",
+        "geography": "IND",
+        "verification_status": "VERIFIED",
+        "verification_rationale": "Retrieved from official World Bank Open Data API with deterministic schema validation.",
+        "license_id": "CC-BY 4.0",
+        "attribution": "Source: World Bank Open Data API (CC-BY 4.0)",
+        "content_hash": "3694cdb8752cadef0d58677fc45bbe99dcd457bbc54ffdffe0b1528af6921537",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "Annual macroeconomic indicators carry historical publishing lag."
+      }
+    },
+    "CONN_USGS": {
+      "provider": "USGS Earthquake Hazards Program",
+      "category": "Scientific & Disaster",
+      "base_url": "https://earthquake.usgs.gov/fdsnws/event/1",
+      "health_status": "HEALTHY",
+      "health_detail": {
+        "status": "HEALTHY",
+        "latency_ms": 1764.027
+      },
+      "request_timestamp": "2026-09-30T15:59:35.848708+00:00",
+      "latency_ms": 965.38,
+      "record_count": 5,
+      "normalized_count": 5,
+      "response_origin": "LIVE_API",
+      "data_nature": "LIVE",
+      "sample_record": {
+        "evidence_id": "ev_usgs_us6000tyjb",
+        "source_id": "CONN_USGS",
+        "source_name": "USGS Earthquake Hazards Program",
+        "source_url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tyjb",
+        "title": "USGS Seismic Event: M 5.0 - 27 km N of Kupang, Indonesia",
+        "claim_text": "USGS recorded a magnitude 5 earthquake located at 27 km N of Kupang, Indonesia.",
+        "evidence_type": "geophysical_event",
+        "published_at": "2026-09-30T10:58:50.586000+00:00",
+        "retrieved_at": "2026-09-30T15:59:38.784200+00:00",
+        "geography": "27 km N of Kupang, Indonesia",
+        "verification_status": "VERIFIED",
+        "verification_rationale": "Physical seismographic sensor measurement confirmed by USGS National Earthquake Information Center.",
+        "license_id": "Public Domain",
+        "attribution": "Source: USGS Earthquake Hazards Program (Public Domain)",
+        "content_hash": "cf2db3adc4f4c2607ddd4c3ce5a43412c641f24c5ebf2863a5779afd71fd9796",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "Preliminary magnitudes subject to review and revision by USGS analysts."
+      }
+    },
+    "CONN_NASA_EONET": {
+      "provider": "NASA Earth Observatory Natural Event Tracker (EONET)",
+      "category": "Scientific & Disaster",
+      "base_url": "https://eonet.gsfc.nasa.gov/api/v3",
+      "health_status": "HEALTHY",
+      "health_detail": {
+        "status": "HEALTHY",
+        "latency_ms": 1311.8909999999998
+      },
+      "request_timestamp": "2026-09-30T15:59:38.784363+00:00",
+      "latency_ms": 1825.65,
+      "record_count": 5,
+      "normalized_count": 5,
+      "response_origin": "LIVE_API",
+      "data_nature": "LIVE",
+      "sample_record": {
+        "evidence_id": "ev_nasa_EONET_24909",
+        "source_id": "CONN_NASA_EONET",
+        "source_name": "NASA Earth Observatory Natural Event Tracker (EONET)",
+        "source_url": "https://www.nhc.noaa.gov/archive/2026/HANNA.shtml",
+        "title": "NASA EONET: Tropical Storm Hanna",
+        "claim_text": "NASA EONET detected active Severe Storms event: 'Tropical Storm Hanna'.",
+        "evidence_type": "satellite_disaster_signal",
+        "published_at": "2026-09-30T15:59:42.103263+00:00",
+        "retrieved_at": "2026-09-30T15:59:42.103263+00:00",
+        "geography": null,
+        "verification_status": "VERIFIED",
+        "verification_rationale": "Derived from NASA satellite remote-sensing observations and partnered meteorological agencies.",
+        "license_id": "NASA Open Access",
+        "attribution": "Source: NASA EONET / Earth Science Data Systems",
+        "content_hash": "5c6c7ff56fe46a1033078bf0cc6123de99db040d7980ae9780b202163aaba63d",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "Coordinates reflect latest satellite orbital pass centerpoint."
+      }
+    },
+    "CONN_RELIEFWEB": {
+      "provider": "UN OCHA ReliefWeb API",
+      "category": "International Organizations",
+      "base_url": "https://api.reliefweb.int/v1",
+      "health_status": "DEGRADED",
+      "health_detail": {
+        "status": "DEGRADED",
+        "http_code": 410
+      },
+      "request_timestamp": "2026-09-30T15:59:42.103440+00:00",
+      "latency_ms": 1225.1,
+      "record_count": 0,
+      "normalized_count": 0,
+      "response_origin": "BLOCKED_OR_ERROR",
+      "data_nature": "NONE",
+      "sample_record": null
+    }
+  },
+  "dataset_builder_audit": {
+    "plan_id": "plan_audit_real_001",
+    "candidate_connectors": [
+      "economic",
+      "scientific",
+      "international"
+    ],
+    "target_geographies": [
+      "IND",
+      "WLD"
+    ],
+    "total_records_built": 22,
+    "sources_represented": [
+      "CONN_NASA_EONET",
+      "CONN_USGS",
+      "CONN_WORLDBANK"
+    ],
+    "verification_breakdown": {
+      "UNVERIFIED": 0,
+      "SOURCE_REFERENCED": 0,
+      "CROSS_CHECKED": 0,
+      "VERIFIED": 22,
+      "CONFLICTING": 0,
+      "REJECTED": 0
+    },
+    "records": [
+      {
+        "evidence_id": "ev_wb_IND_NY_GDP_MKTP_KD_ZG_2025",
+        "source_id": "CONN_WORLDBANK",
+        "verification_status": "VERIFIED",
+        "source_url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+        "claim_text": "GDP growth (annual %) for IND was recorded at 7.57 in 2025.",
+        "content_hash": "3694cdb8752cadef0d58677fc45bbe99dcd457bbc54ffdffe0b1528af6921537",
+        "retrieved_at": "2026-09-30T15:59:47.824791+00:00",
+        "published_at": "2025-12-31T00:00:00Z"
+      },
+      {
+        "evidence_id": "ev_wb_IND_NY_GDP_MKTP_KD_ZG_2024",
+        "source_id": "CONN_WORLDBANK",
+        "verification_status": "VERIFIED",
+        "source_url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+        "claim_text": "GDP growth (annual %) for IND was recorded at 7.10 in 2024.",
+        "content_hash": "50225d4eab9966327d6c064695bac59cc8835484cbe98343029a4c90485c29fe",
+        "retrieved_at": "2026-09-30T15:59:47.824791+00:00",
+        "published_at": "2024-12-31T00:00:00Z"
+      },
+      {
+        "evidence_id": "ev_wb_IND_NY_GDP_MKTP_KD_ZG_2023",
+        "source_id": "CONN_WORLDBANK",
+        "verification_status": "VERIFIED",
+        "source_url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+        "claim_text": "GDP growth (annual %) for IND was recorded at 7.21 in 2023.",
+        "content_hash": "4279b085b297387754b6da0f723a2d18f02a60b566b9401bc5bb520784d5e363",
+        "retrieved_at": "2026-09-30T15:59:47.824791+00:00",
+        "published_at": "2023-12-31T00:00:00Z"
+      },
+      {
+        "evidence_id": "ev_wb_IND_FP_CPI_TOTL_ZG_2025",
+        "source_id": "CONN_WORLDBANK",
+        "verification_status": "VERIFIED",
+        "source_url": "https://api.worldbank.org/v2/country/IND/indicator/FP.CPI.TOTL.ZG?format=json&per_page=3",
+        "claim_text": "Inflation, consumer prices (annual %) for IND was recorded at 2.40 in 2025.",
+        "content_hash": "e8fa73af52d27e23d5d7740586997219c454a67cd2eb82bc8093ee9c3d4dd43a",
+        "retrieved_at": "2026-09-30T15:59:47.824791+00:00",
+        "published_at": "2025-12-31T00:00:00Z"
+      },
+      {
+        "evidence_id": "ev_wb_IND_FP_CPI_TOTL_ZG_2024",
+        "source_id": "CONN_WORLDBANK",
+        "verification_status": "VERIFIED",
+        "source_url": "https://api.worldbank.org/v2/country/IND/indicator/FP.CPI.TOTL.ZG?format=json&per_page=3",
+        "claim_text": "Inflation, consumer prices (annual %) for IND was recorded at 4.95 in 2024.",
+        "content_hash": "001b2438e1a35476828177844d66d5ba477db7997ae8bccb4bb8d7de2ea20e66",
+        "retrieved_at": "2026-09-30T15:59:47.824791+00:00",
+        "published_at": "2024-12-31T00:00:00Z"
+      },
+      {
+        "evidence_id": "ev_wb_IND_FP_CPI_TOTL_ZG_2023",
+        "source_id": "CONN_WORLDBANK",
+        "verification_status": "VERIFIED",
+        "source_url": "https://api.worldbank.org/v2/country/IND/indicator/FP.CPI.TOTL.ZG?format=json&per_page=3",
+        "claim_text": "Inflation, consumer prices (annual %) for IND was recorded at 5.65 in 2023.",
+        "content_hash": "c8534b5351f6cb66dd77b98d92cf371b6ac59478fa5b15a845116ed7295ba543",
+        "retrieved_at": "2026-09-30T15:59:47.824791+00:00",
+        "published_at": "2023-12-31T00:00:00Z"
+      },
+      {
+        "evidence_id": "ev_wb_WLD_NY_GDP_MKTP_KD_ZG_2025",
+        "source_id": "CONN_WORLDBANK",
+        "verification_status": "VERIFIED",
+        "source_url": "https://api.worldbank.org/v2/country/WLD/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+        "claim_text": "GDP growth (annual %) for WLD was recorded at 2.92 in 2025.",
+        "content_hash": "f2a6c42f47809f9fe0c74b5218a905e971c57c91c4973cc7254374eab0bd0cfd",
+        "retrieved_at": "2026-09-30T15:59:47.824791+00:00",
+        "published_at": "2025-12-31T00:00:00Z"
+      },
+      {
+        "evidence_id": "ev_wb_WLD_NY_GDP_MKTP_KD_ZG_2024",
+        "source_id": "CONN_WORLDBANK",
+        "verification_status": "VERIFIED",
+        "source_url": "https://api.worldbank.org/v2/country/WLD/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+        "claim_text": "GDP growth (annual %) for WLD was recorded at 2.90 in 2024.",
+        "content_hash": "b76e1c3e6f3f9bcdbbba379013784a01d951d1256c637845bedfb8ed0f775b43",
+        "retrieved_at": "2026-09-30T15:59:47.824791+00:00",
+        "published_at": "2024-12-31T00:00:00Z"
+      },
+      {
+        "evidence_id": "ev_wb_WLD_NY_GDP_MKTP_KD_ZG_2023",
+        "source_id": "CONN_WORLDBANK",
+        "verification_status": "VERIFIED",
+        "source_url": "https://api.worldbank.org/v2/country/WLD/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+        "claim_text": "GDP growth (annual %) for WLD was recorded at 2.86 in 2023.",
+        "content_hash": "751aa37709a0a839cf1e8a738a49a15e3c7939d560abecd07242106d86b9d97a",
+        "retrieved_at": "2026-09-30T15:59:47.824791+00:00",
+        "published_at": "2023-12-31T00:00:00Z"
+      },
+      {
+        "evidence_id": "ev_wb_WLD_FP_CPI_TOTL_ZG_2025",
+        "source_id": "CONN_WORLDBANK",
+        "verification_status": "VERIFIED",
+        "source_url": "https://api.worldbank.org/v2/country/WLD/indicator/FP.CPI.TOTL.ZG?format=json&per_page=3",
+        "claim_text": "Inflation, consumer prices (annual %) for WLD was recorded at 3.04 in 2025.",
+        "content_hash": "6412407f4cee64edd2ffc52751a22863de57ff65745f7ebc7a375f442cbf4810",
+        "retrieved_at": "2026-09-30T15:59:47.824791+00:00",
+        "published_at": "2025-12-31T00:00:00Z"
+      }
+    ]
+  },
+  "pipeline_execution_audit": {
+    "status": "COMPLETED",
+    "analysis_run_id": "run_c61ddae4",
+    "question_id": "q_657d56a6",
+    "session_id": "audit_session_12_stages",
+    "completed_at": "2026-09-30T15:59:49.748752+00:00",
+    "sections_present": {
+      "current_situation": true,
+      "relevant_evidence": true,
+      "impact_analysis": true,
+      "strategy_recommendations": true
+    },
+    "scenarios_count": 2,
+    "limitations_count": 4,
+    "confidence_rationale": "High confidence regarding baseline macroeconomic dependency and official multilateral data; moderate confidence regarding geopolitical escalation time horizons."
+  },
+  "five_questions_audit": [
+    {
+      "id": "Q1",
+      "archetype": "Impact Analysis",
+      "question": "What could be the effects on India if US-Iran tensions escalate?",
+      "run_id": "run_30335d13",
+      "status": "COMPLETED",
+      "sections_verified": true,
+      "section_breakdown": {
+        "situation_facts_count": 4,
+        "evidence_count": 27,
+        "impact_pathways_count": 2,
+        "strategies_count": 2
+      },
+      "url_validity": true,
+      "evidence_ids_valid": true,
+      "risk_review_pass": true,
+      "scenarios_labeled": true,
+      "claims_audited": [
+        {
+          "claim": "[World Bank Indicators API] GDP growth (annual %) for IND was recorded at 7.57 in 2025.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "[World Bank Indicators API] GDP growth (annual %) for IND was recorded at 7.10 in 2024.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "[World Bank Indicators API] GDP growth (annual %) for IND was recorded at 7.21 in 2023.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "[World Bank Indicators API] Inflation, consumer prices (annual %) for IND was recorded at 2.40 in 2025.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "Informs analysis on IND indicators and impact pathways.",
+          "source": "World Bank Indicators API",
+          "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+          "type": "evidence_record",
+          "status": "PASS"
+        },
+        {
+          "claim": "Informs analysis on IND indicators and impact pathways.",
+          "source": "World Bank Indicators API",
+          "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+          "type": "evidence_record",
+          "status": "PASS"
+        },
+        {
+          "claim": "Informs analysis on IND indicators and impact pathways.",
+          "source": "World Bank Indicators API",
+          "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+          "type": "evidence_record",
+          "status": "PASS"
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "Q2",
+      "archetype": "Maritime Trade & Freight Disruption",
+      "question": "Evaluate the economic and shipping container freight impact of Red Sea transit disruptions.",
+      "run_id": "run_785f8409",
+      "status": "COMPLETED",
+      "sections_verified": true,
+      "section_breakdown": {
+        "situation_facts_count": 4,
+        "evidence_count": 22,
+        "impact_pathways_count": 2,
+        "strategies_count": 2
+      },
+      "url_validity": true,
+      "evidence_ids_valid": true,
+      "risk_review_pass": true,
+      "scenarios_labeled": true,
+      "claims_audited": [
+        {
+          "claim": "[World Bank Indicators API] GDP growth (annual %) for EGY was recorded at 4.39 in 2025.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "[World Bank Indicators API] GDP growth (annual %) for EGY was recorded at 2.40 in 2024.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "[World Bank Indicators API] GDP growth (annual %) for EGY was recorded at 3.76 in 2023.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "[World Bank Indicators API] Inflation, consumer prices (annual %) for EGY was recorded at 14.07 in 2025.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "Informs analysis on EGY indicators and impact pathways.",
+          "source": "World Bank Indicators API",
+          "url": "https://api.worldbank.org/v2/country/EGY/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+          "type": "evidence_record",
+          "status": "PASS"
+        },
+        {
+          "claim": "Informs analysis on EGY indicators and impact pathways.",
+          "source": "World Bank Indicators API",
+          "url": "https://api.worldbank.org/v2/country/EGY/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+          "type": "evidence_record",
+          "status": "PASS"
+        },
+        {
+          "claim": "Informs analysis on EGY indicators and impact pathways.",
+          "source": "World Bank Indicators API",
+          "url": "https://api.worldbank.org/v2/country/EGY/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+          "type": "evidence_record",
+          "status": "PASS"
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "Q3",
+      "archetype": "Strategy Comparison & Mitigation",
+      "question": "Analyze potential domestic sector spillovers if crude oil trade routes face selective maritime blockades.",
+      "run_id": "run_bcfd9e1f",
+      "status": "COMPLETED",
+      "sections_verified": true,
+      "section_breakdown": {
+        "situation_facts_count": 4,
+        "evidence_count": 27,
+        "impact_pathways_count": 2,
+        "strategies_count": 2
+      },
+      "url_validity": true,
+      "evidence_ids_valid": true,
+      "risk_review_pass": true,
+      "scenarios_labeled": true,
+      "claims_audited": [
+        {
+          "claim": "[World Bank Indicators API] GDP growth (annual %) for IND was recorded at 7.57 in 2025.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "[World Bank Indicators API] GDP growth (annual %) for IND was recorded at 7.10 in 2024.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "[World Bank Indicators API] GDP growth (annual %) for IND was recorded at 7.21 in 2023.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "[World Bank Indicators API] Inflation, consumer prices (annual %) for IND was recorded at 2.40 in 2025.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "Informs analysis on IND indicators and impact pathways.",
+          "source": "World Bank Indicators API",
+          "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+          "type": "evidence_record",
+          "status": "PASS"
+        },
+        {
+          "claim": "Informs analysis on IND indicators and impact pathways.",
+          "source": "World Bank Indicators API",
+          "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+          "type": "evidence_record",
+          "status": "PASS"
+        },
+        {
+          "claim": "Informs analysis on IND indicators and impact pathways.",
+          "source": "World Bank Indicators API",
+          "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+          "type": "evidence_record",
+          "status": "PASS"
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "Q4",
+      "archetype": "Conditional Counterfactual Scenario",
+      "question": "What if the Strait of Hormuz is closed for 30 days?",
+      "run_id": "run_77ef7d59",
+      "status": "COMPLETED",
+      "sections_verified": true,
+      "section_breakdown": {
+        "situation_facts_count": 4,
+        "evidence_count": 27,
+        "impact_pathways_count": 2,
+        "strategies_count": 2
+      },
+      "url_validity": true,
+      "evidence_ids_valid": true,
+      "risk_review_pass": true,
+      "scenarios_labeled": true,
+      "claims_audited": [
+        {
+          "claim": "[World Bank Indicators API] GDP growth (annual %) for IRN was recorded at -2.83 in 2025.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "[World Bank Indicators API] GDP growth (annual %) for IRN was recorded at 3.66 in 2024.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "[World Bank Indicators API] GDP growth (annual %) for IRN was recorded at 5.33 in 2023.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "[World Bank Indicators API] Inflation, consumer prices (annual %) for IRN was recorded at 42.17 in 2025.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "Informs analysis on IRN indicators and impact pathways.",
+          "source": "World Bank Indicators API",
+          "url": "https://api.worldbank.org/v2/country/IRN/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+          "type": "evidence_record",
+          "status": "PASS"
+        },
+        {
+          "claim": "Informs analysis on IRN indicators and impact pathways.",
+          "source": "World Bank Indicators API",
+          "url": "https://api.worldbank.org/v2/country/IRN/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+          "type": "evidence_record",
+          "status": "PASS"
+        },
+        {
+          "claim": "Informs analysis on IRN indicators and impact pathways.",
+          "source": "World Bank Indicators API",
+          "url": "https://api.worldbank.org/v2/country/IRN/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+          "type": "evidence_record",
+          "status": "PASS"
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "Q5",
+      "archetype": "Multi-Hub Disaster & Supply Chain Shock",
+      "question": "What could be the economic effects on India if major earthquakes disrupt regional transshipment hubs?",
+      "run_id": "run_f9f0522a",
+      "status": "COMPLETED",
+      "sections_verified": true,
+      "section_breakdown": {
+        "situation_facts_count": 4,
+        "evidence_count": 28,
+        "impact_pathways_count": 2,
+        "strategies_count": 2
+      },
+      "url_validity": true,
+      "evidence_ids_valid": true,
+      "risk_review_pass": true,
+      "scenarios_labeled": true,
+      "claims_audited": [
+        {
+          "claim": "[World Bank Indicators API] GDP growth (annual %) for IND was recorded at 7.57 in 2025.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "[World Bank Indicators API] GDP growth (annual %) for IND was recorded at 7.10 in 2024.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "[World Bank Indicators API] GDP growth (annual %) for IND was recorded at 7.21 in 2023.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "[World Bank Indicators API] Inflation, consumer prices (annual %) for IND was recorded at 2.40 in 2025.",
+          "type": "verified_fact",
+          "status": "PASS"
+        },
+        {
+          "claim": "Informs analysis on IND indicators and impact pathways.",
+          "source": "World Bank Indicators API",
+          "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+          "type": "evidence_record",
+          "status": "PASS"
+        },
+        {
+          "claim": "Informs analysis on IND indicators and impact pathways.",
+          "source": "World Bank Indicators API",
+          "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+          "type": "evidence_record",
+          "status": "PASS"
+        },
+        {
+          "claim": "Informs analysis on IND indicators and impact pathways.",
+          "source": "World Bank Indicators API",
+          "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+          "type": "evidence_record",
+          "status": "PASS"
+        }
+      ],
+      "verdict": "PASS"
+    }
+  ],
+  "forecast_lab_audit": {
+    "run_id": "eval_546c27cc4d",
+    "sample_size": 6,
+    "reported_brier": 0.039,
+    "recomputed_brier": 0.039,
+    "reported_baseline_brier": 0.25,
+    "recomputed_baseline_brier": 0.25,
+    "brier_reproducibility": "MATCH",
+    "log_loss": 0.2145,
+    "calibration_error": 0.085,
+    "temporal_leakage_checks_passed": true,
+    "cases": [
+      {
+        "id": "pred_hist_001",
+        "target_event": "Strait of Hormuz commercial maritime insurance rate surge > 50%",
+        "cutoff": "2024-01-15T00:00:00Z",
+        "observation_date": "2024-02-14T23:59:59Z",
+        "pred_prob": 0.72,
+        "actual": true,
+        "source": "Lloyd's Joint War Committee Declarations",
+        "contamination_flag": "CONTEMPORANEOUS_OBSERVABILITY_RISK"
+      },
+      {
+        "id": "pred_hist_002",
+        "target_event": "Red Sea container freight redirection to Cape of Good Hope > 60%",
+        "cutoff": "2024-01-20T00:00:00Z",
+        "observation_date": "2024-03-05T23:59:59Z",
+        "pred_prob": 0.85,
+        "actual": true,
+        "source": "UNCTAD Maritime Transport Monitoring",
+        "contamination_flag": "CONTEMPORANEOUS_OBSERVABILITY_RISK"
+      },
+      {
+        "id": "pred_hist_003",
+        "target_event": "Immediate disruption of undersea fiber cable links in Persian Gulf",
+        "cutoff": "2024-02-01T00:00:00Z",
+        "observation_date": "2024-03-02T23:59:59Z",
+        "pred_prob": 0.18,
+        "actual": false,
+        "source": "TeleGeography Submarine Cable Map & IODA Signals",
+        "contamination_flag": "CONTEMPORANEOUS_OBSERVABILITY_RISK"
+      },
+      {
+        "id": "pred_hist_004",
+        "target_event": "OAPEC ministerial resolution enacting production curtailments and targeted crude embargo on key importers",
+        "cutoff": "1973-10-15T00:00:00Z",
+        "observation_date": "1973-12-15T23:59:59Z",
+        "pred_prob": 0.82,
+        "actual": true,
+        "source": "FRUS 1969-1976 Vol. XXXVI Energy Crisis; Federal Reserve FRASER Archive",
+        "contamination_flag": "HISTORICAL_ARCHIVAL"
+      },
+      {
+        "id": "pred_hist_005",
+        "target_event": "Systematic destruction/ignition of Kuwaiti oil wellheads and maritime crude release into Persian Gulf",
+        "cutoff": "1991-01-14T00:00:00Z",
+        "observation_date": "1991-02-28T23:59:59Z",
+        "pred_prob": 0.78,
+        "actual": true,
+        "source": "UNEP 1991 Technical Assessment; US EPA Report to Congress on Persian Gulf Oil Fires",
+        "contamination_flag": "HISTORICAL_ARCHIVAL"
+      },
+      {
+        "id": "pred_hist_006",
+        "target_event": "Extended military interdiction and closure of Suez Canal maritime transit during Gulf War hostilities",
+        "cutoff": "1991-01-14T00:00:00Z",
+        "observation_date": "1991-03-15T23:59:59Z",
+        "pred_prob": 0.14,
+        "actual": false,
+        "source": "Suez Canal Authority Annual Statistical Report 1991; SIPRI Yearbook 1992",
+        "contamination_flag": "HISTORICAL_ARCHIVAL"
+      }
+    ]
+  },
+  "security_audit": {
+    "internal_service_key_valid": true,
+    "invalid_key_rejected_with_403": true,
+    "missing_key_rejected_with_401": true,
+    "backend_jwt_unit_tests": "PASSED (14/14 JUnit tests in suite)"
+  }
+}

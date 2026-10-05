@@ -106,6 +106,7 @@ class EvidenceRecord(BaseModel):
     license_id: str = "open_access"
     attribution: str = ""
     content_hash: str = ""
+    data_origin: str = "LIVE"
     corroboration_ids: List[str] = Field(default_factory=list)
     contradiction_ids: List[str] = Field(default_factory=list)
     limitations: Optional[str] = None
@@ -204,6 +205,7 @@ class EvidenceItemSection(BaseModel):
     retrieval_date: str
     verification_status: VerificationState
     relevance: str
+    data_origin: str = "LIVE"
     conflicts_or_limitations: Optional[str] = None
 
 class ImpactAnalysisSection(BaseModel):
@@ -246,3 +248,83 @@ class PipelineExecutionResult(BaseModel):
     model_version: str = "local_deterministic_v1"
     answer: GeoSentinelAnswer
     completed_at: str
+
+# ==========================================
+# 6. Section 30 Distinctive Research Schemas
+# ==========================================
+
+class GeoMemoryMatch(BaseModel):
+    case_id: str
+    event_title: str
+    event_date: str
+    geographies: List[str]
+    similarity_score: float
+    key_parallels: List[str]
+    limits_of_analogy: str
+    source_references: List[str]
+
+class GeoMemoryResult(BaseModel):
+    query_context: str
+    temporal_cutoff: str
+    retrieved_cases: List[GeoMemoryMatch]
+    memory_limitations: str
+
+class CountrySectorMetric(BaseModel):
+    indicator_code: str
+    indicator_name: str
+    value: Optional[float] = None
+    unit: str
+    year: int
+    data_source: str
+    freshness: str
+    comparability_note: Optional[str] = None
+
+class CountrySectorProfile(BaseModel):
+    country_code: str
+    country_name: str
+    metrics: List[CountrySectorMetric] = Field(default_factory=list)
+    impact_exposure: str
+    vulnerabilities: List[str]
+    strengths: List[str]
+
+class GeoLensComparisonResult(BaseModel):
+    comparison_id: str
+    target_countries: List[str]
+    sectors: List[str]
+    profiles: List[CountrySectorProfile]
+    cross_cutting_findings: List[str]
+    data_gaps_and_limitations: List[str]
+
+class ForecastPrediction(BaseModel):
+    prediction_id: str
+    target_event: str
+    time_horizon: str
+    cutoff_timestamp: str
+    predicted_probability: float
+    confidence_interval: List[float] = Field(default_factory=lambda: [0.0, 1.0])
+    model_version: str
+
+class ForecastOutcome(BaseModel):
+    outcome_id: str
+    prediction_id: str
+    actual_occurrence: bool
+    observation_date: str
+    adjudication_source: str
+    adjudication_method: str
+
+class ForecastEvaluationMetrics(BaseModel):
+    sample_size: int
+    brier_score: float
+    log_loss: float
+    calibration_error: float
+    baseline_brier_comparison: float
+    methodology_notes: str
+
+class ForecastEvaluationReport(BaseModel):
+    evaluation_run_id: str
+    evaluated_at: str
+    predictions_count: int
+    outcomes_count: int
+    metrics: ForecastEvaluationMetrics
+    temporal_leakage_checks_passed: bool = True
+

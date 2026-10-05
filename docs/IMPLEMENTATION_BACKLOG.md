@@ -29,6 +29,21 @@ This backlog tracks every discrete implementation task in accordance with Sectio
 
 ---
 
+## Phase 1 (Connectors): Six Live Public Data Connectors
+
+| Task ID | Requirement Ref | Description | Priority | Dependencies | Status | Files Involved |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **TSK-CONN-01** | REQ-RW-01 | ReliefWeb v2 Connector (`CONN_RELIEFWEB`) with AppName parameter | P0 | TSK-020 | **PASSED** | `ai-service/app/connectors/reliefweb.py` |
+| **TSK-CONN-02** | REQ-GDELT-01 | GDELT DOC 2.0 Connector (`CONN_GDELT`) with query retrieval & 5s throttle | P0 | TSK-020 | **PASSED** | `ai-service/app/connectors/gdelt.py` |
+| **TSK-CONN-03** | REQ-OONI-01 | OONI Censorship Connector (`CONN_OONI`) with ISO country code resolver | P0 | TSK-020 | **PASSED** | `ai-service/app/connectors/ooni.py` |
+| **TSK-CONN-04** | REQ-IODA-01 | IODA Outage Connector (`CONN_IODA`) with Live vs Historical timestamping | P0 | TSK-020 | **PASSED** | `ai-service/app/connectors/ioda.py` |
+| **TSK-CONN-05** | REQ-WD-01 | Wikidata SPARQL Connector (`CONN_WIKIDATA`) with semantic graph entity mapping | P0 | TSK-020 | **PASSED** | `ai-service/app/connectors/wikidata.py` |
+| **TSK-CONN-06** | REQ-WM-01 | Wikimedia Pageviews Connector (`CONN_WIKIMEDIA`) for digital attention signals | P0 | TSK-020 | **PASSED** | `ai-service/app/connectors/wikimedia.py` |
+| **TSK-CONN-07** | REQ-DSB-02 | DatasetBuilder & RetrievalPlan dynamic connector routing by inquiry domain | P0 | TSK-CONN-01..06 | **PASSED** | `app/dataset_builder/builder.py`, `app/agents/retrieval_planning.py` |
+| **TSK-CONN-08** | REQ-TEST-01 | Unit & Live Integration Test Suite (20 unit tests, 5 live question audits) | P0 | TSK-CONN-07 | **PASSED** | `tests/test_six_connectors_unit.py`, `tests/run_live_verification.py` |
+
+---
+
 ## Phase 1: Backend Foundations (Spring Boot 3.x)
 
 | Task ID | Requirement Ref | Description | Priority | Dependencies | Status | Files Involved |
@@ -105,3 +120,43 @@ This backlog tracks every discrete implementation task in accordance with Sectio
 | **TSK-073** | REQ-FE-04 | Implement 4-Section Answer View (Situation, Evidence, Impact, Strategy Matrix) | P0 | TSK-072 | **PASSED** | `frontend/src/features/analysis/AnalysisResultView.tsx` |
 | **TSK-074** | REQ-FE-05 | Implement Evidence Explorer and Provenance Tree | P1 | TSK-073 | **PASSED** | `frontend/src/features/analysis/AnalysisResultView.tsx` |
 | **TSK-075** | REQ-FE-06 | Implement Source Registry, Connector Health, and Status Views | P1 | TSK-071 | **PASSED** | `frontend/src/features/connectors/ConnectorStatusView.tsx` |
+
+---
+
+## Phase 8: Section 30 Research Capabilities
+
+| Task ID | Requirement Ref | Description | Priority | Dependencies | Status | Files Involved |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **TSK-080** | REQ-MEM-01 | Implement GeoMemory historical analog retrieval and limits of analogy | P1 | TSK-052 | **PASSED** | `ai-service/app/agents/geomemory.py` |
+| **TSK-081** | REQ-LENS-01 | Implement GeoLens multi-country and multi-sector comparison engine | P1 | TSK-053 | **PASSED** | `ai-service/app/agents/geolens.py` |
+| **TSK-082** | REQ-LAB-01 | Implement ForecastLab historical replay, temporal cutoffs & scoring | P1 | TSK-054 | **PASSED** | `ai-service/app/evaluation/forecast_lab.py` |
+| **TSK-083** | REQ-UI-07 | Implement Research Laboratory UI (GeoFork, GeoLens, ForecastLab) | P1 | TSK-072 | **PASSED** | `frontend/src/features/scenarios/ScenarioLaboratoryView.tsx` |
+
+---
+
+## Phase 9: Research Benchmarking & Empirical Expansion
+
+| Task ID | Requirement Ref | Description | Priority | Dependencies | Status | Files Involved |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **TSK-090** | REQ-LAB-02 | Historical conflict corpus expansion (1973 Oil Embargo, 1991 Gulf War) | P2 | TSK-082 | **PASSED** | `ai-service/app/evaluation/forecast_lab.py` |
+| **TSK-091** | REQ-DB-02 | Database test profile compatibility audit (MySQL 8 vs H2 DDL) | P2 | TSK-011 | **PASSED** | `docs/VERIFICATION_AUDIT.md`, `backend/` |
+
+---
+
+## Phase 10: Canonical Eight-Category Live Connector Integration & Full Pipeline Verification
+
+| Task ID | Requirement Ref | Description | Priority | Dependencies | Status | Files Involved |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **TSK-100** | REQ-CONN-06 | Implement USASpending Connector (Cat 1: Government Open Data) | P0 | TSK-030 | **PASSED** | `ai-service/app/connectors/usaspending.py` |
+| **TSK-101** | REQ-CONN-07 | Implement UN SDG Indicator Connector (Cat 2: International Organizations) | P0 | TSK-030 | **PASSED** | `ai-service/app/connectors/un_sdg.py` |
+| **TSK-102** | REQ-CONN-08 | Implement UN News Connector (Cat 4: News Sources) | P0 | TSK-030 | **PASSED** | `ai-service/app/connectors/news.py` |
+| **TSK-103** | REQ-CONN-09 | Implement Nominatim Connector (Cat 6: Geographic Data) | P0 | TSK-030 | **PASSED** | `ai-service/app/connectors/nominatim.py` |
+| **TSK-104** | REQ-CONN-10 | Implement Wikimedia Pageviews Connector (Cat 7: Public Social Signals) | P0 | TSK-030 | **PASSED** | `ai-service/app/connectors/wikimedia.py` |
+| **TSK-105** | REQ-CONN-11 | Implement GDELT 2.0 Live Events Feed Connector (Cat 8: Conflict & Political Events) | P0 | TSK-030 | **PASSED** | `ai-service/app/connectors/gdelt_events.py` |
+| **TSK-106** | REQ-CONN-12 | Credential handling and registration for ReliefWeb v2 and UCDP API | P1 | TSK-030 | **PASSED** | `ai-service/app/connectors/reliefweb.py`, `.env.example` |
+| **TSK-107** | REQ-DSB-02 | Expand Dataset Builder to ingest all 8 canonical categories concurrently | P0 | TSK-100 | **PASSED** | `ai-service/app/dataset_builder/builder.py`, `retrieval_planning.py` |
+| **TSK-108** | REQ-DB-03 | Hydrate MySQL 8.0 relational tables with canonical reference data | P0 | TSK-011 | **PASSED** | `scripts/setup/hydrate_database.py` |
+| **TSK-109** | REQ-VAL-01 | Execute and validate canonical user questions Q1 through Q5 through 12-stage pipeline | P0 | TSK-107 | **PASSED** | `scripts/development/run_comprehensive_audit.py`, `docs/LIVE_AUDIT_OUTPUT.json` |
+| **TSK-110** | REQ-REL-01 | Full-stack live readiness audit across all 18 UI/API modules | P0 | TSK-109 | **PASSED** | `scripts/development/test_full_stack.py`, `docs/RELEASE_READINESS_REPORT.md` |
+
+

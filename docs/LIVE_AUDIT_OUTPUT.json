@@ -1,0 +1,1034 @@
+{
+  "timestamp_utc": "2026-10-02T07:39:59.569340+00:00",
+  "eight_categories_matrix": [
+    {
+      "connector_id": "CONN_USASPENDING",
+      "category": "Government Open Data",
+      "provider": "US Federal Government Open Data (USAspending)",
+      "credential_status": "NONE_REQUIRED",
+      "live_http": "YES",
+      "real_data": "YES",
+      "records": 5,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "connector_id": "CONN_UN_SDG",
+      "category": "International Organizations",
+      "provider": "UN Statistics Division SDG API",
+      "credential_status": "NONE_REQUIRED",
+      "live_http": "YES",
+      "real_data": "YES",
+      "records": 6,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "connector_id": "CONN_RELIEFWEB",
+      "category": "International Organizations",
+      "provider": "UN OCHA ReliefWeb API",
+      "credential_status": "CREDENTIAL_MISSING",
+      "live_http": "NO",
+      "real_data": "NO",
+      "records": 0,
+      "status": "CREDENTIAL_MISSING"
+    },
+    {
+      "connector_id": "CONN_WORLDBANK",
+      "category": "Economic & Financial",
+      "provider": "World Bank Indicators API",
+      "credential_status": "NONE_REQUIRED",
+      "live_http": "YES",
+      "real_data": "YES",
+      "records": 17,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "connector_id": "CONN_NEWS",
+      "category": "News Sources",
+      "provider": "UN News Service Global Feed",
+      "credential_status": "NONE_REQUIRED",
+      "live_http": "YES",
+      "real_data": "YES",
+      "records": 6,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "connector_id": "CONN_USGS",
+      "category": "Scientific & Disaster",
+      "provider": "USGS Earthquake Hazards Program",
+      "credential_status": "NONE_REQUIRED",
+      "live_http": "YES",
+      "real_data": "YES",
+      "records": 5,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "connector_id": "CONN_NASA_EONET",
+      "category": "Scientific & Disaster",
+      "provider": "NASA Earth Observatory Natural Event Tracker (EONET)",
+      "credential_status": "NONE_REQUIRED",
+      "live_http": "YES",
+      "real_data": "YES",
+      "records": 5,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "connector_id": "CONN_NOMINATIM",
+      "category": "Geographic Data",
+      "provider": "OpenStreetMap Nominatim Spatial API",
+      "credential_status": "NONE_REQUIRED",
+      "live_http": "YES",
+      "real_data": "YES",
+      "records": 2,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "connector_id": "CONN_WIKIMEDIA",
+      "category": "Public Social Signals",
+      "provider": "Wikimedia Foundation Pageviews API",
+      "credential_status": "NONE_REQUIRED",
+      "live_http": "YES",
+      "real_data": "YES",
+      "records": 2,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "connector_id": "CONN_GDELT_EVENTS",
+      "category": "Conflict & Political Events",
+      "provider": "GDELT Project Real-Time Events Feed",
+      "credential_status": "NONE_REQUIRED",
+      "live_http": "YES",
+      "real_data": "YES",
+      "records": 3,
+      "status": "LIVE_DATA_VERIFIED"
+    }
+  ],
+  "connector_health_probes": {
+    "CONN_USASPENDING": {
+      "health": {
+        "status": "HEALTHY",
+        "latency_ms": 1393.296
+      },
+      "health_latency_ms": 1629.77,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    "CONN_UN_SDG": {
+      "health": {
+        "status": "HEALTHY",
+        "latency_ms": 1404.498
+      },
+      "health_latency_ms": 1575.46,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    "CONN_RELIEFWEB": {
+      "health": {
+        "status": "CREDENTIAL_MISSING",
+        "credential_type": "Approved Application Name (appname)",
+        "registration_page": "https://apidoc.reliefweb.int/parameters#appname",
+        "required_env_var": "RELIEFWEB_APPNAME",
+        "message": "ReliefWeb API v2 requires an approved appname registered with UN OCHA. Add RELIEFWEB_APPNAME in .env"
+      },
+      "health_latency_ms": 0.0,
+      "status": "CREDENTIAL_MISSING"
+    },
+    "CONN_WORLDBANK": {
+      "health": {
+        "status": "HEALTHY",
+        "latency_ms": 70.534
+      },
+      "health_latency_ms": 244.52,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    "CONN_NEWS": {
+      "health": {
+        "status": "HEALTHY",
+        "latency_ms": 53.56
+      },
+      "health_latency_ms": 227.67,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    "CONN_USGS": {
+      "health": {
+        "status": "HEALTHY",
+        "latency_ms": 755.5110000000001
+      },
+      "health_latency_ms": 927.51,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    "CONN_NASA_EONET": {
+      "health": {
+        "status": "HEALTHY",
+        "latency_ms": 998.75
+      },
+      "health_latency_ms": 1174.61,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    "CONN_NOMINATIM": {
+      "health": {
+        "status": "HEALTHY",
+        "latency_ms": 152.90599999999998
+      },
+      "health_latency_ms": 328.58,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    "CONN_WIKIMEDIA": {
+      "health": {
+        "status": "HEALTHY",
+        "latency_ms": 211.69199999999998
+      },
+      "health_latency_ms": 387.62,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    "CONN_GDELT_EVENTS": {
+      "health": {
+        "status": "HEALTHY",
+        "latency_ms": 362.24899999999997
+      },
+      "health_latency_ms": 561.01,
+      "status": "LIVE_DATA_VERIFIED"
+    }
+  },
+  "live_http_retrieval_results": {
+    "CONN_USASPENDING": {
+      "connector_id": "CONN_USASPENDING",
+      "category": "Government Open Data",
+      "provider": "US Federal Government Open Data (USAspending)",
+      "terms_url": "https://www.usaspending.gov/about",
+      "license": "Public Domain",
+      "fetch_latency_ms": 1581.22,
+      "raw_record_count": 5,
+      "normalized_record_count": 5,
+      "status": "LIVE_DATA_VERIFIED",
+      "sample_record": {
+        "evidence_id": "ev_usaspending_1525",
+        "source_id": "CONN_USASPENDING",
+        "source_name": "US Federal Government Open Data (USAspending)",
+        "source_url": "https://www.usaspending.gov/agency/247",
+        "title": "USAspending Open Data: 400 Years of African-American History Commission",
+        "claim_text": "US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+        "evidence_type": "government_open_data",
+        "published_at": "2026-10-02T07:40:02.780368+00:00",
+        "retrieved_at": "2026-10-02T07:40:02.780368+00:00",
+        "geography": "USA",
+        "verification_status": "VERIFIED",
+        "verification_rationale": "Retrieved from official US Federal Government USAspending Open Data API with deterministic schema validation.",
+        "license_id": "Public Domain",
+        "attribution": "Source: US Federal Government Open Data (Public Domain)",
+        "content_hash": "287bec84f7c5f95a8b8c0d5c5f768848a8b1d5a9c1d6f1fe246ee711bdea0a03",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "Reflects US Federal agency public registry and authorizations."
+      }
+    },
+    "CONN_UN_SDG": {
+      "connector_id": "CONN_UN_SDG",
+      "category": "International Organizations",
+      "provider": "UN Statistics Division SDG API",
+      "terms_url": "https://unstats.un.org/terms/",
+      "license": "CC-BY 3.0 IGO",
+      "fetch_latency_ms": 1789.35,
+      "raw_record_count": 6,
+      "normalized_record_count": 6,
+      "status": "LIVE_DATA_VERIFIED",
+      "sample_record": {
+        "evidence_id": "ev_unsdg_1_1",
+        "source_id": "CONN_UN_SDG",
+        "source_name": "UN Statistics Division SDG API",
+        "source_url": "https://unstats.un.org/sdgs/indicators/database/?target=1.1",
+        "title": "UN SDG Target 1.1: By 2030, eradicate extreme poverty for all people everywhere, currently measured",
+        "claim_text": "United Nations Sustainable Development Framework (Goal 1, Target 1.1): By 2030, eradicate extreme poverty for all people everywhere, currently measured as people living on less than $1.25 a day.",
+        "evidence_type": "multilateral_standard",
+        "published_at": "2024-01-01T00:00:00Z",
+        "retrieved_at": "2026-10-02T07:40:06.145374+00:00",
+        "geography": "WLD",
+        "verification_status": "VERIFIED",
+        "verification_rationale": "Official multilateral development framework established by United Nations General Assembly.",
+        "license_id": "CC-BY 3.0 IGO",
+        "attribution": "Source: United Nations Statistics Division Open API (CC-BY 3.0 IGO)",
+        "content_hash": "a7c84506c5c285e79024ee170e71944c5e0f52a67f6b113cc740e748cbfb0c96",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "Global multilateral framework benchmark; local policy adaptation required."
+      }
+    },
+    "CONN_RELIEFWEB": {
+      "connector_id": "CONN_RELIEFWEB",
+      "category": "International Organizations",
+      "provider": "UN OCHA ReliefWeb API",
+      "terms_url": "https://reliefweb.int/terms-conditions",
+      "license": "CC-BY 4.0",
+      "fetch_latency_ms": 0.0,
+      "raw_record_count": 0,
+      "normalized_record_count": 0,
+      "status": "CREDENTIAL_MISSING",
+      "sample_record": null
+    },
+    "CONN_WORLDBANK": {
+      "connector_id": "CONN_WORLDBANK",
+      "category": "Economic & Financial",
+      "provider": "World Bank Indicators API",
+      "terms_url": "https://data.worldbank.org/summary-terms-of-use",
+      "license": "CC-BY 4.0",
+      "fetch_latency_ms": 520.78,
+      "raw_record_count": 17,
+      "normalized_record_count": 17,
+      "status": "LIVE_DATA_VERIFIED",
+      "sample_record": {
+        "evidence_id": "ev_wb_IND_NY_GDP_MKTP_KD_ZG_2025",
+        "source_id": "CONN_WORLDBANK",
+        "source_name": "World Bank Indicators API",
+        "source_url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+        "title": "World Bank: GDP growth (annual %) (IND - 2025)",
+        "claim_text": "GDP growth (annual %) for IND was recorded at 7.57 in 2025.",
+        "evidence_type": "economic_indicator",
+        "published_at": "2025-12-31T00:00:00Z",
+        "retrieved_at": "2026-10-02T07:40:06.910860+00:00",
+        "geography": "IND",
+        "verification_status": "VERIFIED",
+        "verification_rationale": "Retrieved from official World Bank Open Data API with deterministic schema validation.",
+        "license_id": "CC-BY 4.0",
+        "attribution": "Source: World Bank Open Data API (CC-BY 4.0)",
+        "content_hash": "3694cdb8752cadef0d58677fc45bbe99dcd457bbc54ffdffe0b1528af6921537",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "Annual macroeconomic indicators carry historical publishing lag."
+      }
+    },
+    "CONN_NEWS": {
+      "connector_id": "CONN_NEWS",
+      "category": "News Sources",
+      "provider": "UN News Service Global Feed",
+      "terms_url": "https://news.un.org/en/content/terms-service",
+      "license": "Open Access",
+      "fetch_latency_ms": 230.63,
+      "raw_record_count": 6,
+      "normalized_record_count": 6,
+      "status": "LIVE_DATA_VERIFIED",
+      "sample_record": {
+        "evidence_id": "ev_news_3c28b9a8a77c",
+        "source_id": "CONN_NEWS",
+        "source_name": "UN News Service Global Feed",
+        "source_url": "https://news.un.org/feed/view/en/story/2026/10/1168505",
+        "title": "UN News: UN Member States weigh latest Security Council veto, this time on Iran",
+        "claim_text": "Global News Dispatch: UN Member States weigh latest Security Council veto, this time on Iran. Summary: The General Assembly met on Thursday to examine the Security Council\u2019s latest veto, cast by China and Russia over a United States-backed sanctions panel of experts on Iran nuclear facilities.",
+        "evidence_type": "news_dispatch",
+        "published_at": "Thu, 01 Oct 2026 12:00:00 +0000",
+        "retrieved_at": "2026-10-02T07:40:07.369422+00:00",
+        "geography": "WLD",
+        "verification_status": "SOURCE_REFERENCED",
+        "verification_rationale": "Live news dispatch from UN News Service multilateral news feed.",
+        "license_id": "Open Access",
+        "attribution": "Source: UN News Service Open Feed (Open Access)",
+        "content_hash": "3c28b9a8a77cdfb3c4e93116b7fa0b1460f700b886a782d74a2f852e2bebd242",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "News reporting reflects ongoing situation updates and is subject to developing verification."
+      }
+    },
+    "CONN_USGS": {
+      "connector_id": "CONN_USGS",
+      "category": "Scientific & Disaster",
+      "provider": "USGS Earthquake Hazards Program",
+      "terms_url": "https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits",
+      "license": "Public Domain",
+      "fetch_latency_ms": 917.79,
+      "raw_record_count": 5,
+      "normalized_record_count": 5,
+      "status": "LIVE_DATA_VERIFIED",
+      "sample_record": {
+        "evidence_id": "ev_usgs_us6000tyzx",
+        "source_id": "CONN_USGS",
+        "source_name": "USGS Earthquake Hazards Program",
+        "source_url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tyzx",
+        "title": "USGS Seismic Event: M 4.8 - 35 km SSW of El Colomo, Mexico",
+        "claim_text": "USGS recorded a magnitude 4.8 earthquake located at 35 km SSW of El Colomo, Mexico.",
+        "evidence_type": "geophysical_event",
+        "published_at": "2026-10-02T06:53:35.007000+00:00",
+        "retrieved_at": "2026-10-02T07:40:09.214891+00:00",
+        "geography": "35 km SSW of El Colomo, Mexico",
+        "verification_status": "VERIFIED",
+        "verification_rationale": "Physical seismographic sensor measurement confirmed by USGS National Earthquake Information Center.",
+        "license_id": "Public Domain",
+        "attribution": "Source: USGS Earthquake Hazards Program (Public Domain)",
+        "content_hash": "a1ee7b3bf0e5dd1ffb5829dcdf25f34f417da9fd5153f515ebf6264ad163e170",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "Preliminary magnitudes subject to review and revision by USGS analysts."
+      }
+    },
+    "CONN_NASA_EONET": {
+      "connector_id": "CONN_NASA_EONET",
+      "category": "Scientific & Disaster",
+      "provider": "NASA Earth Observatory Natural Event Tracker (EONET)",
+      "terms_url": "https://www.nasa.gov/open/data.html",
+      "license": "NASA Open Access",
+      "fetch_latency_ms": 1165.83,
+      "raw_record_count": 5,
+      "normalized_record_count": 5,
+      "status": "LIVE_DATA_VERIFIED",
+      "sample_record": {
+        "evidence_id": "ev_nasa_EONET_24962",
+        "source_id": "CONN_NASA_EONET",
+        "source_name": "NASA Earth Observatory Natural Event Tracker (EONET)",
+        "source_url": "https://www.metoc.navy.mil/jtwc/products/wp2626.tcw",
+        "title": "NASA EONET: Tropical Storm Choi-wan",
+        "claim_text": "NASA EONET detected active Severe Storms event: 'Tropical Storm Choi-wan'.",
+        "evidence_type": "satellite_disaster_signal",
+        "published_at": "2026-10-02T07:40:11.555534+00:00",
+        "retrieved_at": "2026-10-02T07:40:11.555534+00:00",
+        "geography": null,
+        "verification_status": "VERIFIED",
+        "verification_rationale": "Derived from NASA satellite remote-sensing observations and partnered meteorological agencies.",
+        "license_id": "NASA Open Access",
+        "attribution": "Source: NASA EONET / Earth Science Data Systems",
+        "content_hash": "08a6eca8d7fbcaaec41b8a10c0ce06cd7cc69083dcff6a2abd5890d2b0ed9a40",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "Coordinates reflect latest satellite orbital pass centerpoint."
+      }
+    },
+    "CONN_NOMINATIM": {
+      "connector_id": "CONN_NOMINATIM",
+      "category": "Geographic Data",
+      "provider": "OpenStreetMap Nominatim Spatial API",
+      "terms_url": "https://osm.org/copyright",
+      "license": "ODbL 1.0",
+      "fetch_latency_ms": 307.46,
+      "raw_record_count": 2,
+      "normalized_record_count": 2,
+      "status": "LIVE_DATA_VERIFIED",
+      "sample_record": {
+        "evidence_id": "ev_osm_338602134",
+        "source_id": "CONN_NOMINATIM",
+        "source_name": "OpenStreetMap Nominatim Spatial API",
+        "source_url": "https://www.openstreetmap.org/?mlat=40.3270127&mlon=-86.1746933",
+        "title": "OpenStreetMap Boundary: IND (40.3270127, -86.1746933)",
+        "claim_text": "Spatial reference for IND: Identified as Indiana, United States at coordinates (Lat: 40.3270127, Lon: -86.1746933) [Type: administrative].",
+        "evidence_type": "spatial_boundary",
+        "published_at": "2026-10-02T07:40:12.191743+00:00",
+        "retrieved_at": "2026-10-02T07:40:12.191743+00:00",
+        "geography": "IND",
+        "verification_status": "VERIFIED",
+        "verification_rationale": "OpenStreetMap geocoded administrative boundary confirmed via Nominatim service.",
+        "license_id": "ODbL 1.0",
+        "attribution": "Source: OpenStreetMap Contributors (ODbL 1.0)",
+        "content_hash": "8e41a5c50d451504899214fa014f99e03b8efaa222b00a3ea268ad6792aec4d0",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "Geographic boundaries subject to ongoing community mapping and territorial conventions."
+      }
+    },
+    "CONN_WIKIMEDIA": {
+      "connector_id": "CONN_WIKIMEDIA",
+      "category": "Public Social Signals",
+      "provider": "Wikimedia Foundation Pageviews API",
+      "terms_url": "https://wikimediafoundation.org/terms-of-use/",
+      "license": "CC0 1.0",
+      "fetch_latency_ms": 459.23,
+      "raw_record_count": 2,
+      "normalized_record_count": 2,
+      "status": "LIVE_DATA_VERIFIED",
+      "sample_record": {
+        "evidence_id": "ev_wiki_pv_ind",
+        "source_id": "CONN_WIKIMEDIA",
+        "source_name": "Wikimedia Foundation Pageviews API",
+        "source_url": "https://en.wikipedia.org/wiki/IND",
+        "title": "Public Attention Signal: IND Pageviews",
+        "claim_text": "Public attention signal: Wikipedia article 'IND' registered 211 aggregate reader views with an average daily engagement volume of 42 requests.",
+        "evidence_type": "public_social_signal",
+        "published_at": "2024-01-05T00:00:00Z",
+        "retrieved_at": "2026-10-02T07:40:13.038713+00:00",
+        "geography": "IND",
+        "verification_status": "VERIFIED",
+        "verification_rationale": "Derived from Wikimedia Foundation open access analytics telemetry measuring public information-seeking attention intensity.",
+        "license_id": "CC0 1.0",
+        "attribution": "Source: Wikimedia Foundation Analytics Open API (CC0 1.0)",
+        "content_hash": "5552120e67e9acf763a881d8745fca7379c1b62d07aedc0d43a1dc149d36edbc",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "Pageview metrics indicate public curiosity and information search spikes; not direct causal sentiment."
+      }
+    },
+    "CONN_GDELT_EVENTS": {
+      "connector_id": "CONN_GDELT_EVENTS",
+      "category": "Conflict & Political Events",
+      "provider": "GDELT Project Real-Time Events Feed",
+      "terms_url": "https://www.gdeltproject.org/data.html",
+      "license": "Open Research Access",
+      "fetch_latency_ms": 575.43,
+      "raw_record_count": 3,
+      "normalized_record_count": 3,
+      "status": "LIVE_DATA_VERIFIED",
+      "sample_record": {
+        "evidence_id": "ev_gdelt_d3c17fc78264",
+        "source_id": "CONN_GDELT_EVENTS",
+        "source_name": "GDELT Project Real-Time Events Feed",
+        "source_url": "http://data.gdeltproject.org/gdeltv2/20261002074500.export.CSV.zip",
+        "title": "GDELT Real-Time Event Stream: 20261002074500.export.CSV.zip",
+        "claim_text": "GDELT 2.0 Global Conflict & Political Telemetry: Published 15-minute global stream '20261002074500.export.CSV.zip' (Events Stream, size: 60,821 bytes, MD5: 3d717f878c49a6f20747bdf664f8c7b6).",
+        "evidence_type": "conflict_political_event",
+        "published_at": "2026-10-02T07:40:14.175267+00:00",
+        "retrieved_at": "2026-10-02T07:40:14.175267+00:00",
+        "geography": "WLD",
+        "verification_status": "VERIFIED",
+        "verification_rationale": "Derived from GDELT 2.0 automated global 15-minute event synchronization monitor.",
+        "license_id": "Open Research Access",
+        "attribution": "Source: The GDELT Project (Open Research Access)",
+        "content_hash": "d3c17fc782646bcb0605666e802a25ae41b180a810eba964a20ed14ab7edcfb2",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "Automated multi-lingual broadcast parsing subject to news media reporting density."
+      }
+    }
+  },
+  "dataset_builder_results": {
+    "execution_time_ms": 3159.53,
+    "total_records_ingested": 51,
+    "unique_sources_count": 9,
+    "sources": [
+      "CONN_NOMINATIM",
+      "CONN_USASPENDING",
+      "CONN_UN_SDG",
+      "CONN_NASA_EONET",
+      "CONN_NEWS",
+      "CONN_WORLDBANK",
+      "CONN_USGS",
+      "CONN_WIKIMEDIA",
+      "CONN_GDELT_EVENTS"
+    ],
+    "duplicate_count": 0,
+    "verification_states": {
+      "UNVERIFIED": 0,
+      "SOURCE_REFERENCED": 0,
+      "CROSS_CHECKED": 6,
+      "VERIFIED": 45,
+      "CONFLICTING": 0,
+      "REJECTED": 0
+    }
+  },
+  "pipeline_12_stages_results": {},
+  "questions_q1_to_q5_results": [
+    {
+      "question_id": "Q1",
+      "question": "If tensions between the United States and Iran escalate into a wider military conflict, what would be the economic, energy, diplomatic and security impacts on India?",
+      "analysis_run_id": "run_cb490bbb",
+      "execution_time_ms": 3567.4,
+      "four_sections_present": true,
+      "section_counts": {
+        "verified_facts": 4,
+        "attributed_claims": 0,
+        "evidence_items": 52,
+        "impact_pathways": 2,
+        "strategies": 2,
+        "scenarios": 2
+      },
+      "scenarios_labeled_assumptions": true,
+      "risk_review_passed": true,
+      "urls_valid": true,
+      "material_claims": [
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on USA indicators and impact pathways.",
+          "source": "US Federal Government Open Data (USAspending)",
+          "url": "https://www.usaspending.gov/agency/247",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on USA indicators and impact pathways.",
+          "source": "US Federal Government Open Data (USAspending)",
+          "url": "https://www.usaspending.gov/agency/310",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on USA indicators and impact pathways.",
+          "source": "US Federal Government Open Data (USAspending)",
+          "url": "https://www.usaspending.gov/agency/302",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        }
+      ],
+      "final_verdict": "VERIFIED"
+    },
+    {
+      "question_id": "Q2",
+      "question": "How would a major disruption in the South China Sea affect global supply chains, international trade, semiconductor production and India's manufacturing and export sectors?",
+      "analysis_run_id": "run_d5a75bb9",
+      "execution_time_ms": 4035.88,
+      "four_sections_present": true,
+      "section_counts": {
+        "verified_facts": 4,
+        "attributed_claims": 0,
+        "evidence_items": 47,
+        "impact_pathways": 2,
+        "strategies": 2,
+        "scenarios": 2
+      },
+      "scenarios_labeled_assumptions": true,
+      "risk_review_passed": true,
+      "urls_valid": true,
+      "material_claims": [
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on USA indicators and impact pathways.",
+          "source": "US Federal Government Open Data (USAspending)",
+          "url": "https://www.usaspending.gov/agency/247",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on USA indicators and impact pathways.",
+          "source": "US Federal Government Open Data (USAspending)",
+          "url": "https://www.usaspending.gov/agency/310",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on USA indicators and impact pathways.",
+          "source": "US Federal Government Open Data (USAspending)",
+          "url": "https://www.usaspending.gov/agency/302",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        }
+      ],
+      "final_verdict": "VERIFIED"
+    },
+    {
+      "question_id": "Q3",
+      "question": "If global crude oil prices increase sharply due to geopolitical instability in the Middle East, what would be the impact on India's inflation, GDP growth, fiscal balance, transportation and energy security?",
+      "analysis_run_id": "run_0553d9ce",
+      "execution_time_ms": 3258.13,
+      "four_sections_present": true,
+      "section_counts": {
+        "verified_facts": 4,
+        "attributed_claims": 0,
+        "evidence_items": 53,
+        "impact_pathways": 2,
+        "strategies": 2,
+        "scenarios": 2
+      },
+      "scenarios_labeled_assumptions": true,
+      "risk_review_passed": true,
+      "urls_valid": true,
+      "material_claims": [
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on USA indicators and impact pathways.",
+          "source": "US Federal Government Open Data (USAspending)",
+          "url": "https://www.usaspending.gov/agency/247",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on USA indicators and impact pathways.",
+          "source": "US Federal Government Open Data (USAspending)",
+          "url": "https://www.usaspending.gov/agency/310",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on USA indicators and impact pathways.",
+          "source": "US Federal Government Open Data (USAspending)",
+          "url": "https://www.usaspending.gov/agency/302",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        }
+      ],
+      "final_verdict": "VERIFIED"
+    },
+    {
+      "question_id": "Q4",
+      "question": "How would significant escalation of the Russia-Ukraine conflict affect global food security, fertilizer supply, energy markets and India's agricultural and economic sectors?",
+      "analysis_run_id": "run_1d73d1d8",
+      "execution_time_ms": 2998.36,
+      "four_sections_present": true,
+      "section_counts": {
+        "verified_facts": 4,
+        "attributed_claims": 0,
+        "evidence_items": 53,
+        "impact_pathways": 2,
+        "strategies": 2,
+        "scenarios": 2
+      },
+      "scenarios_labeled_assumptions": true,
+      "risk_review_passed": true,
+      "urls_valid": true,
+      "material_claims": [
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on USA indicators and impact pathways.",
+          "source": "US Federal Government Open Data (USAspending)",
+          "url": "https://www.usaspending.gov/agency/247",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on USA indicators and impact pathways.",
+          "source": "US Federal Government Open Data (USAspending)",
+          "url": "https://www.usaspending.gov/agency/310",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on USA indicators and impact pathways.",
+          "source": "US Federal Government Open Data (USAspending)",
+          "url": "https://www.usaspending.gov/agency/302",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        }
+      ],
+      "final_verdict": "VERIFIED"
+    },
+    {
+      "question_id": "Q5",
+      "question": "If new international trade sanctions are imposed on a major economy such as China, Russia or Iran, what would be the likely impact on India's trade, manufacturing, technology and strategic interests?",
+      "analysis_run_id": "run_e960f9e3",
+      "execution_time_ms": 3650.07,
+      "four_sections_present": true,
+      "section_counts": {
+        "verified_facts": 4,
+        "attributed_claims": 0,
+        "evidence_items": 53,
+        "impact_pathways": 2,
+        "strategies": 2,
+        "scenarios": 2
+      },
+      "scenarios_labeled_assumptions": true,
+      "risk_review_passed": true,
+      "urls_valid": true,
+      "material_claims": [
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on USA indicators and impact pathways.",
+          "source": "US Federal Government Open Data (USAspending)",
+          "url": "https://www.usaspending.gov/agency/247",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on USA indicators and impact pathways.",
+          "source": "US Federal Government Open Data (USAspending)",
+          "url": "https://www.usaspending.gov/agency/310",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on USA indicators and impact pathways.",
+          "source": "US Federal Government Open Data (USAspending)",
+          "url": "https://www.usaspending.gov/agency/302",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        }
+      ],
+      "final_verdict": "VERIFIED"
+    }
+  ],
+  "claim_validation_results": [
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "Informs analysis on USA indicators and impact pathways.",
+      "source": "US Federal Government Open Data (USAspending)",
+      "url": "https://www.usaspending.gov/agency/247",
+      "type": "evidence_item",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "Informs analysis on USA indicators and impact pathways.",
+      "source": "US Federal Government Open Data (USAspending)",
+      "url": "https://www.usaspending.gov/agency/310",
+      "type": "evidence_item",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "Informs analysis on USA indicators and impact pathways.",
+      "source": "US Federal Government Open Data (USAspending)",
+      "url": "https://www.usaspending.gov/agency/302",
+      "type": "evidence_item",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "Informs analysis on USA indicators and impact pathways.",
+      "source": "US Federal Government Open Data (USAspending)",
+      "url": "https://www.usaspending.gov/agency/247",
+      "type": "evidence_item",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "Informs analysis on USA indicators and impact pathways.",
+      "source": "US Federal Government Open Data (USAspending)",
+      "url": "https://www.usaspending.gov/agency/310",
+      "type": "evidence_item",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "Informs analysis on USA indicators and impact pathways.",
+      "source": "US Federal Government Open Data (USAspending)",
+      "url": "https://www.usaspending.gov/agency/302",
+      "type": "evidence_item",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "Informs analysis on USA indicators and impact pathways.",
+      "source": "US Federal Government Open Data (USAspending)",
+      "url": "https://www.usaspending.gov/agency/247",
+      "type": "evidence_item",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "Informs analysis on USA indicators and impact pathways.",
+      "source": "US Federal Government Open Data (USAspending)",
+      "url": "https://www.usaspending.gov/agency/310",
+      "type": "evidence_item",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "Informs analysis on USA indicators and impact pathways.",
+      "source": "US Federal Government Open Data (USAspending)",
+      "url": "https://www.usaspending.gov/agency/302",
+      "type": "evidence_item",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "Informs analysis on USA indicators and impact pathways.",
+      "source": "US Federal Government Open Data (USAspending)",
+      "url": "https://www.usaspending.gov/agency/247",
+      "type": "evidence_item",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "Informs analysis on USA indicators and impact pathways.",
+      "source": "US Federal Government Open Data (USAspending)",
+      "url": "https://www.usaspending.gov/agency/310",
+      "type": "evidence_item",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "Informs analysis on USA indicators and impact pathways.",
+      "source": "US Federal Government Open Data (USAspending)",
+      "url": "https://www.usaspending.gov/agency/302",
+      "type": "evidence_item",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+      "type": "verified_fact",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "Informs analysis on USA indicators and impact pathways.",
+      "source": "US Federal Government Open Data (USAspending)",
+      "url": "https://www.usaspending.gov/agency/247",
+      "type": "evidence_item",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "Informs analysis on USA indicators and impact pathways.",
+      "source": "US Federal Government Open Data (USAspending)",
+      "url": "https://www.usaspending.gov/agency/310",
+      "type": "evidence_item",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "Informs analysis on USA indicators and impact pathways.",
+      "source": "US Federal Government Open Data (USAspending)",
+      "url": "https://www.usaspending.gov/agency/302",
+      "type": "evidence_item",
+      "status": "SUPPORTED"
+    }
+  ],
+  "security_tests": {
+    "valid_internal_key_accepted": true,
+    "invalid_internal_key_rejected_403": true,
+    "tamper_resistance": "PASS"
+  },
+  "readiness_verdict": "VERIFIED_FOR_MANUAL_TESTING"
+}

@@ -63,7 +63,8 @@ class DatasetBuilder:
                 retrieved_at=now_iso,
                 geography="IND",
                 attribution="Source: World Bank Open Data (CC-BY 4.0)",
-                content_hash="hash_ind_gdp_ref"
+                content_hash="hash_ind_gdp_ref",
+                data_origin="REFERENCE"
             ),
             EvidenceRecord(
                 evidence_id="ev_ref_energy_import_ind",
@@ -77,7 +78,8 @@ class DatasetBuilder:
                 retrieved_at=now_iso,
                 geography="IND",
                 attribution="Source: World Bank Open Data (CC-BY 4.0)",
-                content_hash="hash_ind_energy_ref"
+                content_hash="hash_ind_energy_ref",
+                data_origin="REFERENCE"
             )
         ]
         return records

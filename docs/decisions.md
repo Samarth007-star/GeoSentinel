@@ -85,3 +85,21 @@ This document records the foundational architectural decisions resolved for the 
 - **Consequences**:
   - If review status is `REQUIRES_REVISION` or `REJECTED`, the strategy is either withheld or prominently qualified with clear warnings and missing mitigations.
   - Automated tests enforce that bypassing this gate causes pipeline failure.
+
+---
+
+## ADR-008: Technology Version Flexibility Policy
+
+- **Status**: ACCEPTED
+- **Context**: Local development, CI, and deployment environments may contain different installed runtime versions of the approved technologies (e.g., Python 3.14.x vs 3.11.x, OpenJDK 26 vs JDK 21, Node.js 24.x vs 20.x, Vite 5.x vs 4.x, MySQL 8.0.x). Enforcing rigid fixed version strings when compatible and stable runtimes already exist locally introduces artificial blockers, unnecessary churn, and fragile environments.
+- **Decision**: Adopt the **Technology Version Flexibility Policy**:
+  1. **Flexible Compatibility**: Do not enforce fixed technology versions unless a specific version is strictly required for compatibility, security, or a documented architectural requirement. Java, JDK, Spring Boot, Python, FastAPI, React, Vite, Node.js, npm, MySQL, Maven, and other approved technologies may use any compatible and stable version available in the local environment.
+  2. **No Cosmetic Upgrades/Downgrades**: Use the installed versions when they are compatible with the application and its dependencies. Do not downgrade or upgrade a working technology solely to match a version number in an earlier specification.
+  3. **No Architecture or Stack Substitution**: Do not replace an approved technology (e.g., Spring Boot, FastAPI, MySQL, React) or change the architecture without explicit authorization.
+  4. **Pre-Change Verification**: Before changing versions, verify compatibility, security support, dependency requirements, and zero-cost compliance.
+  5. **Empirical Documentation**: Record the actual versions used in the environment and documentation. Build and run the complete application, execute relevant tests, and report actual results. Never claim compatibility without empirical evidence.
+  6. **Mandatory Invariants**: The technology stack, application functionality, security, evidence verification, research integrity, and zero-cost policy remain mandatory. Version flexibility does not authorize paid services, unsupported features, or removal of requirements.
+- **Consequences**:
+  - The application builds, tests, and runs natively across modern compatible toolchains (e.g., JDK 26, Python 3.14, Node 24, Vite 5, MySQL 8.0) without requiring artificial version downgrades.
+  - All automated test suites and documentation explicitly track the empirical runtime versions tested.
+

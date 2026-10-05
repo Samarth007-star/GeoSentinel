@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from .core.config import settings
 from .core.security import verify_internal_service_key
 from .schemas.models import (
@@ -80,3 +80,51 @@ async def execute_analysis_pipeline(request: QuestionIntakeRequest) -> PipelineE
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Pipeline execution failure: {str(e)}"
         )
+
+# ==========================================
+# Section 30 Distinctive Capabilities Routes
+# ==========================================
+from .evaluation.forecast_lab import forecast_lab
+from .agents.geomemory import geomemory_service
+from .agents.geolens import geolens_service
+from .schemas.models import (
+    ForecastEvaluationReport,
+    ForecastPrediction,
+    ForecastOutcome,
+    GeoMemoryResult,
+    GeoLensComparisonResult
+)
+
+@app.get("/api/v1/forecastlab/predictions", response_model=List[ForecastPrediction], tags=["ForecastLab"])
+async def list_forecast_predictions():
+    """Lists immutable historical prediction records (Section 30.5)."""
+    return forecast_lab.list_predictions()
+
+@app.get("/api/v1/forecastlab/outcomes", response_model=List[ForecastOutcome], tags=["ForecastLab"])
+async def list_forecast_outcomes():
+    """Lists adjudicated historical outcomes (Section 30.5)."""
+    return forecast_lab.list_outcomes()
+
+@app.post("/api/v1/forecastlab/evaluate", response_model=ForecastEvaluationReport, tags=["ForecastLab"])
+async def run_forecastlab_evaluation(model_version: Optional[str] = None):
+    """Executes Brier score, log loss, and calibration evaluation with temporal integrity checks."""
+    try:
+        return forecast_lab.run_evaluation(model_version=model_version)
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+
+@app.post("/api/v1/geomemory/search", response_model=GeoMemoryResult, tags=["GeoMemory"])
+async def search_geomemory(payload: Dict[str, Any]):
+    """Retrieves historical precedents, parallels, and limits of analogy (Section 30.7)."""
+    query = payload.get("query", "")
+    geographies = payload.get("geographies", [])
+    cutoff = payload.get("temporal_cutoff")
+    return geomemory_service.find_analogs(query=query, geographies=geographies, temporal_cutoff=cutoff)
+
+@app.post("/api/v1/geolens/compare", response_model=GeoLensComparisonResult, tags=["GeoLens"])
+async def compare_geolens(payload: Dict[str, Any]):
+    """Performs cross-country and cross-sector impact profile comparison (Section 30.8)."""
+    countries = payload.get("countries", ["IND", "IRN", "USA"])
+    sectors = payload.get("sectors", ["energy", "trade", "macroeconomic", "maritime"])
+    return geolens_service.compare_countries(countries=countries, sectors=sectors)
+
