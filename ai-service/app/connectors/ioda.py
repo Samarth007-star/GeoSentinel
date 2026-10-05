@@ -26,7 +26,7 @@ class IodaConnector(BaseConnector):
             provider_name="Internet Outage Detection & Analysis (IODA)",
             terms_url="https://ioda.inetintel.cc.gatech.edu/",
             license_type="Academic Non-Commercial Research",
-            timeout=settings.CONNECTOR_TIMEOUT_SECONDS
+            timeout=15.0
         )
         self.base_url = settings.IODA_BASE_URL.rstrip('/')
         self.auth_type = "None (Academic API)"

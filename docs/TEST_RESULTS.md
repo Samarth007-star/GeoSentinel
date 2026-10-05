@@ -5,16 +5,23 @@
 
 ---
 
-## Test Execution Summary
+## Test Execution Summary (Fresh Audit 2026-10-05)
 
-- **Total Test Suites Executed**: 8
-- **Phase 1 Six Connectors Unit Tests (`test_six_connectors_unit.py`)**: 20 PASSED (0 failed)
-- **General Connector Suite (`test_connectors.py`)**: 17 PASSED (0 failed)
-- **Pipeline & Failure Modes Tests**: 4 PASSED (0 failed)
-- **Section 30 & Risk Gate Tests**: 5 PASSED (0 failed)
-- **Backend Spring Boot Tests (JUnit 5)**: 14 PASSED (0 failed)
-- **Live HTTP Probes**: Real outbound requests made to all 6 Phase 1 connectors plus World Bank, USGS, and NASA EONET.
-- **Empirical User Questions Validated**: Q1 through Q5 executed through the complete 12-stage pipeline with live evidence ingested.
+- **Total Test Suites Executed**: 9
+- **Complete Pytest Suite (`ai-service`)**: **52 PASSED** (0 failed, 0 skipped in 109.11s)
+  - `test_six_connectors_unit.py`: 20 PASSED
+  - `test_connectors.py`: 17 PASSED
+  - `test_section30_capabilities.py`: 4 PASSED
+  - `test_pipeline_failure_modes.py`: 3 PASSED
+  - `test_pipeline.py`: 1 PASSED
+  - `test_strategy_risk_gate.py`: 1 PASSED
+  - `test_question_humanitarian.py`: 1 PASSED
+  - `test_reliefweb_live.py`: 1 PASSED
+  - `test_gdelt_*.py` and `test_wiki_search.py`: 4 PASSED
+- **Backend Spring Boot Tests (JUnit 5)**: **14 PASSED** (0 failed)
+- **Frontend Production Build (`npm run build`)**: **1503 modules transformed**, 0 errors (built in 2.48s)
+- **Live HTTP Connector Probes**: 9 connectors probed against real endpoints (7 LIVE_DATA_VERIFIED, 1 LIVE_API + HISTORICAL_DATA, 1 RATE_LIMITED)
+- **Empirical User Questions Validated**: Questions Q_A, Q_B, Q_C, Q_D, Q_E executed through the complete 12-stage pipeline with live evidence ingested.
 
 ---
 

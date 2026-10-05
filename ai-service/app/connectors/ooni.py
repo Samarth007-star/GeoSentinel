@@ -25,7 +25,7 @@ class OoniConnector(BaseConnector):
             provider_name="Open Observatory of Network Interference (OONI)",
             terms_url="https://ooni.org/about/data-policy/",
             license_type="CC0 1.0 Public Domain",
-            timeout=settings.CONNECTOR_TIMEOUT_SECONDS
+            timeout=15.0
         )
         self.base_url = settings.OONI_BASE_URL.rstrip('/')
         self.auth_type = "None (Open Data API)"
@@ -78,10 +78,13 @@ class OoniConnector(BaseConnector):
 
         probe_cc = self._resolve_country_code(target_geographies)
         url = f"{self.base_url}/measurements?probe_cc={probe_cc}&limit=5"
-
+        headers = {
+            "User-Agent": "GeoSentinel/1.0 (Research Platform; contact@geosentinel.org)",
+            "Accept": "application/json"
+        }
         try:
             async with httpx.AsyncClient(timeout=self.timeout) as client:
-                res = await client.get(url)
+                res = await client.get(url, headers=headers)
                 if res.status_code == 200:
                     data = res.json()
                     for item in data.get("results", []):

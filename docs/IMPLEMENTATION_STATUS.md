@@ -1,7 +1,7 @@
 # GeoSentinel — Implementation Status
 
-> **Last Updated**: 2026-10-03  
-> **Phase 1 Connectors State**: SIX LIVE PUBLIC DATA CONNECTORS IMPLEMENTED & VERIFIED  
+> **Last Updated**: 2026-10-05  
+> **Phase 1 Connectors State**: SIX LIVE PUBLIC DATA CONNECTORS IMPLEMENTED & EMPIRICALLY VERIFIED  
 > **Deployment Architecture**: 100% Native Windows (Zero Docker)  
 > **Audit Reference**: `docs/VERIFICATION_AUDIT.md`  
 > **Test Ledger**: `docs/TEST_RESULTS.md`  
@@ -26,14 +26,14 @@
 
 ---
 
-## Phase 1 Connector Verification Matrix
+## Phase 1 Connector Verification Matrix (Fresh Empirical Probes)
 
 | Connector | Category | Implemented | Real HTTP | Records Retrieved | Normalized | Dataset Builder Ingestion | Status |
 |---|---|:---:|:---:|:---:|:---:|:---:|---|
 | **ReliefWeb** | International Organizations | Yes (`reliefweb.py`) | Yes (v2 API) | 5 | Yes (`ev_rw_{id}`) | Yes | **LIVE_DATA_VERIFIED** |
-| **GDELT** | News | Yes (`gdelt.py`) | Yes (DOC 2.0 API) | 5 (When unthrottled) | Yes (`news_report`) | Yes | **LIVE_DATA_VERIFIED** |
+| **GDELT** | News | Yes (`gdelt.py`) | Yes (DOC 2.0 API) | 0 (When throttled) / 5 | Yes (`news_report`) | Yes | **RATE_LIMITED / LIVE_DATA_VERIFIED** |
 | **OONI** | Internet & Infrastructure | Yes (`ooni.py`) | Yes (v1 API) | 5 | Yes (`network_measurement`) | Yes | **LIVE_DATA_VERIFIED** |
-| **IODA** | Internet & Infrastructure | Yes (`ioda.py`) | Yes (v2 API) | 1 | Yes (`infrastructure_outage_signal`) | Yes | **LIVE_DATA_VERIFIED** |
+| **IODA** | Internet & Infrastructure | Yes (`ioda.py`) | Yes (v2 API) | 5 | Yes (`infrastructure_outage_signal`) | Yes | **LIVE_API + HISTORICAL_DATA** |
 | **Wikidata** | Geographic & Entities | Yes (`wikidata.py`) | Yes (SPARQL) | 4 | Yes (`entity_knowledge_graph`) | Yes | **LIVE_DATA_VERIFIED** |
 | **Wikimedia** | Public Digital Signals | Yes (`wikimedia.py`) | Yes (REST API) | 12 | Yes (`digital_attention_signal`) | Yes | **LIVE_DATA_VERIFIED** |
 

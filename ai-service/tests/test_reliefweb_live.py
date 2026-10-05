@@ -10,9 +10,11 @@ sys.path.insert(0, os.path.abspath("."))
 load_dotenv(dotenv_path=os.path.abspath("../.env"), override=True)
 load_dotenv(override=True)
 
+import pytest
 from app.core.config import settings
 from app.connectors.reliefweb import ReliefWebConnector
 
+@pytest.mark.anyio
 async def test_live_reliefweb():
     print(f"=== TESTING RELIEFWEB LIVE CONNECTOR ===")
     print(f"Configured Base URL: {settings.RELIEFWEB_BASE_URL}")
