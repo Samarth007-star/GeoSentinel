@@ -17,7 +17,6 @@ class JwtTokenProviderTest {
     @BeforeEach
     void setUp() {
                 jwtTokenProvider = new JwtTokenProvider(secret, expirationMs);
-
     }
 
     @Test
@@ -28,7 +27,6 @@ class JwtTokenProviderTest {
         List<String> roles = List.of("ROLE_ANALYST");
         
         String token = jwtTokenProvider.generateToken(userId, email, roles);
-         assertNotNull(token);
         assertTrue(jwtTokenProvider.validateToken(token));
         assertEquals(userId, jwtTokenProvider.getUserIdFromToken(token));
        
