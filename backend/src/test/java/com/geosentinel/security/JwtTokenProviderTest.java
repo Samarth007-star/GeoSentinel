@@ -26,7 +26,6 @@ class JwtTokenProviderTest {
         String email = "analyst@geosentinel.internal";
         List<String> roles = List.of("ROLE_ANALYST");
 
-        String token = jwtTokenProvider.generateToken(userId, email, roles);
 
         assertNotNull(token);
         assertTrue(jwtTokenProvider.validateToken(token));
