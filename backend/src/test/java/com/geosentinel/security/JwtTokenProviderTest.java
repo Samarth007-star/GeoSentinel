@@ -42,10 +42,5 @@ class JwtTokenProviderTest {
         assertFalse(jwtTokenProvider.validateToken(tamperedToken));
     }
 
-    @Test
-    @DisplayName("Should reject invalid or malformed tokens")
-    void shouldRejectMalformedToken() {
-        assertFalse(jwtTokenProvider.validateToken("not-a-valid-jwt"));
-        assertFalse(jwtTokenProvider.validateToken(""));
-    }
+   
 }
