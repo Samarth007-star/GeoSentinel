@@ -16,6 +16,8 @@ class JwtTokenProviderTest {
 
     @BeforeEach
     void setUp() {
+                jwtTokenProvider = new JwtTokenProvider(secret, expirationMs);
+
     }
 
     @Test
