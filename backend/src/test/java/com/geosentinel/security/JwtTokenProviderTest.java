@@ -36,7 +36,7 @@ class JwtTokenProviderTest {
     @Test
     @DisplayName("Should reject tampered JWT token")
     void shouldRejectTamperedToken() {
-        String token = jwtTokenProvider.generateToken("usr-001", "user@test.org", List.of("ROLE_VIEWER"));
+        
         String tamperedToken = token + "corrupted";
 
         assertFalse(jwtTokenProvider.validateToken(tamperedToken));
