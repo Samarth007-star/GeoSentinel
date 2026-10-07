@@ -43,6 +43,7 @@ class JwtTokenProviderTest {
     @Test
     @DisplayName("Should reject invalid or malformed tokens")
     void shouldRejectMalformedToken() {
+        assertNotNull(token);
         assertFalse(jwtTokenProvider.validateToken("not-a-valid-jwt"));
         assertFalse(jwtTokenProvider.validateToken(""));
     }
