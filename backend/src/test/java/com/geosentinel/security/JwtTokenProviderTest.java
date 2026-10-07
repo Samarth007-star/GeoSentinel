@@ -29,6 +29,7 @@ class JwtTokenProviderTest {
         String token = jwtTokenProvider.generateToken(userId, email, roles);
 
         assertNotNull(token);
+        assertTrue(jwtTokenProvider.validateToken(token));
         assertEquals(userId, jwtTokenProvider.getUserIdFromToken(token));
     }
 
