@@ -8,10 +8,7 @@ import java.util.UUID;
 @Table(name = "events")
 public class Event {
 
-    @Id
-    @Column(length = 64)
-    private String id;
-
+   
     @Column(nullable = false, length = 512)
     private String title;
 
