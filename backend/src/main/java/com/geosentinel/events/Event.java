@@ -11,8 +11,7 @@ public class Event {
     @Column(length = 64)
     private String id;
 
-    @Column(nullable = false, length = 512)
-    private String title;
+   
    
 
     @Column(name = "event_type", nullable = false, length = 64)
