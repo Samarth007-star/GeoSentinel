@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("/api/v1/events")
 public class EventController {
 
-    private final EventRepository eventRepository;
+    
 
     public EventController(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
