@@ -15,7 +15,7 @@ class ApiResponseTest {
         assertTrue(response.isSuccess());
         assertEquals("Operation successful", response.getMessage());
         assertEquals("data-payload", response.getData());
-       
+        assertNotNull(response.getTimestamp());
     }
 
     @Test
