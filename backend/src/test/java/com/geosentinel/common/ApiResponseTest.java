@@ -12,7 +12,7 @@ class ApiResponseTest {
 
         assertTrue(response.isSuccess());
         assertEquals("Operation successful", response.getMessage());
-       
+        assertEquals("data-payload", response.getData());
 
     @Test
     @DisplayName("Should create error ApiResponse")
