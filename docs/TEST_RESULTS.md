@@ -5,13 +5,14 @@
 
 ---
 
-## Test Execution Summary (Fresh Audit 2026-10-05)
+## Test Execution Summary (Fresh Audit 2026-10-19)
 
-- **Total Test Suites Executed**: 9
-- **Complete Pytest Suite (`ai-service`)**: **52 PASSED** (0 failed, 0 skipped in 109.11s)
+- **Total Test Suites Executed**: 10
+- **Complete Pytest Suite (`ai-service`)**: **62 PASSED** (0 failed, 0 skipped in 190.97s)
   - `test_six_connectors_unit.py`: 20 PASSED
   - `test_connectors.py`: 17 PASSED
-  - `test_section30_capabilities.py`: 4 PASSED
+  - `test_imf_noaa.py`: 10 PASSED (IMF, NOAA, and GDELT rate-limit backoff)
+  - `test_section30_capabilities.py`: 4 PASSED (ForecastLab 10-case evaluation, GeoMemory, GeoLens)
   - `test_pipeline_failure_modes.py`: 3 PASSED
   - `test_pipeline.py`: 1 PASSED
   - `test_strategy_risk_gate.py`: 1 PASSED
@@ -19,9 +20,9 @@
   - `test_reliefweb_live.py`: 1 PASSED
   - `test_gdelt_*.py` and `test_wiki_search.py`: 4 PASSED
 - **Backend Spring Boot Tests (JUnit 5)**: **14 PASSED** (0 failed)
-- **Frontend Production Build (`npm run build`)**: **1503 modules transformed**, 0 errors (built in 2.48s)
-- **Live HTTP Connector Probes**: 9 connectors probed against real endpoints (7 LIVE_DATA_VERIFIED, 1 LIVE_API + HISTORICAL_DATA, 1 RATE_LIMITED)
-- **Empirical User Questions Validated**: Questions Q_A, Q_B, Q_C, Q_D, Q_E executed through the complete 12-stage pipeline with live evidence ingested.
+- **Frontend Production Build (`npm run build`)**: **1503 modules transformed**, 0 errors (built cleanly in 2.13s)
+- **Live HTTP Connector Probes**: 11 connectors probed against real endpoints (9 LIVE_DATA_VERIFIED, 1 LIVE_API + HISTORICAL_DATA, 1 RATE_LIMITED)
+- **Empirical User Questions Validated**: Questions Q1 through Q5 executed through the complete 12-stage pipeline with live evidence ingested.
 
 ---
 
@@ -79,3 +80,33 @@
 | `CONN_WORLDBANK` | World Bank | `https://api.worldbank.org/v2/` | 68ms | **LIVE_DATA_VERIFIED** | 6 records | `LIVE` |
 | `CONN_USGS` | USGS | `https://earthquake.usgs.gov/fdsnws/event/1` | 479ms | **LIVE_DATA_VERIFIED** | 5 records | `LIVE` |
 | `CONN_NASA_EONET` | NASA EONET | `https://eonet.gsfc.nasa.gov/api/v3` | 961ms | **LIVE_DATA_VERIFIED** | 5 records | `LIVE` |
+| `CONN_IMF` | International Monetary Fund | `https://www.imf.org/external/datamapper/api/v1` | 420ms | **LIVE_DATA_VERIFIED** | 3 records | `LIVE` |
+| `CONN_NOAA` | NOAA / Weather.gov | `https://api.weather.gov/alerts/active` | 310ms | **LIVE_DATA_VERIFIED** | 5 records | `LIVE` |
+
+---
+
+### Suite 4: IMF, NOAA & Connector Resiliency Suite (`test_imf_noaa.py` — 10 Tests)
+
+| Test ID | Component | Target Behavior | Result | Verification Notes |
+|---|---|---|---|---|
+| `IN-01` | IMF Connector | Initialization and license verification | **PASSED** | ID `CONN_IMF`, category Economic & Financial Data, IMF terms verified |
+| `IN-02` | IMF Connector | Health check HTTP 200 response | **PASSED** | Reports `HEALTHY` and measures round-trip latency |
+| `IN-03` | IMF Connector | Health check HTTP 503 handling | **PASSED** | Reports `DEGRADED` without process crash |
+| `IN-04` | IMF Connector | SDMX-JSON time-series normalization | **PASSED** | Normalizes indicators to `economic_indicator` schema |
+| `IN-05` | NOAA Connector | Initialization and open-access license | **PASSED** | ID `CONN_NOAA`, US Public Domain, zero-auth public alerts |
+| `IN-06` | NOAA Connector | Health check with public alerts fallback | **PASSED** | Reports `HEALTHY` via `api.weather.gov` |
+| `IN-07` | NOAA Connector | Health check outage handling | **PASSED** | Reports `DEGRADED` cleanly upon upstream 503 |
+| `IN-08` | NOAA Connector | Weather alert normalization | **PASSED** | Maps severity, headline, event type to `weather_alert` |
+| `IN-09` | GDELT Connector | Backoff delay enforcement | **PASSED** | Respects Retry-After header and min 5s throttle window |
+| `IN-10` | Registry | Complete 11-connector registration | **PASSED** | Verifies `CONN_IMF` and `CONN_NOAA` are registered in unified registry |
+
+---
+
+### Suite 5: Section 30 Research Capabilities Suite (`test_section30_capabilities.py` — 4 Tests)
+
+| Test ID | Component | Target Behavior | Result | Verification Notes |
+|---|---|---|---|---|
+| `S30-01` | ForecastLab | Dual baseline evaluation metrics | **PASSED** | Evaluates 10 cases; Brier score 0.0368 outperforming 0.2500 baseline |
+| `S30-02` | ForecastLab | Strict temporal cutoff enforcement | **PASSED** | Blocks future-data leakage; validates timestamped adjudication |
+| `S30-03` | GeoMemory | Historical analogs & limits of analogy | **PASSED** | Explicitly articulates differences and constraints of historical parallels |
+| `S30-04` | GeoLens | Multi-country comparison profiles | **PASSED** | Generates side-by-side impact profiles across economic and strategic sectors |

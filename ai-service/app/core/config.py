@@ -33,6 +33,8 @@ class Settings(BaseModel):
     GDELT_EVENTS_BASE_URL: str = os.getenv("GDELT_EVENTS_BASE_URL", "http://data.gdeltproject.org/gdeltv2")
     UN_NEWS_FEED_URL: str = os.getenv("UN_NEWS_FEED_URL", "https://news.un.org/feed/subscribe/en/news/all/rss.xml")
     UCDP_ACCESS_TOKEN: str = os.getenv("UCDP_ACCESS_TOKEN", "")
+    NOAA_CDO_TOKEN: str = os.getenv("NOAA_CDO_TOKEN", "")
+    IMF_BASE_URL: str = os.getenv("IMF_BASE_URL", "https://www.imf.org/external/datamapper/api/v1")
     
     # Limits & Timeouts
     CONNECTOR_TIMEOUT_SECONDS: int = 8

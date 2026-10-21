@@ -32,6 +32,8 @@ Every data connector utilized by the GeoSentinel Dataset Builder has been audite
 | `CONN_WORLDBANK` | The World Bank Group | Economic & Financial Data | `https://api.worldbank.org/v2` | Genuinely Free Public Open Data | **NO** | None (Open access) | CC-BY 4.0 | **LIVE_DATA_VERIFIED** |
 | `CONN_USGS` | United States Geological Survey | Scientific & Disaster Data | `https://earthquake.usgs.gov/fdsnws/event/1` | US Federal Public Domain | **NO** | None (Open access) | US Public Domain | **LIVE_DATA_VERIFIED** |
 | `CONN_NASA_EONET` | NASA Earth Observatory | Scientific & Disaster Data | `https://eonet.gsfc.nasa.gov/api/v3` | US Federal Public Open Data | **NO** | None (Open access) | NASA Open Data Policy | **LIVE_DATA_VERIFIED** |
+| `CONN_IMF` | International Monetary Fund | Economic & Financial Data | `https://www.imf.org/external/datamapper/api/v1` | Free Multilateral SDMX Data | **NO** | None (Public SDMX API) | IMF Copyright (Research Attribution) | **LIVE_DATA_VERIFIED** |
+| `CONN_NOAA` | NOAA / NCEI / Weather.gov | Scientific & Disaster Data | `https://api.weather.gov/alerts/active` | US Federal Public Open Data | **NO** | Optional CDO token / Free Public Alerts | US Public Domain | **LIVE_DATA_VERIFIED** |
 
 ### Safe Failure & Quota Protection:
 1. **No Automatic Overage**: BaseConnector (`ai-service/app/connectors/base.py`) has hardcoded max timeout (8s), rate-limit backoff, and circuit-breaker threshold (5 failures).

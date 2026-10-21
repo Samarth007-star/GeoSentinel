@@ -1,0 +1,247 @@
+{
+  "audit_timestamp_utc": "2026-10-19T16:13:17.766014+00:00",
+  "total_tests": 10,
+  "passed_tests": 10,
+  "results": [
+    {
+      "test_id": "TEST_A",
+      "category": "Current Geopolitical Situation",
+      "question": "What are the latest verified developments involving Iran and the Strait of Hormuz, and what potential implications could they have for India's energy security?",
+      "elapsed_ms": 20752.38,
+      "status": "PASSED",
+      "facts_count": 4,
+      "evidence_count": 36,
+      "impacts_count": 2,
+      "strategies_count": 2,
+      "scenarios_count": 2,
+      "red_team_passed": true,
+      "scenarios_labeled": true,
+      "sample_sources": [
+        "UN OCHA ReliefWeb (ACT Alliance)",
+        "UN OCHA ReliefWeb (ACT Alliance)",
+        "UN OCHA ReliefWeb (ACT Alliance)"
+      ],
+      "sample_urls": [
+        "https://reliefweb.int/node/1125231",
+        "https://reliefweb.int/node/1827834",
+        "https://reliefweb.int/node/2159574"
+      ]
+    },
+    {
+      "test_id": "TEST_B",
+      "category": "Current Energy & Economic Indicators",
+      "question": "What are the latest available indicators relevant to India's energy imports and economic exposure to Middle East instability?",
+      "elapsed_ms": 22087.58,
+      "status": "PASSED",
+      "facts_count": 4,
+      "evidence_count": 34,
+      "impacts_count": 2,
+      "strategies_count": 2,
+      "scenarios_count": 2,
+      "red_team_passed": true,
+      "scenarios_labeled": true,
+      "sample_sources": [
+        "UN OCHA ReliefWeb (ACT Alliance)",
+        "UN OCHA ReliefWeb (ACT Alliance)",
+        "UN OCHA ReliefWeb (ACT Alliance)"
+      ],
+      "sample_urls": [
+        "https://reliefweb.int/node/1827834",
+        "https://reliefweb.int/node/2159574",
+        "https://reliefweb.int/node/585050"
+      ]
+    },
+    {
+      "test_id": "TEST_C",
+      "category": "Current Disaster or Scientific Event",
+      "question": "What significant recent earthquakes or natural hazards are reported by the configured scientific data sources, and what evidence supports the findings?",
+      "elapsed_ms": 10495.23,
+      "status": "PASSED",
+      "facts_count": 4,
+      "evidence_count": 12,
+      "impacts_count": 2,
+      "strategies_count": 2,
+      "scenarios_count": 2,
+      "red_team_passed": true,
+      "scenarios_labeled": true,
+      "sample_sources": [
+        "Wikidata Knowledge Base",
+        "Wikidata Knowledge Base",
+        "Wikidata Knowledge Base"
+      ],
+      "sample_urls": [
+        "http://www.wikidata.org/entity/Q5",
+        "http://www.wikidata.org/entity/Q252",
+        "http://www.wikidata.org/entity/Q794"
+      ]
+    },
+    {
+      "test_id": "TEST_D",
+      "category": "Recent Humanitarian Situation",
+      "question": "What recent humanitarian developments are reported for a currently relevant conflict-affected region?",
+      "elapsed_ms": 16948.71,
+      "status": "PASSED",
+      "facts_count": 4,
+      "evidence_count": 18,
+      "impacts_count": 2,
+      "strategies_count": 2,
+      "scenarios_count": 2,
+      "red_team_passed": true,
+      "scenarios_labeled": true,
+      "sample_sources": [
+        "UN OCHA ReliefWeb (ACT Alliance)",
+        "UN OCHA ReliefWeb (ACT Alliance)",
+        "UN OCHA ReliefWeb (ACT Alliance)"
+      ],
+      "sample_urls": [
+        "https://reliefweb.int/node/1100066",
+        "https://reliefweb.int/node/908631",
+        "https://reliefweb.int/node/1156441"
+      ]
+    },
+    {
+      "test_id": "TEST_E",
+      "category": "Internet Connectivity & Censorship Signals",
+      "question": "What recent network interference or connectivity anomalies are reported for a selected country by the configured OONI or IODA integrations?",
+      "elapsed_ms": 17691.89,
+      "status": "PASSED",
+      "facts_count": 4,
+      "evidence_count": 14,
+      "impacts_count": 2,
+      "strategies_count": 2,
+      "scenarios_count": 2,
+      "red_team_passed": true,
+      "scenarios_labeled": true,
+      "sample_sources": [
+        "Wikimedia Pageviews API",
+        "Wikimedia Pageviews API",
+        "Wikimedia Pageviews API"
+      ],
+      "sample_urls": [
+        "https://en.wikipedia.org/wiki/Irn",
+        "https://en.wikipedia.org/wiki/Rus",
+        "https://en.wikipedia.org/wiki/Rus"
+      ]
+    },
+    {
+      "test_id": "TEST_F",
+      "category": "Entity & Relationship Question",
+      "question": "What reliable information do the configured knowledge sources provide about India, Iran, and their relevant international or economic relationships?",
+      "elapsed_ms": 10639.33,
+      "status": "PASSED",
+      "facts_count": 4,
+      "evidence_count": 31,
+      "impacts_count": 2,
+      "strategies_count": 2,
+      "scenarios_count": 2,
+      "red_team_passed": true,
+      "scenarios_labeled": true,
+      "sample_sources": [
+        "UN OCHA ReliefWeb (ACT Alliance)",
+        "UN OCHA ReliefWeb (ACT Alliance)",
+        "UN OCHA ReliefWeb (ACT Alliance)"
+      ],
+      "sample_urls": [
+        "https://reliefweb.int/node/1125231",
+        "https://reliefweb.int/node/1827834",
+        "https://reliefweb.int/node/2159574"
+      ]
+    },
+    {
+      "test_id": "TEST_G",
+      "category": "Arbitrary Natural-Language Question",
+      "question": "How will recent semiconductor supply chain agreements between India and East Asian economies affect high-tech manufacturing resilience?",
+      "elapsed_ms": 16364.35,
+      "status": "PASSED",
+      "facts_count": 4,
+      "evidence_count": 28,
+      "impacts_count": 2,
+      "strategies_count": 2,
+      "scenarios_count": 2,
+      "red_team_passed": true,
+      "scenarios_labeled": true,
+      "sample_sources": [
+        "UN OCHA ReliefWeb (ACT Alliance)",
+        "UN OCHA ReliefWeb (ACT Alliance)",
+        "UN OCHA ReliefWeb (ACT Alliance)"
+      ],
+      "sample_urls": [
+        "https://reliefweb.int/node/1125231",
+        "https://reliefweb.int/node/2159574",
+        "https://reliefweb.int/node/1827834"
+      ]
+    },
+    {
+      "test_id": "TEST_H",
+      "category": "Hypothetical Scenario",
+      "question": "If a major disruption occurred in the Strait of Hormuz, what possible effects could it have on India's energy security, trade, and economy?",
+      "elapsed_ms": 33610.03,
+      "status": "PASSED",
+      "facts_count": 4,
+      "evidence_count": 32,
+      "impacts_count": 2,
+      "strategies_count": 2,
+      "scenarios_count": 2,
+      "red_team_passed": true,
+      "scenarios_labeled": true,
+      "sample_sources": [
+        "UN OCHA ReliefWeb (ACT Alliance)",
+        "UN OCHA ReliefWeb (ACT Alliance)",
+        "UN OCHA ReliefWeb (ACT Alliance)"
+      ],
+      "sample_urls": [
+        "https://reliefweb.int/node/1125231",
+        "https://reliefweb.int/node/2159574",
+        "https://reliefweb.int/node/1827834"
+      ]
+    },
+    {
+      "test_id": "TEST_I",
+      "category": "Insufficient-Evidence Question",
+      "question": "What will the exact price of crude oil in India be on a specific date next month?",
+      "elapsed_ms": 8308.27,
+      "status": "PASSED",
+      "facts_count": 4,
+      "evidence_count": 6,
+      "impacts_count": 2,
+      "strategies_count": 2,
+      "scenarios_count": 2,
+      "red_team_passed": true,
+      "scenarios_labeled": true,
+      "sample_sources": [
+        "World Bank Indicators API",
+        "World Bank Indicators API",
+        "World Bank Indicators API"
+      ],
+      "sample_urls": [
+        "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+        "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+        "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3"
+      ]
+    },
+    {
+      "test_id": "TEST_J",
+      "category": "Unrelated or Ambiguous Question",
+      "question": "What is the best recipe for baking chocolate chip cookies in cold weather?",
+      "elapsed_ms": 488.49,
+      "status": "PASSED",
+      "facts_count": 4,
+      "evidence_count": 4,
+      "impacts_count": 2,
+      "strategies_count": 2,
+      "scenarios_count": 2,
+      "red_team_passed": true,
+      "scenarios_labeled": true,
+      "sample_sources": [
+        "Wikimedia Pageviews API",
+        "Wikimedia Pageviews API",
+        "Wikimedia Pageviews API"
+      ],
+      "sample_urls": [
+        "https://en.wikipedia.org/wiki/Ind",
+        "https://en.wikipedia.org/wiki/Ind",
+        "https://en.wikipedia.org/wiki/Ind"
+      ]
+    }
+  ]
+}

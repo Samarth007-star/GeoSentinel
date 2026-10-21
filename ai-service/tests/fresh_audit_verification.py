@@ -67,7 +67,7 @@ async def probe_connector(conn, sample_entities, sample_geos):
     sample_rec = norm_records[0] if norm_records else None
     
     status = "FAILED"
-    if norm_records:
+    if sample_rec is not None:
         if sample_rec.data_origin == "LIVE":
             status = "LIVE_DATA_VERIFIED"
         elif sample_rec.data_origin == "HISTORICAL":

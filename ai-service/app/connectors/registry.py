@@ -13,6 +13,9 @@ from .usaspending import UsaSpendingConnector
 from .un_sdg import UnSdgConnector
 from .news import NewsFeedConnector
 from .nominatim import NominatimConnector
+from .gdelt_events import GdeltEventsConnector
+from .noaa import NoaaConnector
+from .imf import ImfConnector
 
 class ConnectorRegistry:
     def __init__(self):
@@ -34,11 +37,15 @@ class ConnectorRegistry:
         self.register(WikimediaPageviewsConnector())
         # 6. Economic & Financial Data
         self.register(WorldBankConnector())
+        self.register(ImfConnector())
         # 7. Scientific & Disaster Telemetry
         self.register(UsgsConnector())
         self.register(NasaEonetConnector())
+        self.register(NoaaConnector())
         # 8. Government Open Data
         self.register(UsaSpendingConnector())
+        # 8b. Conflict & Political Events
+        self.register(GdeltEventsConnector())
 
     def register(self, connector: BaseConnector):
         self._connectors[connector.connector_id] = connector
@@ -60,3 +67,4 @@ class ConnectorRegistry:
         return eligible
 
 connector_registry = ConnectorRegistry()
+

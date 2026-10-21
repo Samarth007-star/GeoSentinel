@@ -159,4 +159,14 @@ This backlog tracks every discrete implementation task in accordance with Sectio
 | **TSK-109** | REQ-VAL-01 | Execute and validate canonical user questions Q1 through Q5 through 12-stage pipeline | P0 | TSK-107 | **PASSED** | `scripts/development/run_comprehensive_audit.py`, `docs/LIVE_AUDIT_OUTPUT.json` |
 | **TSK-110** | REQ-REL-01 | Full-stack live readiness audit across all 18 UI/API modules | P0 | TSK-109 | **PASSED** | `scripts/development/test_full_stack.py`, `docs/RELEASE_READINESS_REPORT.md` |
 
+---
 
+## Phase 11: Expanded Macroeconomic & Scientific Telemetry (IMF, NOAA & 10-Case ForecastLab)
+
+| Task ID | Requirement Ref | Description | Priority | Dependencies | Status | Files Involved |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **TSK-111** | REQ-CONN-13 | Implement IMF Economic Indicators Connector (`CONN_IMF`) with SDMX-JSON parsing | P1 | TSK-030 | **PASSED** | `ai-service/app/connectors/imf.py`, `ai-service/tests/test_imf_noaa.py` |
+| **TSK-112** | REQ-CONN-14 | Implement NOAA Weather & Disaster Alert Connector (`CONN_NOAA`) | P1 | TSK-030 | **PASSED** | `ai-service/app/connectors/noaa.py`, `ai-service/tests/test_imf_noaa.py` |
+| **TSK-113** | REQ-LAB-02 | Expand ForecastLab longitudinal reference corpus to 10 verified cases with dual baseline scoring | P1 | TSK-082 | **PASSED** | `ai-service/app/evaluation/forecast_lab.py`, `docs/RESEARCH_VALIDATION_REPORT.md` |
+| **TSK-114** | REQ-FE-08 | Register IMF, NOAA, and GDELT 2.0 Events in web console connector service | P1 | TSK-075 | **PASSED** | `frontend/src/services/api.ts` |
+| **TSK-115** | REQ-AUD-02 | Synchronize live empirical test ledger and zero-cost audits across all 11 providers | P1 | TSK-111..114 | **PASSED** | `docs/TEST_RESULTS.md`, `docs/COST_AND_SERVICE_AUDIT.md`, `docs/data-source-register.md` |

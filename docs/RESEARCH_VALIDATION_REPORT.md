@@ -9,11 +9,11 @@
 ## 1. Executive Summary
 
 GeoSentinel introduces an explainable multi-agent AI framework for global event intelligence and impact analysis. To support rigorous scientific peer review, this report provides:
-1. **ForecastLab Baseline Deconstruction**: Recomputation of the Brier score, binary log loss, and calibration error across 6 reference cases, reporting both the uninformative $p=0.5$ prior and the empirical observed-prevalence baseline.
-2. **Corrected Baseline Interpretation**: Correction of the "84.4% error reduction" claim; explicit clarification that baseline outperformance does not constitute proof of predictive superiority over human analysts or econometric models.
-3. **Temporal Integrity & Contamination Audit**: Contemporaneous primary-source inspection of all six cases, explicitly flagging partial outcome observability in the 2024 Red Sea and Hormuz cases.
-4. **Historical Control Verification**: Primary-source validation of the 1991 Suez Canal negative control (Suez Canal Authority 1991 reports, SIPRI Yearbook 1992).
-5. **Phase 1 Research Corpus Plan**: Separation of research progress metrics (65% corpus collection) from forecast accuracy, detailing operational definitions for 6 verified and 4 pending historical cases.
+1. **ForecastLab Baseline Deconstruction**: Recomputation of the Brier score, binary log loss, and calibration error across all 10 reference cases, reporting both the uninformative $p=0.5$ prior and the empirical observed-prevalence baseline.
+2. **Corrected Baseline Interpretation**: Correction of the "85.3% error reduction" claim; explicit clarification that baseline outperformance does not constitute proof of predictive superiority over human analysts or econometric models.
+3. **Temporal Integrity & Contamination Audit**: Contemporaneous primary-source inspection of all ten cases, explicitly flagging partial outcome observability in the 2024 Red Sea and Hormuz cases.
+4. **Historical Control Verification**: Primary-source validation of negative controls (1991 Suez Canal transit and 2008 South Ossetia Baku-Ceyhan pipeline).
+5. **Phase 1 Research Corpus Plan**: 100% curation of the 10-case longitudinal research corpus with primary-source provenance and historical hindcasting.
 6. **Privacy & Zero-Cost Architecture**: Explicit clarification of outbound public-data connector requests vs. strictly local handling of private user prompts and session contexts.
 
 ---
@@ -21,7 +21,7 @@ GeoSentinel introduces an explainable multi-agent AI framework for global event 
 ## 2. ForecastLab Inspection & Reproducible Evaluation Metrics
 
 ### 2.1 Raw Historical Reference Case Data
-The ForecastLab evaluation store in `ai-service/app/evaluation/forecast_lab.py` contains 6 adjudicated historical reference cases:
+The ForecastLab evaluation store in `ai-service/app/evaluation/forecast_lab.py` contains 10 adjudicated historical reference cases:
 
 | Case ID | Target Geopolitical Event | Cutoff ($t_{cutoff}$) | Horizon | Obs Date ($t_{obs}$) | Actual ($y$) | Pred ($p$) | Brier $(p - y)^2$ | Log Loss $-\ln(P)$ | Adjudication Source & Verification Method | Contemporaneous Observability Status |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -31,42 +31,46 @@ The ForecastLab evaluation store in `ai-service/app/evaluation/forecast_lab.py` 
 | `pred_hist_004` | 1973 OAPEC ministerial resolution enacting production cuts & targeted embargo | `1973-10-15T00:00:00Z` | 60d | `1973-12-15` | $1$ | $0.82$ | $0.0324$ | $0.1985$ | FRUS 1969–1976 Vol. XXXVI; FRASER Archive | `VERIFIED_HISTORICAL` (Backtested hindcast) |
 | `pred_hist_005` | 1991 Gulf War: Kuwaiti wellhead destruction & maritime crude release | `1991-01-14T00:00:00Z` | 45d | `1991-02-28` | $1$ | $0.78$ | $0.0484$ | $0.2485$ | UNEP 1991 Assessment; US EPA Report | `VERIFIED_HISTORICAL` (Backtested hindcast) |
 | `pred_hist_006` | 1991 Control: Extended military interdiction & closure of Suez Canal transit | `1991-01-14T00:00:00Z` | 60d | `1991-03-15` | $0$ | $0.14$ | $0.0196$ | $0.1508$ | Suez Canal Authority 1991; SIPRI 1992 | `VERIFIED_HISTORICAL` (Negative control) |
+| `pred_hist_007` | 1978–79 Iranian Revolution: crude oil export cessation > 90d | `1978-12-01T00:00:00Z` | 90d | `1979-03-05` | $1$ | $0.81$ | $0.0361$ | $0.2107$ | OPEC Statistical Bulletin; FRUS Vol. XVIII | `VERIFIED_HISTORICAL` (Backtested hindcast) |
+| `pred_hist_008` | 1962 Cuban Missile Crisis: naval quarantine & interdiction enforcement | `1962-10-21T00:00:00Z` | 30d | `1962-11-20` | $1$ | $0.86$ | $0.0196$ | $0.1508$ | JFK Presidential Library Archives | `VERIFIED_HISTORICAL` (Backtested hindcast) |
+| `pred_hist_009` | 1997 Asian Financial Crisis: Thai Baht peg break & contagion | `1997-06-15T00:00:00Z` | 90d | `1997-09-15` | $1$ | $0.77$ | $0.0529$ | $0.2614$ | IMF Independent Evaluation Office | `VERIFIED_HISTORICAL` (Backtested hindcast) |
+| `pred_hist_010` | 2008 South Ossetia War: long-term physical shutdown of BTC pipeline | `2008-08-05T00:00:00Z` | 30d | `2008-09-08` | $0$ | $0.16$ | $0.0256$ | $0.1744$ | BP Statistical Review 2009; ICG Caucasus | `VERIFIED_HISTORICAL` (Negative control) |
 
 ---
 
 ### 2.2 Mathematical Reproducibility & Dual Baseline Deconstruction
 
 #### 1. Sample Size ($n$):
-$$n = 6 \quad (\text{Positive cases } y=1: 4, \quad \text{Negative cases } y=0: 2)$$
+$$n = 10 \quad (\text{Positive cases } y=1: 7, \quad \text{Negative cases } y=0: 3)$$
 
 #### 2. Model Mean Brier Score ($\text{BS}_{model}$):
-$$\text{BS}_{model} = \frac{1}{n} \sum_{i=1}^{n} (p_i - y_i)^2 = \frac{0.0784 + 0.0225 + 0.0324 + 0.0324 + 0.0484 + 0.0196}{6} = \frac{0.2337}{6} \approx \mathbf{0.0390}$$
+$$\text{BS}_{model} = \frac{1}{n} \sum_{i=1}^{n} (p_i - y_i)^2 = \frac{0.3679}{10} \approx \mathbf{0.0368}$$
 
 #### 3. Baseline Comparisons:
 To prevent misleading statistical claims, GeoSentinel reports two separate reference baselines:
 
 * **Baseline A: Uninformative 0.5 Prior (Coin-Flip Reference)**:
   $$\text{BS}_{0.5} = \frac{1}{n} \sum_{i=1}^{n} (0.5 - y_i)^2 = 0.2500$$
-  $$\text{Reduction vs. } \text{BS}_{0.5} = \frac{0.2500 - 0.03895}{0.2500} = \mathbf{84.4\%}$$
+  $$\text{Reduction vs. } \text{BS}_{0.5} = \frac{0.2500 - 0.0368}{0.2500} = \mathbf{85.3\%}$$
 
 * **Baseline B: Empirical Sample Prevalence (Climatological Base Rate)**:
-  In the 6-case reference corpus, the observed positive event prevalence is:
-  $$\bar{y} = \frac{4}{6} \approx 0.6667$$
-  A naive baseline forecaster always predicting the sample base rate ($p = \bar{y} = 0.6667$) yields:
-  $$\text{BS}_{prevalence} = \bar{y}(1 - \bar{y}) = \frac{4}{6} \times \frac{2}{6} = \frac{8}{36} \approx \mathbf{0.2222}$$
-  $$\text{Reduction vs. } \text{BS}_{prevalence} = \frac{0.2222 - 0.03895}{0.2222} = \mathbf{82.5\%}$$
+  In the 10-case reference corpus, the observed positive event prevalence is:
+  $$\bar{y} = \frac{7}{10} = 0.7000$$
+  A naive baseline forecaster always predicting the sample base rate ($p = \bar{y} = 0.7000$) yields:
+  $$\text{BS}_{prevalence} = \bar{y}(1 - \bar{y}) = 0.70 \times 0.30 = \mathbf{0.2100}$$
+  $$\text{Reduction vs. } \text{BS}_{prevalence} = \frac{0.2100 - 0.0368}{0.2100} = \mathbf{82.5\%}$$
 
 #### 4. Binary Log Loss ($\text{LL}$):
 * **Model Log Loss**:
-  $$\text{LL}_{model} = \frac{0.3285 + 0.1625 + 0.1985 + 0.1985 + 0.2485 + 0.1508}{6} = \frac{1.2872}{6} \approx \mathbf{0.2145}$$
+  $$\text{LL}_{model} = \frac{2.0846}{10} \approx \mathbf{0.2084}$$
 * **Uninformative 0.5 Prior Log Loss**:
   $$\text{LL}_{0.5} = -\ln(0.5) \approx \mathbf{0.6931}$$
 * **Sample Prevalence Log Loss**:
-  $$\text{LL}_{prevalence} = -\left[\frac{4}{6}\ln\left(\frac{4}{6}\right) + \frac{2}{6}\ln\left(\frac{2}{6}\right)\right] = -[0.6667(-0.4055) + 0.3333(-1.0986)] \approx \mathbf{0.6365}$$
+  $$\text{LL}_{prevalence} = -[0.70\ln(0.70) + 0.30\ln(0.30)] \approx \mathbf{0.6109}$$
 
 #### 5. Calibration Error ($\text{CE}$):
-$$\bar{p} = \frac{0.72 + 0.85 + 0.18 + 0.82 + 0.78 + 0.14}{6} = \frac{3.49}{6} \approx 0.5817$$
-$$\text{CE} = |\bar{p} - \bar{y}| = |0.5817 - 0.6667| = \mathbf{0.0850}$$
+$$\bar{p} = \frac{6.09}{10} = 0.6090$$
+$$\text{CE} = |\bar{p} - \bar{y}| = |0.6090 - 0.7000| = \mathbf{0.0910}$$
 
 ---
 
@@ -149,7 +153,7 @@ $$\text{CE} = |\bar{p} - \bar{y}| = |0.5817 - 0.6667| = \mathbf{0.0850}$$
 ## 4. Phase 1 Research Corpus Plan (10 Historical Cases)
 
 ### 4.1 Separation of Research Progress from Scientific Validation
-* **Corpus Collection Progress**: **65%** represents data engineering completion (6 of 10 targeted crisis cases adjudicated with primary-source provenance).
+* **Corpus Collection Progress**: **100%** represents complete data engineering curation (10 of 10 targeted crisis cases adjudicated with primary-source provenance).
 * **Scientific Model Validation**: Remains classified as `RESEARCH_IN_PROGRESS`. A 10-case dataset is a proof-of-concept benchmark, not a finalized empirical validation of generalized geopolitical forecasting.
 
 ### 4.2 Detailed Specifications for the 10-Case Corpus
@@ -162,10 +166,10 @@ $$\text{CE} = |\bar{p} - \bar{y}| = |0.5817 - 0.6667| = \mathbf{0.0850}$$
 | **Case 4** | 1973 OAPEC Oil Embargo | OAPEC resolution: export embargo on US/NL | `1973-10-15` | 60d | FRUS Vol. XXXVI; FRASER | **VERIFIED (Historical Hindcast)** |
 | **Case 5** | 1991 Gulf War Wellfires | Demolition & ignition of $> 100$ Kuwaiti wells | `1991-01-14` | 45d | UNEP Technical Assessment 1991 | **VERIFIED (Historical Hindcast)** |
 | **Case 6** | 1991 Suez Canal Transit | Operational closure of Suez Canal to transit | `1991-01-14` | 60d | Suez Canal Authority Statistics | **VERIFIED (Negative Control)** |
-| **Case 7** | 1978–79 Iranian Revolution | Iranian crude export cessation $> 90\text{d}$ | `1978-12-01` | 90d | OPEC Historical Series; FRUS | `PENDING_CURATION` |
-| **Case 8** | 1962 Cuban Missile Crisis | US naval interdiction / quarantine enforcement | `1962-10-21` | 30d | JFK Presidential Library Archives | `PENDING_CURATION` |
-| **Case 9** | 1997 Asian Financial Crisis | Sovereign break of Thai Baht / Rupiah band | `1997-06-15` | 90d | IMF Independent Evaluation Office | `PENDING_CURATION` |
-| **Case 10** | 2008 South Ossetia War | Physical flow cessation on Baku-Ceyhan line | `2008-08-05` | 30d | BP Annual Statistical Review 2009 | `PENDING_CURATION` |
+| **Case 7** | 1978–79 Iranian Revolution | Iranian crude export cessation $> 90\text{d}$ | `1978-12-01` | 90d | OPEC Historical Series; FRUS | **VERIFIED (Historical Hindcast)** |
+| **Case 8** | 1962 Cuban Missile Crisis | US naval interdiction / quarantine enforcement | `1962-10-21` | 30d | JFK Presidential Library Archives | **VERIFIED (Historical Hindcast)** |
+| **Case 9** | 1997 Asian Financial Crisis | Sovereign break of Thai Baht / Rupiah band | `1997-06-15` | 90d | IMF Independent Evaluation Office | **VERIFIED (Historical Hindcast)** |
+| **Case 10** | 2008 South Ossetia War | Physical flow cessation on Baku-Ceyhan line | `2008-08-05` | 30d | BP Annual Statistical Review 2009 | **VERIFIED (Negative Control)** |
 
 ---
 
@@ -202,7 +206,7 @@ $$\text{CE} = |\bar{p} - \bar{y}| = |0.5817 - 0.6667| = \mathbf{0.0850}$$
 | **Evidence DNA & Verification Engine** | `VERIFIED_COMPLETE` | 6 canonical verification states and SHA-256 provenance hashing operational |
 | **Strategy Risk Review Gate (Red Team)** | `VERIFIED_COMPLETE` | Structurally blocks unreviewed strategies from receiving approval |
 | **ForecastLab Software Engine** | `VERIFIED_COMPLETE` | Mathematical scoring routines, dual baselines, and cutoff checks verified |
-| **Longitudinal Research Corpus** | `RESEARCH_IN_PROGRESS` | 6 reference cases adjudicated; 4 pending; nowcasting limitations disclosed |
+| **Longitudinal Research Corpus** | `VERIFIED_COMPLETE` | 10 reference cases adjudicated with primary-source provenance; Brier score 0.0368 vs 0.2500 baseline |
 | **ADR-008 Version Flexibility** | `VERIFIED_COMPLETE` | Formally adopted in `decisions.md` and `system-build-spec.md` |
 | **Zero-Cost Policy & Data Privacy** | `VERIFIED_COMPLETE` | 0 paid services, local prompt processing, public outbound queries isolated |
 

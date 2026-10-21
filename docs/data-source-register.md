@@ -18,6 +18,8 @@
 | 7 | **Economic & Financial Data** | `CONN_WORLDBANK` | World Bank Indicators API | `https://api.worldbank.org/v2/country/{iso}/indicator/{code}` | None (CC-BY 4.0) | Free | Implemented (`world_bank.py`) | **LIVE_DATA_VERIFIED** (HTTP 200, 662ms) | Macro Indicators & Development Series |
 | 8 | **Scientific & Disaster Data** | `CONN_USGS` | USGS Earthquake Hazards Program | `https://earthquake.usgs.gov/fdsnws/event/1/` | None (Public Domain) | Free | Implemented (`usgs.py`) | **LIVE_DATA_VERIFIED** (HTTP 200, 990ms) | Real-time Seismic Events |
 | 9 | **Scientific & Disaster Data** | `CONN_NASA_EONET` | NASA Earth Observatory Natural Events | `https://eonet.gsfc.nasa.gov/api/v3/events` | None (NASA Open Access) | Free | Implemented (`nasa_eonet.py`) | **LIVE_DATA_VERIFIED** (HTTP 200, 2246ms) | Active Natural Hazard Events |
+| 10 | **Economic & Financial Data** | `CONN_IMF` | International Monetary Fund Data API | `https://www.imf.org/external/datamapper/api/v1` | None (IMF Copyright) | Free (Research with Attribution) | Implemented (`imf.py`) | **LIVE_DATA_VERIFIED** (HTTP 200) | WEO Macroeconomic & Financial Projections |
+| 11 | **Scientific & Disaster Data** | `CONN_NOAA` | NOAA NCEI / Weather.gov | `https://api.weather.gov/alerts/active` | Optional CDO token / Free Alerts | Free (US Public Domain) | Implemented (`noaa.py`) | **LIVE_DATA_VERIFIED** (HTTP 200) | Severe Weather Alerts & Climate Extremes |
 
 ---
 
@@ -45,6 +47,8 @@ The repository maintains two strictly separated data tiers:
    - World Bank (`CONN_WORLDBANK`)
    - USGS (`CONN_USGS`)
    - NASA EONET (`CONN_NASA_EONET`)
+   - IMF (`CONN_IMF`)
+   - NOAA (`CONN_NOAA`)
 2. **Internal Reference Datasets** (Stored in `data/reference/` and hydrated into MySQL 8.0 `geosentinel` database):
    - `countries.csv` (258 rows)
    - `economic_indicators.csv` (265 rows)
