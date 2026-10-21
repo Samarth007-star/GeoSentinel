@@ -4,8 +4,9 @@ import time
 import sys
 import os
 from datetime import datetime, timezone
+from typing import TypedDict, List
 
-# Ensure ai-service app is importable
+# Ensure ai-service app is in python path
 ai_service_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "ai-service"))
 if ai_service_dir not in sys.path:
     sys.path.insert(0, ai_service_dir)
@@ -145,7 +146,13 @@ async def audit_all():
     print("STEP 3: EXECUTING THE 5 REAL USER QUESTIONS (Q1 TO Q5)")
     print("==================================================================")
 
-    five_questions = [
+    class AuditQuestion(TypedDict):
+        id: str
+        question: str
+        geos: List[str]
+        horizon: str
+
+    five_questions: List[AuditQuestion] = [
         {
             "id": "Q1",
             "question": "If tensions between the United States and Iran escalate into a wider military conflict, what would be the economic, energy, diplomatic and security impacts on India?",

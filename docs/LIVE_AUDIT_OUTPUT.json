@@ -1,10 +1,10 @@
 {
-  "timestamp_utc": "2026-10-02T07:39:59.569340+00:00",
+  "timestamp_utc": "2026-10-19T16:28:14.713257+00:00",
   "eight_categories_matrix": [
     {
-      "connector_id": "CONN_USASPENDING",
-      "category": "Government Open Data",
-      "provider": "US Federal Government Open Data (USAspending)",
+      "connector_id": "CONN_RELIEFWEB",
+      "category": "International Organizations",
+      "provider": "UN OCHA ReliefWeb API",
       "credential_status": "NONE_REQUIRED",
       "live_http": "YES",
       "real_data": "YES",
@@ -22,39 +22,29 @@
       "status": "LIVE_DATA_VERIFIED"
     },
     {
-      "connector_id": "CONN_RELIEFWEB",
-      "category": "International Organizations",
-      "provider": "UN OCHA ReliefWeb API",
-      "credential_status": "CREDENTIAL_MISSING",
+      "connector_id": "CONN_GDELT",
+      "category": "News",
+      "provider": "GDELT Project (DOC 2.0 API)",
+      "credential_status": "NONE_REQUIRED",
       "live_http": "NO",
       "real_data": "NO",
       "records": 0,
-      "status": "CREDENTIAL_MISSING"
-    },
-    {
-      "connector_id": "CONN_WORLDBANK",
-      "category": "Economic & Financial",
-      "provider": "World Bank Indicators API",
-      "credential_status": "NONE_REQUIRED",
-      "live_http": "YES",
-      "real_data": "YES",
-      "records": 17,
-      "status": "LIVE_DATA_VERIFIED"
+      "status": "EMPTY_RESULT"
     },
     {
       "connector_id": "CONN_NEWS",
       "category": "News Sources",
       "provider": "UN News Service Global Feed",
       "credential_status": "NONE_REQUIRED",
-      "live_http": "YES",
-      "real_data": "YES",
-      "records": 6,
-      "status": "LIVE_DATA_VERIFIED"
+      "live_http": "NO",
+      "real_data": "NO",
+      "records": 0,
+      "status": "BLOCKED"
     },
     {
-      "connector_id": "CONN_USGS",
-      "category": "Scientific & Disaster",
-      "provider": "USGS Earthquake Hazards Program",
+      "connector_id": "CONN_OONI",
+      "category": "Internet & Infrastructure",
+      "provider": "Open Observatory of Network Interference (OONI)",
       "credential_status": "NONE_REQUIRED",
       "live_http": "YES",
       "real_data": "YES",
@@ -62,13 +52,23 @@
       "status": "LIVE_DATA_VERIFIED"
     },
     {
-      "connector_id": "CONN_NASA_EONET",
-      "category": "Scientific & Disaster",
-      "provider": "NASA Earth Observatory Natural Event Tracker (EONET)",
+      "connector_id": "CONN_IODA",
+      "category": "Internet & Infrastructure",
+      "provider": "Internet Outage Detection & Analysis (IODA)",
       "credential_status": "NONE_REQUIRED",
       "live_http": "YES",
       "real_data": "YES",
-      "records": 5,
+      "records": 2,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "connector_id": "CONN_WIKIDATA",
+      "category": "Geographic & Entities",
+      "provider": "Wikidata Knowledge Base (SPARQL)",
+      "credential_status": "NONE_REQUIRED",
+      "live_http": "YES",
+      "real_data": "YES",
+      "records": 7,
       "status": "LIVE_DATA_VERIFIED"
     },
     {
@@ -83,12 +83,72 @@
     },
     {
       "connector_id": "CONN_WIKIMEDIA",
-      "category": "Public Social Signals",
-      "provider": "Wikimedia Foundation Pageviews API",
+      "category": "Public Social/Digital Signals",
+      "provider": "Wikimedia REST API (Pageviews)",
       "credential_status": "NONE_REQUIRED",
       "live_http": "YES",
       "real_data": "YES",
-      "records": 2,
+      "records": 12,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "connector_id": "CONN_WORLDBANK",
+      "category": "Economic & Financial",
+      "provider": "World Bank Indicators API",
+      "credential_status": "NONE_REQUIRED",
+      "live_http": "YES",
+      "real_data": "YES",
+      "records": 17,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "connector_id": "CONN_IMF",
+      "category": "Economic & Financial",
+      "provider": "International Monetary Fund Data API",
+      "credential_status": "NONE_REQUIRED",
+      "live_http": "YES",
+      "real_data": "NO",
+      "records": 0,
+      "status": "EMPTY_RESULT"
+    },
+    {
+      "connector_id": "CONN_USGS",
+      "category": "Scientific & Disaster",
+      "provider": "USGS Earthquake Hazards Program",
+      "credential_status": "NONE_REQUIRED",
+      "live_http": "YES",
+      "real_data": "NO",
+      "records": 0,
+      "status": "EMPTY_RESULT"
+    },
+    {
+      "connector_id": "CONN_NASA_EONET",
+      "category": "Scientific & Disaster",
+      "provider": "NASA Earth Observatory Natural Event Tracker (EONET)",
+      "credential_status": "NONE_REQUIRED",
+      "live_http": "YES",
+      "real_data": "YES",
+      "records": 5,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    {
+      "connector_id": "CONN_NOAA",
+      "category": "Scientific & Disaster",
+      "provider": "NOAA National Centers for Environmental Information",
+      "credential_status": "NONE_REQUIRED",
+      "live_http": "NO",
+      "real_data": "NO",
+      "records": 0,
+      "status": "BLOCKED"
+    },
+    {
+      "connector_id": "CONN_USASPENDING",
+      "category": "Government Open Data",
+      "provider": "US Federal Government Open Data (USAspending)",
+      "credential_status": "NONE_REQUIRED",
+      "live_http": "YES",
+      "real_data": "YES",
+      "records": 5,
       "status": "LIVE_DATA_VERIFIED"
     },
     {
@@ -103,120 +163,168 @@
     }
   ],
   "connector_health_probes": {
-    "CONN_USASPENDING": {
+    "CONN_RELIEFWEB": {
       "health": {
         "status": "HEALTHY",
-        "latency_ms": 1393.296
+        "latency_ms": 1124.6370000000002
       },
-      "health_latency_ms": 1629.77,
+      "health_latency_ms": 1425.85,
       "status": "LIVE_DATA_VERIFIED"
     },
     "CONN_UN_SDG": {
       "health": {
         "status": "HEALTHY",
-        "latency_ms": 1404.498
+        "latency_ms": 2528.355
       },
-      "health_latency_ms": 1575.46,
+      "health_latency_ms": 2734.24,
       "status": "LIVE_DATA_VERIFIED"
     },
-    "CONN_RELIEFWEB": {
+    "CONN_GDELT": {
       "health": {
-        "status": "CREDENTIAL_MISSING",
-        "credential_type": "Approved Application Name (appname)",
-        "registration_page": "https://apidoc.reliefweb.int/parameters#appname",
-        "required_env_var": "RELIEFWEB_APPNAME",
-        "message": "ReliefWeb API v2 requires an approved appname registered with UN OCHA. Add RELIEFWEB_APPNAME in .env"
+        "status": "RATE_LIMITED",
+        "http_code": 429,
+        "retry_after_seconds": 10.0,
+        "error": "GDELT rate limit exceeded (HTTP 429). Backoff: 10s."
       },
-      "health_latency_ms": 0.0,
-      "status": "CREDENTIAL_MISSING"
-    },
-    "CONN_WORLDBANK": {
-      "health": {
-        "status": "HEALTHY",
-        "latency_ms": 70.534
-      },
-      "health_latency_ms": 244.52,
-      "status": "LIVE_DATA_VERIFIED"
+      "health_latency_ms": 10418.02,
+      "status": "EMPTY_RESULT"
     },
     "CONN_NEWS": {
       "health": {
-        "status": "HEALTHY",
-        "latency_ms": 53.56
+        "status": "DEGRADED",
+        "http_code": 404
       },
-      "health_latency_ms": 227.67,
-      "status": "LIVE_DATA_VERIFIED"
+      "health_latency_ms": 15826.4,
+      "status": "BLOCKED"
     },
-    "CONN_USGS": {
+    "CONN_OONI": {
       "health": {
         "status": "HEALTHY",
-        "latency_ms": 755.5110000000001
+        "latency_ms": 1518.095
       },
-      "health_latency_ms": 927.51,
+      "health_latency_ms": 1682.74,
       "status": "LIVE_DATA_VERIFIED"
     },
-    "CONN_NASA_EONET": {
+    "CONN_IODA": {
+      "health": {
+        "status": "DEGRADED",
+        "http_code": 500
+      },
+      "health_latency_ms": 15673.26,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    "CONN_WIKIDATA": {
       "health": {
         "status": "HEALTHY",
-        "latency_ms": 998.75
+        "latency_ms": 1813.15
       },
-      "health_latency_ms": 1174.61,
+      "health_latency_ms": 1989.9,
       "status": "LIVE_DATA_VERIFIED"
     },
     "CONN_NOMINATIM": {
       "health": {
         "status": "HEALTHY",
-        "latency_ms": 152.90599999999998
+        "latency_ms": 775.857
       },
-      "health_latency_ms": 328.58,
+      "health_latency_ms": 945.62,
       "status": "LIVE_DATA_VERIFIED"
     },
     "CONN_WIKIMEDIA": {
       "health": {
         "status": "HEALTHY",
-        "latency_ms": 211.69199999999998
+        "latency_ms": 531.634
       },
-      "health_latency_ms": 387.62,
+      "health_latency_ms": 700.97,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    "CONN_WORLDBANK": {
+      "health": {
+        "status": "HEALTHY",
+        "latency_ms": 428.568
+      },
+      "health_latency_ms": 596.19,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    "CONN_IMF": {
+      "health": {
+        "status": "HEALTHY",
+        "latency_ms": 778.116
+      },
+      "health_latency_ms": 949.87,
+      "status": "EMPTY_RESULT"
+    },
+    "CONN_USGS": {
+      "health": {
+        "status": "HEALTHY",
+        "latency_ms": 606.2389999999999
+      },
+      "health_latency_ms": 778.12,
+      "status": "EMPTY_RESULT"
+    },
+    "CONN_NASA_EONET": {
+      "health": {
+        "status": "HEALTHY",
+        "latency_ms": 4873.456
+      },
+      "health_latency_ms": 5042.32,
+      "status": "LIVE_DATA_VERIFIED"
+    },
+    "CONN_NOAA": {
+      "health": {
+        "status": "DEGRADED",
+        "http_code": 400
+      },
+      "health_latency_ms": 886.7,
+      "status": "BLOCKED"
+    },
+    "CONN_USASPENDING": {
+      "health": {
+        "status": "HEALTHY",
+        "latency_ms": 1771.306
+      },
+      "health_latency_ms": 1938.0,
       "status": "LIVE_DATA_VERIFIED"
     },
     "CONN_GDELT_EVENTS": {
       "health": {
         "status": "HEALTHY",
-        "latency_ms": 362.24899999999997
+        "latency_ms": 553.157
       },
-      "health_latency_ms": 561.01,
+      "health_latency_ms": 1134.8,
       "status": "LIVE_DATA_VERIFIED"
     }
   },
   "live_http_retrieval_results": {
-    "CONN_USASPENDING": {
-      "connector_id": "CONN_USASPENDING",
-      "category": "Government Open Data",
-      "provider": "US Federal Government Open Data (USAspending)",
-      "terms_url": "https://www.usaspending.gov/about",
-      "license": "Public Domain",
-      "fetch_latency_ms": 1581.22,
+    "CONN_RELIEFWEB": {
+      "connector_id": "CONN_RELIEFWEB",
+      "category": "International Organizations",
+      "provider": "UN OCHA ReliefWeb API",
+      "terms_url": "https://reliefweb.int/terms-conditions",
+      "license": "CC-BY 4.0",
+      "fetch_latency_ms": 873.16,
       "raw_record_count": 5,
       "normalized_record_count": 5,
       "status": "LIVE_DATA_VERIFIED",
       "sample_record": {
-        "evidence_id": "ev_usaspending_1525",
-        "source_id": "CONN_USASPENDING",
-        "source_name": "US Federal Government Open Data (USAspending)",
-        "source_url": "https://www.usaspending.gov/agency/247",
-        "title": "USAspending Open Data: 400 Years of African-American History Commission",
-        "claim_text": "US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
-        "evidence_type": "government_open_data",
-        "published_at": "2026-10-02T07:40:02.780368+00:00",
-        "retrieved_at": "2026-10-02T07:40:02.780368+00:00",
-        "geography": "USA",
-        "verification_status": "VERIFIED",
-        "verification_rationale": "Retrieved from official US Federal Government USAspending Open Data API with deterministic schema validation.",
-        "license_id": "Public Domain",
-        "attribution": "Source: US Federal Government Open Data (Public Domain)",
-        "content_hash": "287bec84f7c5f95a8b8c0d5c5f768848a8b1d5a9c1d6f1fe246ee711bdea0a03",
+        "evidence_id": "ev_rw_1827834",
+        "source_id": "CONN_RELIEFWEB",
+        "source_name": "UN OCHA ReliefWeb (ACT Alliance)",
+        "source_url": "https://reliefweb.int/node/1827834",
+        "title": "ReliefWeb: ACT Alliance Preliminary Appeal - Cyclone Vardah in Tamil Nadu, India \u2013 IND162",
+        "claim_text": "[ACT Alliance] ACT Alliance Preliminary Appeal - Cyclone Vardah in Tamil Nadu, India \u2013 IND162. **Preliminary Appeal Target: US$ 211,409** \n\n**Balance Requested: US$ 211,409**\n\n**PRIORITY NEEDS**\n\n \u2022 Emergency Assistance/NFI\n\n\u2022 Food Security\n\n\u2022 Shelter\n\n\u2022 Hygiene (WASH)",
+        "evidence_type": "humanitarian_report",
+        "published_at": "2016-12-19T16:08:59+00:00",
+        "retrieved_at": "2026-10-19T16:28:17.012302+00:00",
+        "geography": "India",
+        "verification_status": "SOURCE_REFERENCED",
+        "verification_rationale": "Retrieved from official UN OCHA ReliefWeb API v2 with structured report metadata.",
+        "license_id": "CC-BY 4.0",
+        "attribution": "Source: UN OCHA ReliefWeb / ACT Alliance (CC-BY 4.0)",
+        "content_hash": "5ae68f61456a5d2b0ef2901e476a2cdfed1a6d1a5bc0643e6ba95a54926ab912",
+        "data_origin": "LIVE",
         "corroboration_ids": [],
         "contradiction_ids": [],
-        "limitations": "Reflects US Federal agency public registry and authorizations."
+        "limitations": "Humanitarian field assessments reflect operational estimates subject to evolving ground conditions."
       }
     },
     "CONN_UN_SDG": {
@@ -225,7 +333,7 @@
       "provider": "UN Statistics Division SDG API",
       "terms_url": "https://unstats.un.org/terms/",
       "license": "CC-BY 3.0 IGO",
-      "fetch_latency_ms": 1789.35,
+      "fetch_latency_ms": 1590.6,
       "raw_record_count": 6,
       "normalized_record_count": 6,
       "status": "LIVE_DATA_VERIFIED",
@@ -238,29 +346,202 @@
         "claim_text": "United Nations Sustainable Development Framework (Goal 1, Target 1.1): By 2030, eradicate extreme poverty for all people everywhere, currently measured as people living on less than $1.25 a day.",
         "evidence_type": "multilateral_standard",
         "published_at": "2024-01-01T00:00:00Z",
-        "retrieved_at": "2026-10-02T07:40:06.145374+00:00",
+        "retrieved_at": "2026-10-19T16:28:21.339815+00:00",
         "geography": "WLD",
         "verification_status": "VERIFIED",
         "verification_rationale": "Official multilateral development framework established by United Nations General Assembly.",
         "license_id": "CC-BY 3.0 IGO",
         "attribution": "Source: United Nations Statistics Division Open API (CC-BY 3.0 IGO)",
         "content_hash": "a7c84506c5c285e79024ee170e71944c5e0f52a67f6b113cc740e748cbfb0c96",
+        "data_origin": "LIVE",
         "corroboration_ids": [],
         "contradiction_ids": [],
         "limitations": "Global multilateral framework benchmark; local policy adaptation required."
       }
     },
-    "CONN_RELIEFWEB": {
-      "connector_id": "CONN_RELIEFWEB",
-      "category": "International Organizations",
-      "provider": "UN OCHA ReliefWeb API",
-      "terms_url": "https://reliefweb.int/terms-conditions",
-      "license": "CC-BY 4.0",
-      "fetch_latency_ms": 0.0,
+    "CONN_GDELT": {
+      "connector_id": "CONN_GDELT",
+      "category": "News",
+      "provider": "GDELT Project (DOC 2.0 API)",
+      "terms_url": "https://www.gdeltproject.org/data.html",
+      "license": "Open Research Access",
+      "fetch_latency_ms": 21338.57,
       "raw_record_count": 0,
       "normalized_record_count": 0,
-      "status": "CREDENTIAL_MISSING",
+      "status": "EMPTY_RESULT",
       "sample_record": null
+    },
+    "CONN_NEWS": {
+      "connector_id": "CONN_NEWS",
+      "category": "News Sources",
+      "provider": "UN News Service Global Feed",
+      "terms_url": "https://news.un.org/en/content/terms-service",
+      "license": "Open Access",
+      "fetch_latency_ms": 16103.96,
+      "raw_record_count": 0,
+      "normalized_record_count": 0,
+      "status": "BLOCKED",
+      "sample_record": null
+    },
+    "CONN_OONI": {
+      "connector_id": "CONN_OONI",
+      "category": "Internet & Infrastructure",
+      "provider": "Open Observatory of Network Interference (OONI)",
+      "terms_url": "https://ooni.org/about/data-policy/",
+      "license": "CC0 1.0 Public Domain",
+      "fetch_latency_ms": 3209.48,
+      "raw_record_count": 5,
+      "normalized_record_count": 5,
+      "status": "LIVE_DATA_VERIFIED",
+      "sample_record": {
+        "evidence_id": "ev_ooni_20261019162919",
+        "source_id": "CONN_OONI",
+        "source_name": "OONI Network Measurements",
+        "source_url": "https://api.ooni.io/api/v1/raw_measurement?measurement_uid=20261019162919.074611_IN_dnscheck_15319618602c1b59",
+        "title": "OONI Network Signal: IN (dnscheck - Normal Connectivity)",
+        "claim_text": "OONI probe in IN (AS24560) observed 'dnscheck' on target 'https://cloudflare-dns.com/dns-query'. Status: Normal Connectivity (Measurement timestamp: 2026-10-19T16:29:19.000000Z).",
+        "evidence_type": "network_measurement",
+        "published_at": "2026-10-19T16:29:19.000000Z",
+        "retrieved_at": "2026-10-19T16:29:29.919246+00:00",
+        "geography": "IN",
+        "verification_status": "VERIFIED",
+        "verification_rationale": "Empirical client network telemetry recorded by distributed OONI measurement probes.",
+        "license_id": "CC0 1.0 Public Domain",
+        "attribution": "Source: Open Observatory of Network Interference (CC0 1.0 Public Domain)",
+        "content_hash": "5582d07548a96c99340ea043387ea3f14396bfd0e1076cd573e5760a37d67baa",
+        "data_origin": "LIVE",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "Volunteer vantage points reflect specific ISP/ASN network hops, not nationwide totality."
+      }
+    },
+    "CONN_IODA": {
+      "connector_id": "CONN_IODA",
+      "category": "Internet & Infrastructure",
+      "provider": "Internet Outage Detection & Analysis (IODA)",
+      "terms_url": "https://ioda.inetintel.cc.gatech.edu/",
+      "license": "Academic Non-Commercial Research",
+      "fetch_latency_ms": 1280.31,
+      "raw_record_count": 2,
+      "normalized_record_count": 2,
+      "status": "LIVE_DATA_VERIFIED",
+      "sample_record": {
+        "evidence_id": "ev_ioda_169b59fc53fe",
+        "source_id": "CONN_IODA",
+        "source_name": "IODA Internet Outage Detection",
+        "source_url": "https://ioda.inetintel.cc.gatech.edu/",
+        "title": "IODA Outage Signal: India (PING-SLASH24)",
+        "claim_text": "IODA detected macroscopic connectivity outage impacting India via PING-SLASH24 telemetry. Anomaly score: 2809.8, Event start: 2026-10-15T22:20:00+00:00, Duration: 0h 30m.",
+        "evidence_type": "infrastructure_outage_signal",
+        "published_at": "2026-10-15T22:20:00+00:00",
+        "retrieved_at": "2026-10-19T16:29:46.872934+00:00",
+        "geography": "IN",
+        "verification_status": "VERIFIED",
+        "verification_rationale": "Derived from multi-vantage macroscopic telemetry (BGP routing, active CAIDA probes, darknet telescope).",
+        "license_id": "Academic Non-Commercial Research",
+        "attribution": "Source: Georgia Tech / CAIDA IODA (Academic Non-Commercial Research)",
+        "content_hash": "169b59fc53fe75b1b922d61366a6b928c9e7cd49ea543b93c4ca791efe68d983",
+        "data_origin": "HISTORICAL",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "Automated statistical thresholding detects aggregate macro disruptions; edge connectivity may differ."
+      }
+    },
+    "CONN_WIKIDATA": {
+      "connector_id": "CONN_WIKIDATA",
+      "category": "Geographic & Entities",
+      "provider": "Wikidata Knowledge Base (SPARQL)",
+      "terms_url": "https://www.wikidata.org/wiki/Wikidata:Data_reuse",
+      "license": "CC0 1.0 Public Domain",
+      "fetch_latency_ms": 4650.7,
+      "raw_record_count": 9,
+      "normalized_record_count": 7,
+      "status": "LIVE_DATA_VERIFIED",
+      "sample_record": {
+        "evidence_id": "ev_wd_Q668",
+        "source_id": "CONN_WIKIDATA",
+        "source_name": "Wikidata Knowledge Base",
+        "source_url": "http://www.wikidata.org/entity/Q668",
+        "title": "Wikidata Entity: India (country)",
+        "claim_text": "Wikidata structured entity knowledge: 'India' (country in South Asia). Classified as country. Query term: 'India'. Canonical URI: http://www.wikidata.org/entity/Q668.",
+        "evidence_type": "entity_knowledge_graph",
+        "published_at": "2026-10-19T16:29:53.513652+00:00",
+        "retrieved_at": "2026-10-19T16:29:53.513652+00:00",
+        "geography": "India",
+        "verification_status": "VERIFIED",
+        "verification_rationale": "Extracted from official Wikimedia Wikidata SPARQL graph endpoint with URI provenance.",
+        "license_id": "CC0 1.0 Public Domain",
+        "attribution": "Source: Wikidata Knowledge Base (CC0 1.0 Public Domain)",
+        "content_hash": "12863928adfbc312a3f9ac408a264ff392530ad575fefd4b6fe1e5def9bd5e27",
+        "data_origin": "LIVE",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "Crowdsourced semantic ontology definitions; administrative boundaries reflect Wikidata community consensus."
+      }
+    },
+    "CONN_NOMINATIM": {
+      "connector_id": "CONN_NOMINATIM",
+      "category": "Geographic Data",
+      "provider": "OpenStreetMap Nominatim Spatial API",
+      "terms_url": "https://osm.org/copyright",
+      "license": "ODbL 1.0",
+      "fetch_latency_ms": 1255.24,
+      "raw_record_count": 2,
+      "normalized_record_count": 2,
+      "status": "LIVE_DATA_VERIFIED",
+      "sample_record": {
+        "evidence_id": "ev_osm_338602134",
+        "source_id": "CONN_NOMINATIM",
+        "source_name": "OpenStreetMap Nominatim Spatial API",
+        "source_url": "https://www.openstreetmap.org/?mlat=40.3270127&mlon=-86.1746933",
+        "title": "OpenStreetMap Boundary: IND (40.3270127, -86.1746933)",
+        "claim_text": "Spatial reference for IND: Identified as Indiana, United States at coordinates (Lat: 40.3270127, Lon: -86.1746933) [Type: administrative].",
+        "evidence_type": "spatial_boundary",
+        "published_at": "2026-10-19T16:29:55.714642+00:00",
+        "retrieved_at": "2026-10-19T16:29:55.714642+00:00",
+        "geography": "IND",
+        "verification_status": "VERIFIED",
+        "verification_rationale": "OpenStreetMap geocoded administrative boundary confirmed via Nominatim service.",
+        "license_id": "ODbL 1.0",
+        "attribution": "Source: OpenStreetMap Contributors (ODbL 1.0)",
+        "content_hash": "8e41a5c50d451504899214fa014f99e03b8efaa222b00a3ea268ad6792aec4d0",
+        "data_origin": "LIVE",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "Geographic boundaries subject to ongoing community mapping and territorial conventions."
+      }
+    },
+    "CONN_WIKIMEDIA": {
+      "connector_id": "CONN_WIKIMEDIA",
+      "category": "Public Social/Digital Signals",
+      "provider": "Wikimedia REST API (Pageviews)",
+      "terms_url": "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
+      "license": "CC-BY-SA 3.0 / Open Access",
+      "fetch_latency_ms": 1679.1,
+      "raw_record_count": 12,
+      "normalized_record_count": 12,
+      "status": "LIVE_DATA_VERIFIED",
+      "sample_record": {
+        "evidence_id": "ev_wpv_india_2026101400",
+        "source_id": "CONN_WIKIMEDIA",
+        "source_name": "Wikimedia Pageviews API",
+        "source_url": "https://en.wikipedia.org/wiki/India",
+        "title": "Wikimedia Digital Attention: 'India' (18,318 daily views on 2026-10-14)",
+        "claim_text": "Wikimedia Pageviews API recorded 18,318 views on English Wikipedia for 'India' on 2026-10-14. Public digital attention signal reflects relative open-source reading interest (distinguished from social media sentiment or opinion polls).",
+        "evidence_type": "digital_attention_signal",
+        "published_at": "2026-10-14T00:00:00+00:00",
+        "retrieved_at": "2026-10-19T16:29:58.094832+00:00",
+        "geography": "India",
+        "verification_status": "VERIFIED",
+        "verification_rationale": "Empirical aggregate request logs from Wikimedia Foundation server infrastructure.",
+        "license_id": "CC-BY-SA 3.0 / Open Access",
+        "attribution": "Source: Wikimedia Foundation REST API (Public Digital Attention Signal, CC-BY-SA 3.0)",
+        "content_hash": "3e9ff2485f34473337a60465b5e36cc9de1778821448d11a722c751f9b8d460b",
+        "data_origin": "LIVE",
+        "corroboration_ids": [],
+        "contradiction_ids": [],
+        "limitations": "Measures encyclopedic information retrieval attention; does not measure emotional sentiment or public approval."
+      }
     },
     "CONN_WORLDBANK": {
       "connector_id": "CONN_WORLDBANK",
@@ -268,7 +549,7 @@
       "provider": "World Bank Indicators API",
       "terms_url": "https://data.worldbank.org/summary-terms-of-use",
       "license": "CC-BY 4.0",
-      "fetch_latency_ms": 520.78,
+      "fetch_latency_ms": 1107.97,
       "raw_record_count": 17,
       "normalized_record_count": 17,
       "status": "LIVE_DATA_VERIFIED",
@@ -281,48 +562,30 @@
         "claim_text": "GDP growth (annual %) for IND was recorded at 7.57 in 2025.",
         "evidence_type": "economic_indicator",
         "published_at": "2025-12-31T00:00:00Z",
-        "retrieved_at": "2026-10-02T07:40:06.910860+00:00",
+        "retrieved_at": "2026-10-19T16:29:59.801592+00:00",
         "geography": "IND",
         "verification_status": "VERIFIED",
         "verification_rationale": "Retrieved from official World Bank Open Data API with deterministic schema validation.",
         "license_id": "CC-BY 4.0",
         "attribution": "Source: World Bank Open Data API (CC-BY 4.0)",
         "content_hash": "3694cdb8752cadef0d58677fc45bbe99dcd457bbc54ffdffe0b1528af6921537",
+        "data_origin": "LIVE",
         "corroboration_ids": [],
         "contradiction_ids": [],
         "limitations": "Annual macroeconomic indicators carry historical publishing lag."
       }
     },
-    "CONN_NEWS": {
-      "connector_id": "CONN_NEWS",
-      "category": "News Sources",
-      "provider": "UN News Service Global Feed",
-      "terms_url": "https://news.un.org/en/content/terms-service",
-      "license": "Open Access",
-      "fetch_latency_ms": 230.63,
-      "raw_record_count": 6,
-      "normalized_record_count": 6,
-      "status": "LIVE_DATA_VERIFIED",
-      "sample_record": {
-        "evidence_id": "ev_news_3c28b9a8a77c",
-        "source_id": "CONN_NEWS",
-        "source_name": "UN News Service Global Feed",
-        "source_url": "https://news.un.org/feed/view/en/story/2026/10/1168505",
-        "title": "UN News: UN Member States weigh latest Security Council veto, this time on Iran",
-        "claim_text": "Global News Dispatch: UN Member States weigh latest Security Council veto, this time on Iran. Summary: The General Assembly met on Thursday to examine the Security Council\u2019s latest veto, cast by China and Russia over a United States-backed sanctions panel of experts on Iran nuclear facilities.",
-        "evidence_type": "news_dispatch",
-        "published_at": "Thu, 01 Oct 2026 12:00:00 +0000",
-        "retrieved_at": "2026-10-02T07:40:07.369422+00:00",
-        "geography": "WLD",
-        "verification_status": "SOURCE_REFERENCED",
-        "verification_rationale": "Live news dispatch from UN News Service multilateral news feed.",
-        "license_id": "Open Access",
-        "attribution": "Source: UN News Service Open Feed (Open Access)",
-        "content_hash": "3c28b9a8a77cdfb3c4e93116b7fa0b1460f700b886a782d74a2f852e2bebd242",
-        "corroboration_ids": [],
-        "contradiction_ids": [],
-        "limitations": "News reporting reflects ongoing situation updates and is subject to developing verification."
-      }
+    "CONN_IMF": {
+      "connector_id": "CONN_IMF",
+      "category": "Economic & Financial",
+      "provider": "International Monetary Fund Data API",
+      "terms_url": "https://www.imf.org/external/terms.htm",
+      "license": "IMF Copyright (Research Use Permitted with Attribution)",
+      "fetch_latency_ms": 16975.79,
+      "raw_record_count": 0,
+      "normalized_record_count": 0,
+      "status": "EMPTY_RESULT",
+      "sample_record": null
     },
     "CONN_USGS": {
       "connector_id": "CONN_USGS",
@@ -330,30 +593,11 @@
       "provider": "USGS Earthquake Hazards Program",
       "terms_url": "https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits",
       "license": "Public Domain",
-      "fetch_latency_ms": 917.79,
-      "raw_record_count": 5,
-      "normalized_record_count": 5,
-      "status": "LIVE_DATA_VERIFIED",
-      "sample_record": {
-        "evidence_id": "ev_usgs_us6000tyzx",
-        "source_id": "CONN_USGS",
-        "source_name": "USGS Earthquake Hazards Program",
-        "source_url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tyzx",
-        "title": "USGS Seismic Event: M 4.8 - 35 km SSW of El Colomo, Mexico",
-        "claim_text": "USGS recorded a magnitude 4.8 earthquake located at 35 km SSW of El Colomo, Mexico.",
-        "evidence_type": "geophysical_event",
-        "published_at": "2026-10-02T06:53:35.007000+00:00",
-        "retrieved_at": "2026-10-02T07:40:09.214891+00:00",
-        "geography": "35 km SSW of El Colomo, Mexico",
-        "verification_status": "VERIFIED",
-        "verification_rationale": "Physical seismographic sensor measurement confirmed by USGS National Earthquake Information Center.",
-        "license_id": "Public Domain",
-        "attribution": "Source: USGS Earthquake Hazards Program (Public Domain)",
-        "content_hash": "a1ee7b3bf0e5dd1ffb5829dcdf25f34f417da9fd5153f515ebf6264ad163e170",
-        "corroboration_ids": [],
-        "contradiction_ids": [],
-        "limitations": "Preliminary magnitudes subject to review and revision by USGS analysts."
-      }
+      "fetch_latency_ms": 8625.18,
+      "raw_record_count": 0,
+      "normalized_record_count": 0,
+      "status": "EMPTY_RESULT",
+      "sample_record": null
     },
     "CONN_NASA_EONET": {
       "connector_id": "CONN_NASA_EONET",
@@ -361,91 +605,74 @@
       "provider": "NASA Earth Observatory Natural Event Tracker (EONET)",
       "terms_url": "https://www.nasa.gov/open/data.html",
       "license": "NASA Open Access",
-      "fetch_latency_ms": 1165.83,
+      "fetch_latency_ms": 1629.29,
       "raw_record_count": 5,
       "normalized_record_count": 5,
       "status": "LIVE_DATA_VERIFIED",
       "sample_record": {
-        "evidence_id": "ev_nasa_EONET_24962",
+        "evidence_id": "ev_nasa_EONET_25340",
         "source_id": "CONN_NASA_EONET",
         "source_name": "NASA Earth Observatory Natural Event Tracker (EONET)",
-        "source_url": "https://www.metoc.navy.mil/jtwc/products/wp2626.tcw",
-        "title": "NASA EONET: Tropical Storm Choi-wan",
-        "claim_text": "NASA EONET detected active Severe Storms event: 'Tropical Storm Choi-wan'.",
+        "source_url": "https://www.metoc.navy.mil/jtwc/products/sh0127.tcw",
+        "title": "NASA EONET: Tropical Cyclone Wati",
+        "claim_text": "NASA EONET detected active Severe Storms event: 'Tropical Cyclone Wati'.",
         "evidence_type": "satellite_disaster_signal",
-        "published_at": "2026-10-02T07:40:11.555534+00:00",
-        "retrieved_at": "2026-10-02T07:40:11.555534+00:00",
+        "published_at": "2026-10-19T16:30:33.802501+00:00",
+        "retrieved_at": "2026-10-19T16:30:33.802501+00:00",
         "geography": null,
         "verification_status": "VERIFIED",
         "verification_rationale": "Derived from NASA satellite remote-sensing observations and partnered meteorological agencies.",
         "license_id": "NASA Open Access",
         "attribution": "Source: NASA EONET / Earth Science Data Systems",
-        "content_hash": "08a6eca8d7fbcaaec41b8a10c0ce06cd7cc69083dcff6a2abd5890d2b0ed9a40",
+        "content_hash": "bf6fe02e3de99f351fe63ae098019fb357ecabff5f9ad48641ffea91e3502a1b",
+        "data_origin": "LIVE",
         "corroboration_ids": [],
         "contradiction_ids": [],
         "limitations": "Coordinates reflect latest satellite orbital pass centerpoint."
       }
     },
-    "CONN_NOMINATIM": {
-      "connector_id": "CONN_NOMINATIM",
-      "category": "Geographic Data",
-      "provider": "OpenStreetMap Nominatim Spatial API",
-      "terms_url": "https://osm.org/copyright",
-      "license": "ODbL 1.0",
-      "fetch_latency_ms": 307.46,
-      "raw_record_count": 2,
-      "normalized_record_count": 2,
-      "status": "LIVE_DATA_VERIFIED",
-      "sample_record": {
-        "evidence_id": "ev_osm_338602134",
-        "source_id": "CONN_NOMINATIM",
-        "source_name": "OpenStreetMap Nominatim Spatial API",
-        "source_url": "https://www.openstreetmap.org/?mlat=40.3270127&mlon=-86.1746933",
-        "title": "OpenStreetMap Boundary: IND (40.3270127, -86.1746933)",
-        "claim_text": "Spatial reference for IND: Identified as Indiana, United States at coordinates (Lat: 40.3270127, Lon: -86.1746933) [Type: administrative].",
-        "evidence_type": "spatial_boundary",
-        "published_at": "2026-10-02T07:40:12.191743+00:00",
-        "retrieved_at": "2026-10-02T07:40:12.191743+00:00",
-        "geography": "IND",
-        "verification_status": "VERIFIED",
-        "verification_rationale": "OpenStreetMap geocoded administrative boundary confirmed via Nominatim service.",
-        "license_id": "ODbL 1.0",
-        "attribution": "Source: OpenStreetMap Contributors (ODbL 1.0)",
-        "content_hash": "8e41a5c50d451504899214fa014f99e03b8efaa222b00a3ea268ad6792aec4d0",
-        "corroboration_ids": [],
-        "contradiction_ids": [],
-        "limitations": "Geographic boundaries subject to ongoing community mapping and territorial conventions."
-      }
+    "CONN_NOAA": {
+      "connector_id": "CONN_NOAA",
+      "category": "Scientific & Disaster",
+      "provider": "NOAA National Centers for Environmental Information",
+      "terms_url": "https://www.weather.gov/disclaimer",
+      "license": "US Public Domain",
+      "fetch_latency_ms": 762.01,
+      "raw_record_count": 0,
+      "normalized_record_count": 0,
+      "status": "BLOCKED",
+      "sample_record": null
     },
-    "CONN_WIKIMEDIA": {
-      "connector_id": "CONN_WIKIMEDIA",
-      "category": "Public Social Signals",
-      "provider": "Wikimedia Foundation Pageviews API",
-      "terms_url": "https://wikimediafoundation.org/terms-of-use/",
-      "license": "CC0 1.0",
-      "fetch_latency_ms": 459.23,
-      "raw_record_count": 2,
-      "normalized_record_count": 2,
+    "CONN_USASPENDING": {
+      "connector_id": "CONN_USASPENDING",
+      "category": "Government Open Data",
+      "provider": "US Federal Government Open Data (USAspending)",
+      "terms_url": "https://www.usaspending.gov/about",
+      "license": "Public Domain",
+      "fetch_latency_ms": 2550.63,
+      "raw_record_count": 5,
+      "normalized_record_count": 5,
       "status": "LIVE_DATA_VERIFIED",
       "sample_record": {
-        "evidence_id": "ev_wiki_pv_ind",
-        "source_id": "CONN_WIKIMEDIA",
-        "source_name": "Wikimedia Foundation Pageviews API",
-        "source_url": "https://en.wikipedia.org/wiki/IND",
-        "title": "Public Attention Signal: IND Pageviews",
-        "claim_text": "Public attention signal: Wikipedia article 'IND' registered 211 aggregate reader views with an average daily engagement volume of 42 requests.",
-        "evidence_type": "public_social_signal",
-        "published_at": "2024-01-05T00:00:00Z",
-        "retrieved_at": "2026-10-02T07:40:13.038713+00:00",
-        "geography": "IND",
+        "evidence_id": "ev_usaspending_1525",
+        "source_id": "CONN_USASPENDING",
+        "source_name": "US Federal Government Open Data (USAspending)",
+        "source_url": "https://www.usaspending.gov/agency/247",
+        "title": "USAspending Open Data: 400 Years of African-American History Commission",
+        "claim_text": "US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+        "evidence_type": "government_open_data",
+        "published_at": "2026-10-19T16:30:39.940128+00:00",
+        "retrieved_at": "2026-10-19T16:30:39.940128+00:00",
+        "geography": "USA",
         "verification_status": "VERIFIED",
-        "verification_rationale": "Derived from Wikimedia Foundation open access analytics telemetry measuring public information-seeking attention intensity.",
-        "license_id": "CC0 1.0",
-        "attribution": "Source: Wikimedia Foundation Analytics Open API (CC0 1.0)",
-        "content_hash": "5552120e67e9acf763a881d8745fca7379c1b62d07aedc0d43a1dc149d36edbc",
+        "verification_rationale": "Retrieved from official US Federal Government USAspending Open Data API with deterministic schema validation.",
+        "license_id": "Public Domain",
+        "attribution": "Source: US Federal Government Open Data (Public Domain)",
+        "content_hash": "287bec84f7c5f95a8b8c0d5c5f768848a8b1d5a9c1d6f1fe246ee711bdea0a03",
+        "data_origin": "LIVE",
         "corroboration_ids": [],
         "contradiction_ids": [],
-        "limitations": "Pageview metrics indicate public curiosity and information search spikes; not direct causal sentiment."
+        "limitations": "Reflects US Federal agency public registry and authorizations."
       }
     },
     "CONN_GDELT_EVENTS": {
@@ -454,26 +681,27 @@
       "provider": "GDELT Project Real-Time Events Feed",
       "terms_url": "https://www.gdeltproject.org/data.html",
       "license": "Open Research Access",
-      "fetch_latency_ms": 575.43,
+      "fetch_latency_ms": 774.44,
       "raw_record_count": 3,
       "normalized_record_count": 3,
       "status": "LIVE_DATA_VERIFIED",
       "sample_record": {
-        "evidence_id": "ev_gdelt_d3c17fc78264",
+        "evidence_id": "ev_gdelt_acbd64368d93",
         "source_id": "CONN_GDELT_EVENTS",
         "source_name": "GDELT Project Real-Time Events Feed",
-        "source_url": "http://data.gdeltproject.org/gdeltv2/20261002074500.export.CSV.zip",
-        "title": "GDELT Real-Time Event Stream: 20261002074500.export.CSV.zip",
-        "claim_text": "GDELT 2.0 Global Conflict & Political Telemetry: Published 15-minute global stream '20261002074500.export.CSV.zip' (Events Stream, size: 60,821 bytes, MD5: 3d717f878c49a6f20747bdf664f8c7b6).",
+        "source_url": "http://data.gdeltproject.org/gdeltv2/20261019163000.export.CSV.zip",
+        "title": "GDELT Real-Time Event Stream: 20261019163000.export.CSV.zip",
+        "claim_text": "GDELT 2.0 Global Conflict & Political Telemetry: Published 15-minute global stream '20261019163000.export.CSV.zip' (Events Stream, size: 107,807 bytes, MD5: 0a3bd6fdb42cdb84eb03a5dc53dddc3e).",
         "evidence_type": "conflict_political_event",
-        "published_at": "2026-10-02T07:40:14.175267+00:00",
-        "retrieved_at": "2026-10-02T07:40:14.175267+00:00",
+        "published_at": "2026-10-19T16:30:41.849511+00:00",
+        "retrieved_at": "2026-10-19T16:30:41.849511+00:00",
         "geography": "WLD",
         "verification_status": "VERIFIED",
         "verification_rationale": "Derived from GDELT 2.0 automated global 15-minute event synchronization monitor.",
         "license_id": "Open Research Access",
         "attribution": "Source: The GDELT Project (Open Research Access)",
-        "content_hash": "d3c17fc782646bcb0605666e802a25ae41b180a810eba964a20ed14ab7edcfb2",
+        "content_hash": "acbd64368d931393a1c1cac04953ac9fa34b821f805e3ac4fad2c1aaa784afc4",
+        "data_origin": "LIVE",
         "corroboration_ids": [],
         "contradiction_ids": [],
         "limitations": "Automated multi-lingual broadcast parsing subject to news media reporting density."
@@ -481,26 +709,26 @@
     }
   },
   "dataset_builder_results": {
-    "execution_time_ms": 3159.53,
-    "total_records_ingested": 51,
+    "execution_time_ms": 18637.82,
+    "total_records_ingested": 62,
     "unique_sources_count": 9,
     "sources": [
+      "CONN_GDELT_EVENTS",
       "CONN_NOMINATIM",
-      "CONN_USASPENDING",
-      "CONN_UN_SDG",
       "CONN_NASA_EONET",
-      "CONN_NEWS",
+      "CONN_USASPENDING",
+      "CONN_RELIEFWEB",
+      "CONN_UN_SDG",
       "CONN_WORLDBANK",
-      "CONN_USGS",
       "CONN_WIKIMEDIA",
-      "CONN_GDELT_EVENTS"
+      "CONN_WIKIDATA"
     ],
     "duplicate_count": 0,
     "verification_states": {
       "UNVERIFIED": 0,
-      "SOURCE_REFERENCED": 0,
-      "CROSS_CHECKED": 6,
-      "VERIFIED": 45,
+      "SOURCE_REFERENCED": 5,
+      "CROSS_CHECKED": 0,
+      "VERIFIED": 57,
       "CONFLICTING": 0,
       "REJECTED": 0
     }
@@ -510,8 +738,70 @@
     {
       "question_id": "Q1",
       "question": "If tensions between the United States and Iran escalate into a wider military conflict, what would be the economic, energy, diplomatic and security impacts on India?",
-      "analysis_run_id": "run_cb490bbb",
-      "execution_time_ms": 3567.4,
+      "analysis_run_id": "run_d0347355",
+      "execution_time_ms": 54412.42,
+      "four_sections_present": true,
+      "section_counts": {
+        "verified_facts": 4,
+        "attributed_claims": 0,
+        "evidence_items": 61,
+        "impact_pathways": 2,
+        "strategies": 2,
+        "scenarios": 2
+      },
+      "scenarios_labeled_assumptions": true,
+      "risk_review_passed": true,
+      "urls_valid": true,
+      "material_claims": [
+        {
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Alliance Preliminary Appeal:India Flooding in north & north-eastern India \u2013 IND151. Appeal Target: US$356,600\n\nGeneva, 13 August 2015\n\nDear Colleagues,\n\nManipur is battling with the worst flooding in 200 years due to incessant rainfall in the past few days with water overflowing from of all major rivers, washing away connecting bridges, breaching embankments and cutting off many villages from the mainland. Till date there are no firm details of the number of affected villages and population, however the situation is becoming critical. Six out of nine districts namely Bishnupur,",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Alliance Preliminary Appeal - Cyclone Vardah in Tamil Nadu, India \u2013 IND162. **Preliminary Appeal Target: US$ 211,409** \n\n**Balance Requested: US$ 211,409**\n\n**PRIORITY NEEDS**\n\n \u2022 Emergency Assistance/NFI\n\n\u2022 Food Security\n\n\u2022 Shelter\n\n\u2022 Hygiene (WASH)",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] Appeal: Emergency Response to Floods in Odisha State, India \u2013 IND 171. **Appeal Target:** US$ 76,800\n\n**Balance:** US$ 18,300\n\nThe state of Odisha has been witnessing incessant rainfall from 15.07.2017, because of which flash floods occurred in river Nagabali and Kalyani of Rayagada district. More than 28,000 people in 50 villages under Rayagada Block and 20 villages under Kalyansinghpur Block have been affected.\n\nThree bridges were washed away resulting in disruption of road communication. Flood water is flowing above the Rayagada \u2013 Andhra Pradesh road. Railway Br",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Appeal: India - Uttarakhand, Floods & Landslides - IND132. Geneva, 25 June 2013\n\nDear colleagues,\n\nAs flood waters are ebbing and the torrential downpours have eased, indications of Uttarakhand's worst \nnatural disaster in 60 years are emerging. The death toll, officially placed at 680 on the basis of the current body count, could be frighteningly higher and estimates are running into many thousands. Over 70,000 people are still missing and the toll could go much higher as the process of recovery of bodies has not yet started in many places that are cut",
+          "type": "verified_fact",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on India indicators and impact pathways.",
+          "source": "UN OCHA ReliefWeb (ACT Alliance)",
+          "url": "https://reliefweb.int/node/1125231",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on India indicators and impact pathways.",
+          "source": "UN OCHA ReliefWeb (ACT Alliance)",
+          "url": "https://reliefweb.int/node/1827834",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on India indicators and impact pathways.",
+          "source": "UN OCHA ReliefWeb (ACT Alliance)",
+          "url": "https://reliefweb.int/node/2159574",
+          "type": "evidence_item",
+          "status": "SUPPORTED"
+        }
+      ],
+      "final_verdict": "VERIFIED"
+    },
+    {
+      "question_id": "Q2",
+      "question": "How would a major disruption in the South China Sea affect global supply chains, international trade, semiconductor production and India's manufacturing and export sectors?",
+      "analysis_run_id": "run_1360ac71",
+      "execution_time_ms": 74066.55,
       "four_sections_present": true,
       "section_counts": {
         "verified_facts": 4,
@@ -526,105 +816,43 @@
       "urls_valid": true,
       "material_claims": [
         {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Alliance Preliminary Appeal:India Flooding in north & north-eastern India \u2013 IND151. Appeal Target: US$356,600\n\nGeneva, 13 August 2015\n\nDear Colleagues,\n\nManipur is battling with the worst flooding in 200 years due to incessant rainfall in the past few days with water overflowing from of all major rivers, washing away connecting bridges, breaching embankments and cutting off many villages from the mainland. Till date there are no firm details of the number of affected villages and population, however the situation is becoming critical. Six out of nine districts namely Bishnupur,",
           "type": "verified_fact",
           "status": "SUPPORTED"
         },
         {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Alliance Preliminary Appeal - Cyclone Vardah in Tamil Nadu, India \u2013 IND162. **Preliminary Appeal Target: US$ 211,409** \n\n**Balance Requested: US$ 211,409**\n\n**PRIORITY NEEDS**\n\n \u2022 Emergency Assistance/NFI\n\n\u2022 Food Security\n\n\u2022 Shelter\n\n\u2022 Hygiene (WASH)",
           "type": "verified_fact",
           "status": "SUPPORTED"
         },
         {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] Appeal: Emergency Response to Floods in Odisha State, India \u2013 IND 171. **Appeal Target:** US$ 76,800\n\n**Balance:** US$ 18,300\n\nThe state of Odisha has been witnessing incessant rainfall from 15.07.2017, because of which flash floods occurred in river Nagabali and Kalyani of Rayagada district. More than 28,000 people in 50 villages under Rayagada Block and 20 villages under Kalyansinghpur Block have been affected.\n\nThree bridges were washed away resulting in disruption of road communication. Flood water is flowing above the Rayagada \u2013 Andhra Pradesh road. Railway Br",
           "type": "verified_fact",
           "status": "SUPPORTED"
         },
         {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Appeal: India - Uttarakhand, Floods & Landslides - IND132. Geneva, 25 June 2013\n\nDear colleagues,\n\nAs flood waters are ebbing and the torrential downpours have eased, indications of Uttarakhand's worst \nnatural disaster in 60 years are emerging. The death toll, officially placed at 680 on the basis of the current body count, could be frighteningly higher and estimates are running into many thousands. Over 70,000 people are still missing and the toll could go much higher as the process of recovery of bodies has not yet started in many places that are cut",
           "type": "verified_fact",
           "status": "SUPPORTED"
         },
         {
-          "claim": "Informs analysis on USA indicators and impact pathways.",
-          "source": "US Federal Government Open Data (USAspending)",
-          "url": "https://www.usaspending.gov/agency/247",
+          "claim": "Informs analysis on India indicators and impact pathways.",
+          "source": "UN OCHA ReliefWeb (ACT Alliance)",
+          "url": "https://reliefweb.int/node/1125231",
           "type": "evidence_item",
           "status": "SUPPORTED"
         },
         {
-          "claim": "Informs analysis on USA indicators and impact pathways.",
-          "source": "US Federal Government Open Data (USAspending)",
-          "url": "https://www.usaspending.gov/agency/310",
+          "claim": "Informs analysis on India indicators and impact pathways.",
+          "source": "UN OCHA ReliefWeb (ACT Alliance)",
+          "url": "https://reliefweb.int/node/1827834",
           "type": "evidence_item",
           "status": "SUPPORTED"
         },
         {
-          "claim": "Informs analysis on USA indicators and impact pathways.",
-          "source": "US Federal Government Open Data (USAspending)",
-          "url": "https://www.usaspending.gov/agency/302",
-          "type": "evidence_item",
-          "status": "SUPPORTED"
-        }
-      ],
-      "final_verdict": "VERIFIED"
-    },
-    {
-      "question_id": "Q2",
-      "question": "How would a major disruption in the South China Sea affect global supply chains, international trade, semiconductor production and India's manufacturing and export sectors?",
-      "analysis_run_id": "run_d5a75bb9",
-      "execution_time_ms": 4035.88,
-      "four_sections_present": true,
-      "section_counts": {
-        "verified_facts": 4,
-        "attributed_claims": 0,
-        "evidence_items": 47,
-        "impact_pathways": 2,
-        "strategies": 2,
-        "scenarios": 2
-      },
-      "scenarios_labeled_assumptions": true,
-      "risk_review_passed": true,
-      "urls_valid": true,
-      "material_claims": [
-        {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
-          "type": "verified_fact",
-          "status": "SUPPORTED"
-        },
-        {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
-          "type": "verified_fact",
-          "status": "SUPPORTED"
-        },
-        {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
-          "type": "verified_fact",
-          "status": "SUPPORTED"
-        },
-        {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
-          "type": "verified_fact",
-          "status": "SUPPORTED"
-        },
-        {
-          "claim": "Informs analysis on USA indicators and impact pathways.",
-          "source": "US Federal Government Open Data (USAspending)",
-          "url": "https://www.usaspending.gov/agency/247",
-          "type": "evidence_item",
-          "status": "SUPPORTED"
-        },
-        {
-          "claim": "Informs analysis on USA indicators and impact pathways.",
-          "source": "US Federal Government Open Data (USAspending)",
-          "url": "https://www.usaspending.gov/agency/310",
-          "type": "evidence_item",
-          "status": "SUPPORTED"
-        },
-        {
-          "claim": "Informs analysis on USA indicators and impact pathways.",
-          "source": "US Federal Government Open Data (USAspending)",
-          "url": "https://www.usaspending.gov/agency/302",
+          "claim": "Informs analysis on India indicators and impact pathways.",
+          "source": "UN OCHA ReliefWeb (ACT Alliance)",
+          "url": "https://reliefweb.int/node/2159574",
           "type": "evidence_item",
           "status": "SUPPORTED"
         }
@@ -634,13 +862,13 @@
     {
       "question_id": "Q3",
       "question": "If global crude oil prices increase sharply due to geopolitical instability in the Middle East, what would be the impact on India's inflation, GDP growth, fiscal balance, transportation and energy security?",
-      "analysis_run_id": "run_0553d9ce",
-      "execution_time_ms": 3258.13,
+      "analysis_run_id": "run_3214c457",
+      "execution_time_ms": 78262.67,
       "four_sections_present": true,
       "section_counts": {
         "verified_facts": 4,
         "attributed_claims": 0,
-        "evidence_items": 53,
+        "evidence_items": 58,
         "impact_pathways": 2,
         "strategies": 2,
         "scenarios": 2
@@ -650,43 +878,43 @@
       "urls_valid": true,
       "material_claims": [
         {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Alliance Preliminary Appeal:India Flooding in north & north-eastern India \u2013 IND151. Appeal Target: US$356,600\n\nGeneva, 13 August 2015\n\nDear Colleagues,\n\nManipur is battling with the worst flooding in 200 years due to incessant rainfall in the past few days with water overflowing from of all major rivers, washing away connecting bridges, breaching embankments and cutting off many villages from the mainland. Till date there are no firm details of the number of affected villages and population, however the situation is becoming critical. Six out of nine districts namely Bishnupur,",
           "type": "verified_fact",
           "status": "SUPPORTED"
         },
         {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] Appeal: Emergency Response to Floods in Odisha State, India \u2013 IND 171. **Appeal Target:** US$ 76,800\n\n**Balance:** US$ 18,300\n\nThe state of Odisha has been witnessing incessant rainfall from 15.07.2017, because of which flash floods occurred in river Nagabali and Kalyani of Rayagada district. More than 28,000 people in 50 villages under Rayagada Block and 20 villages under Kalyansinghpur Block have been affected.\n\nThree bridges were washed away resulting in disruption of road communication. Flood water is flowing above the Rayagada \u2013 Andhra Pradesh road. Railway Br",
           "type": "verified_fact",
           "status": "SUPPORTED"
         },
         {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Alliance Preliminary Appeal - Cyclone Vardah in Tamil Nadu, India \u2013 IND162. **Preliminary Appeal Target: US$ 211,409** \n\n**Balance Requested: US$ 211,409**\n\n**PRIORITY NEEDS**\n\n \u2022 Emergency Assistance/NFI\n\n\u2022 Food Security\n\n\u2022 Shelter\n\n\u2022 Hygiene (WASH)",
           "type": "verified_fact",
           "status": "SUPPORTED"
         },
         {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Appeal: India - Uttarakhand, Floods & Landslides - IND132. Geneva, 25 June 2013\n\nDear colleagues,\n\nAs flood waters are ebbing and the torrential downpours have eased, indications of Uttarakhand's worst \nnatural disaster in 60 years are emerging. The death toll, officially placed at 680 on the basis of the current body count, could be frighteningly higher and estimates are running into many thousands. Over 70,000 people are still missing and the toll could go much higher as the process of recovery of bodies has not yet started in many places that are cut",
           "type": "verified_fact",
           "status": "SUPPORTED"
         },
         {
-          "claim": "Informs analysis on USA indicators and impact pathways.",
-          "source": "US Federal Government Open Data (USAspending)",
-          "url": "https://www.usaspending.gov/agency/247",
+          "claim": "Informs analysis on India indicators and impact pathways.",
+          "source": "UN OCHA ReliefWeb (ACT Alliance)",
+          "url": "https://reliefweb.int/node/1125231",
           "type": "evidence_item",
           "status": "SUPPORTED"
         },
         {
-          "claim": "Informs analysis on USA indicators and impact pathways.",
-          "source": "US Federal Government Open Data (USAspending)",
-          "url": "https://www.usaspending.gov/agency/310",
+          "claim": "Informs analysis on India indicators and impact pathways.",
+          "source": "UN OCHA ReliefWeb (ACT Alliance)",
+          "url": "https://reliefweb.int/node/2159574",
           "type": "evidence_item",
           "status": "SUPPORTED"
         },
         {
-          "claim": "Informs analysis on USA indicators and impact pathways.",
-          "source": "US Federal Government Open Data (USAspending)",
-          "url": "https://www.usaspending.gov/agency/302",
+          "claim": "Informs analysis on India indicators and impact pathways.",
+          "source": "UN OCHA ReliefWeb (ACT Alliance)",
+          "url": "https://reliefweb.int/node/1827834",
           "type": "evidence_item",
           "status": "SUPPORTED"
         }
@@ -696,13 +924,13 @@
     {
       "question_id": "Q4",
       "question": "How would significant escalation of the Russia-Ukraine conflict affect global food security, fertilizer supply, energy markets and India's agricultural and economic sectors?",
-      "analysis_run_id": "run_1d73d1d8",
-      "execution_time_ms": 2998.36,
+      "analysis_run_id": "run_217a396e",
+      "execution_time_ms": 25999.29,
       "four_sections_present": true,
       "section_counts": {
         "verified_facts": 4,
         "attributed_claims": 0,
-        "evidence_items": 53,
+        "evidence_items": 61,
         "impact_pathways": 2,
         "strategies": 2,
         "scenarios": 2
@@ -712,43 +940,43 @@
       "urls_valid": true,
       "material_claims": [
         {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Alliance Preliminary Appeal:India Flooding in north & north-eastern India \u2013 IND151. Appeal Target: US$356,600\n\nGeneva, 13 August 2015\n\nDear Colleagues,\n\nManipur is battling with the worst flooding in 200 years due to incessant rainfall in the past few days with water overflowing from of all major rivers, washing away connecting bridges, breaching embankments and cutting off many villages from the mainland. Till date there are no firm details of the number of affected villages and population, however the situation is becoming critical. Six out of nine districts namely Bishnupur,",
           "type": "verified_fact",
           "status": "SUPPORTED"
         },
         {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Alliance Preliminary Appeal - Cyclone Vardah in Tamil Nadu, India \u2013 IND162. **Preliminary Appeal Target: US$ 211,409** \n\n**Balance Requested: US$ 211,409**\n\n**PRIORITY NEEDS**\n\n \u2022 Emergency Assistance/NFI\n\n\u2022 Food Security\n\n\u2022 Shelter\n\n\u2022 Hygiene (WASH)",
           "type": "verified_fact",
           "status": "SUPPORTED"
         },
         {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] Appeal: Emergency Response to Floods in Odisha State, India \u2013 IND 171. **Appeal Target:** US$ 76,800\n\n**Balance:** US$ 18,300\n\nThe state of Odisha has been witnessing incessant rainfall from 15.07.2017, because of which flash floods occurred in river Nagabali and Kalyani of Rayagada district. More than 28,000 people in 50 villages under Rayagada Block and 20 villages under Kalyansinghpur Block have been affected.\n\nThree bridges were washed away resulting in disruption of road communication. Flood water is flowing above the Rayagada \u2013 Andhra Pradesh road. Railway Br",
           "type": "verified_fact",
           "status": "SUPPORTED"
         },
         {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Appeal: India - Uttarakhand, Floods & Landslides - IND132. Geneva, 25 June 2013\n\nDear colleagues,\n\nAs flood waters are ebbing and the torrential downpours have eased, indications of Uttarakhand's worst \nnatural disaster in 60 years are emerging. The death toll, officially placed at 680 on the basis of the current body count, could be frighteningly higher and estimates are running into many thousands. Over 70,000 people are still missing and the toll could go much higher as the process of recovery of bodies has not yet started in many places that are cut",
           "type": "verified_fact",
           "status": "SUPPORTED"
         },
         {
-          "claim": "Informs analysis on USA indicators and impact pathways.",
-          "source": "US Federal Government Open Data (USAspending)",
-          "url": "https://www.usaspending.gov/agency/247",
+          "claim": "Informs analysis on India indicators and impact pathways.",
+          "source": "UN OCHA ReliefWeb (ACT Alliance)",
+          "url": "https://reliefweb.int/node/1125231",
           "type": "evidence_item",
           "status": "SUPPORTED"
         },
         {
-          "claim": "Informs analysis on USA indicators and impact pathways.",
-          "source": "US Federal Government Open Data (USAspending)",
-          "url": "https://www.usaspending.gov/agency/310",
+          "claim": "Informs analysis on India indicators and impact pathways.",
+          "source": "UN OCHA ReliefWeb (ACT Alliance)",
+          "url": "https://reliefweb.int/node/1827834",
           "type": "evidence_item",
           "status": "SUPPORTED"
         },
         {
-          "claim": "Informs analysis on USA indicators and impact pathways.",
-          "source": "US Federal Government Open Data (USAspending)",
-          "url": "https://www.usaspending.gov/agency/302",
+          "claim": "Informs analysis on India indicators and impact pathways.",
+          "source": "UN OCHA ReliefWeb (ACT Alliance)",
+          "url": "https://reliefweb.int/node/2159574",
           "type": "evidence_item",
           "status": "SUPPORTED"
         }
@@ -758,13 +986,13 @@
     {
       "question_id": "Q5",
       "question": "If new international trade sanctions are imposed on a major economy such as China, Russia or Iran, what would be the likely impact on India's trade, manufacturing, technology and strategic interests?",
-      "analysis_run_id": "run_e960f9e3",
-      "execution_time_ms": 3650.07,
+      "analysis_run_id": "run_286c6788",
+      "execution_time_ms": 23127.83,
       "four_sections_present": true,
       "section_counts": {
         "verified_facts": 4,
-        "attributed_claims": 0,
-        "evidence_items": 53,
+        "attributed_claims": 4,
+        "evidence_items": 62,
         "impact_pathways": 2,
         "strategies": 2,
         "scenarios": 2
@@ -774,43 +1002,63 @@
       "urls_valid": true,
       "material_claims": [
         {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+          "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Appeal: South China floods - CHN091. (replacing preliminary appeal issued 10\nJuly 2009)\n<p><b>Appeal Target: </b>US$ 179,417\n<p><b>Contributions/pledges received: </b>US$\n45,311\n<p><b>Balance requested: </b>US$ 134,106\n<p><b>Geneva, 2 October 2009</b>\n<p>Dear Colleagues,\n<p>Flooding and heavy rain in Southern China\nin July 2009 forced hundreds of thousands of people to evacuate their homes\nand has killed over 75 people. (Source China Ministry of Civil Affairs,\n5th July) The most severely affected areas include: Guangxi Zhuang Auton",
           "type": "verified_fact",
           "status": "SUPPORTED"
         },
         {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+          "claim": "[UN Statistics Division SDG API] United Nations Sustainable Development Framework (Goal 1, Target 1.1): By 2030, eradicate extreme poverty for all people everywhere, currently measured as people living on less than $1.25 a day.",
           "type": "verified_fact",
           "status": "SUPPORTED"
         },
         {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+          "claim": "[UN Statistics Division SDG API] United Nations Sustainable Development Framework (Goal 1, Target 1.2): By 2030, reduce at least by half the proportion of men, women and children of all ages living in poverty in all its dimensions according to national definitions.",
           "type": "verified_fact",
           "status": "SUPPORTED"
         },
         {
-          "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+          "claim": "[UN Statistics Division SDG API] United Nations Sustainable Development Framework (Goal 1, Target 1.3): Implement nationally appropriate social protection systems and measures for all, including floors, and by 2030 achieve substantial coverage of the poor and the vulnerable.",
           "type": "verified_fact",
           "status": "SUPPORTED"
         },
         {
-          "claim": "Informs analysis on USA indicators and impact pathways.",
-          "source": "US Federal Government Open Data (USAspending)",
-          "url": "https://www.usaspending.gov/agency/247",
+          "claim": "[UN OCHA ReliefWeb (Salesian Missions)] [Salesian Missions] El Salvador: Furniture donation from IRN impacts close to 900 students, enhancing their learning environments. (MissionNewswire) The Salesian-run Don Bosco University in San Salvador, El Salvador has received 586 pieces of furniture for its School of Rehabilitation Sciences and School of Aeronautics thanks to a recent donation made possible by an ongoing partnership between Salesian Missions and IRN (Institution Recycling Network). IRN matches surplus items with organizations and people who need them. Those impacted by the recent donation include 159 first-year students of rehabilitation sciences and 737",
+          "type": "attributed_claim",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[UN OCHA ReliefWeb (World Organisation Against Torture)] [World Organisation Against Torture] Russian Fed. (Chechnya): Case RUS 100103 - Extrajudicial killings / Impunity. The International Secretariat of OMCT requests\nyour URGENT intervention in the following situation in the Russian Federation.\n<br><b>Brief description of the situation</b>\n<p>The International Secretariat of OMCT\nhas been informed by the Human Rights Center of Azerbaijan, a member of\nthe OMCT network, of the extra-judicial killing of seven civilians by the\nRussian Armed Forces in Chechnya during the last week of 2002.\n<p>According to the information received,\nthere have been a series of extrajud",
+          "type": "attributed_claim",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[UN OCHA ReliefWeb (World Organisation Against Torture)] [World Organisation Against Torture] Russia - RUS 002/0702/OBS 046 - Harassment and assault. RUS 002/0702/OBS 046\n<br>The Observatory for the Protection of\nHuman Rights Defenders, a joint FIDH and OMCT program, requests your urgent\nintervention in the following situation in the Russian Republic of Chechnya:\n<p><b>Brief description of the situation:</b>\n<p>The Observatory has been informed by\nMemorial, a Russian Human Rights NGO, that on July 18, 2002 in the morning,\nan armed unidentified military group attacked its premises in Grozny which\nare located near the FSB police department.\n<p>",
+          "type": "attributed_claim",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "[UN OCHA ReliefWeb (UN Human Rights Committee)] [UN Human Rights Committee] Sixth periodic reports of States parties: Russian Federation (CCPR/C/RUS/6). HUMAN RIGHTS COMMITTEE<br>\nCONSIDERATION OF REPORTS SUBMITTED BY STATES PARTIES UNDER ARTICLE 40 OF\nTHE COVENANT\n<p>INFORMATION CONCERNING PARTICULAR ARTICLES\nOF THE COVENANT\n<p><b>Article 1</b>\n<p>1. The federal concept of the State structure\nin the Russian Federation is grounded in a balance of the interests of\nequal constituent entities, having regard for their ethnic individuality\nand their geographical and other characteristics. The right to self-determination\nwithin the Russian Federation",
+          "type": "attributed_claim",
+          "status": "SUPPORTED"
+        },
+        {
+          "claim": "Informs analysis on El Salvador indicators and impact pathways.",
+          "source": "UN OCHA ReliefWeb (Salesian Missions)",
+          "url": "https://reliefweb.int/node/2696429",
           "type": "evidence_item",
           "status": "SUPPORTED"
         },
         {
-          "claim": "Informs analysis on USA indicators and impact pathways.",
-          "source": "US Federal Government Open Data (USAspending)",
-          "url": "https://www.usaspending.gov/agency/310",
+          "claim": "Informs analysis on Russian Federation indicators and impact pathways.",
+          "source": "UN OCHA ReliefWeb (World Organisation Against Torture)",
+          "url": "https://reliefweb.int/node/116727",
           "type": "evidence_item",
           "status": "SUPPORTED"
         },
         {
-          "claim": "Informs analysis on USA indicators and impact pathways.",
-          "source": "US Federal Government Open Data (USAspending)",
-          "url": "https://www.usaspending.gov/agency/302",
+          "claim": "Informs analysis on Russian Federation indicators and impact pathways.",
+          "source": "UN OCHA ReliefWeb (World Organisation Against Torture)",
+          "url": "https://reliefweb.int/node/105933",
           "type": "evidence_item",
           "status": "SUPPORTED"
         }
@@ -820,207 +1068,227 @@
   ],
   "claim_validation_results": [
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Alliance Preliminary Appeal:India Flooding in north & north-eastern India \u2013 IND151. Appeal Target: US$356,600\n\nGeneva, 13 August 2015\n\nDear Colleagues,\n\nManipur is battling with the worst flooding in 200 years due to incessant rainfall in the past few days with water overflowing from of all major rivers, washing away connecting bridges, breaching embankments and cutting off many villages from the mainland. Till date there are no firm details of the number of affected villages and population, however the situation is becoming critical. Six out of nine districts namely Bishnupur,",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Alliance Preliminary Appeal - Cyclone Vardah in Tamil Nadu, India \u2013 IND162. **Preliminary Appeal Target: US$ 211,409** \n\n**Balance Requested: US$ 211,409**\n\n**PRIORITY NEEDS**\n\n \u2022 Emergency Assistance/NFI\n\n\u2022 Food Security\n\n\u2022 Shelter\n\n\u2022 Hygiene (WASH)",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] Appeal: Emergency Response to Floods in Odisha State, India \u2013 IND 171. **Appeal Target:** US$ 76,800\n\n**Balance:** US$ 18,300\n\nThe state of Odisha has been witnessing incessant rainfall from 15.07.2017, because of which flash floods occurred in river Nagabali and Kalyani of Rayagada district. More than 28,000 people in 50 villages under Rayagada Block and 20 villages under Kalyansinghpur Block have been affected.\n\nThree bridges were washed away resulting in disruption of road communication. Flood water is flowing above the Rayagada \u2013 Andhra Pradesh road. Railway Br",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Appeal: India - Uttarakhand, Floods & Landslides - IND132. Geneva, 25 June 2013\n\nDear colleagues,\n\nAs flood waters are ebbing and the torrential downpours have eased, indications of Uttarakhand's worst \nnatural disaster in 60 years are emerging. The death toll, officially placed at 680 on the basis of the current body count, could be frighteningly higher and estimates are running into many thousands. Over 70,000 people are still missing and the toll could go much higher as the process of recovery of bodies has not yet started in many places that are cut",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "Informs analysis on USA indicators and impact pathways.",
-      "source": "US Federal Government Open Data (USAspending)",
-      "url": "https://www.usaspending.gov/agency/247",
+      "claim": "Informs analysis on India indicators and impact pathways.",
+      "source": "UN OCHA ReliefWeb (ACT Alliance)",
+      "url": "https://reliefweb.int/node/1125231",
       "type": "evidence_item",
       "status": "SUPPORTED"
     },
     {
-      "claim": "Informs analysis on USA indicators and impact pathways.",
-      "source": "US Federal Government Open Data (USAspending)",
-      "url": "https://www.usaspending.gov/agency/310",
+      "claim": "Informs analysis on India indicators and impact pathways.",
+      "source": "UN OCHA ReliefWeb (ACT Alliance)",
+      "url": "https://reliefweb.int/node/1827834",
       "type": "evidence_item",
       "status": "SUPPORTED"
     },
     {
-      "claim": "Informs analysis on USA indicators and impact pathways.",
-      "source": "US Federal Government Open Data (USAspending)",
-      "url": "https://www.usaspending.gov/agency/302",
+      "claim": "Informs analysis on India indicators and impact pathways.",
+      "source": "UN OCHA ReliefWeb (ACT Alliance)",
+      "url": "https://reliefweb.int/node/2159574",
       "type": "evidence_item",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Alliance Preliminary Appeal:India Flooding in north & north-eastern India \u2013 IND151. Appeal Target: US$356,600\n\nGeneva, 13 August 2015\n\nDear Colleagues,\n\nManipur is battling with the worst flooding in 200 years due to incessant rainfall in the past few days with water overflowing from of all major rivers, washing away connecting bridges, breaching embankments and cutting off many villages from the mainland. Till date there are no firm details of the number of affected villages and population, however the situation is becoming critical. Six out of nine districts namely Bishnupur,",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Alliance Preliminary Appeal - Cyclone Vardah in Tamil Nadu, India \u2013 IND162. **Preliminary Appeal Target: US$ 211,409** \n\n**Balance Requested: US$ 211,409**\n\n**PRIORITY NEEDS**\n\n \u2022 Emergency Assistance/NFI\n\n\u2022 Food Security\n\n\u2022 Shelter\n\n\u2022 Hygiene (WASH)",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] Appeal: Emergency Response to Floods in Odisha State, India \u2013 IND 171. **Appeal Target:** US$ 76,800\n\n**Balance:** US$ 18,300\n\nThe state of Odisha has been witnessing incessant rainfall from 15.07.2017, because of which flash floods occurred in river Nagabali and Kalyani of Rayagada district. More than 28,000 people in 50 villages under Rayagada Block and 20 villages under Kalyansinghpur Block have been affected.\n\nThree bridges were washed away resulting in disruption of road communication. Flood water is flowing above the Rayagada \u2013 Andhra Pradesh road. Railway Br",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Appeal: India - Uttarakhand, Floods & Landslides - IND132. Geneva, 25 June 2013\n\nDear colleagues,\n\nAs flood waters are ebbing and the torrential downpours have eased, indications of Uttarakhand's worst \nnatural disaster in 60 years are emerging. The death toll, officially placed at 680 on the basis of the current body count, could be frighteningly higher and estimates are running into many thousands. Over 70,000 people are still missing and the toll could go much higher as the process of recovery of bodies has not yet started in many places that are cut",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "Informs analysis on USA indicators and impact pathways.",
-      "source": "US Federal Government Open Data (USAspending)",
-      "url": "https://www.usaspending.gov/agency/247",
+      "claim": "Informs analysis on India indicators and impact pathways.",
+      "source": "UN OCHA ReliefWeb (ACT Alliance)",
+      "url": "https://reliefweb.int/node/1125231",
       "type": "evidence_item",
       "status": "SUPPORTED"
     },
     {
-      "claim": "Informs analysis on USA indicators and impact pathways.",
-      "source": "US Federal Government Open Data (USAspending)",
-      "url": "https://www.usaspending.gov/agency/310",
+      "claim": "Informs analysis on India indicators and impact pathways.",
+      "source": "UN OCHA ReliefWeb (ACT Alliance)",
+      "url": "https://reliefweb.int/node/1827834",
       "type": "evidence_item",
       "status": "SUPPORTED"
     },
     {
-      "claim": "Informs analysis on USA indicators and impact pathways.",
-      "source": "US Federal Government Open Data (USAspending)",
-      "url": "https://www.usaspending.gov/agency/302",
+      "claim": "Informs analysis on India indicators and impact pathways.",
+      "source": "UN OCHA ReliefWeb (ACT Alliance)",
+      "url": "https://reliefweb.int/node/2159574",
       "type": "evidence_item",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Alliance Preliminary Appeal:India Flooding in north & north-eastern India \u2013 IND151. Appeal Target: US$356,600\n\nGeneva, 13 August 2015\n\nDear Colleagues,\n\nManipur is battling with the worst flooding in 200 years due to incessant rainfall in the past few days with water overflowing from of all major rivers, washing away connecting bridges, breaching embankments and cutting off many villages from the mainland. Till date there are no firm details of the number of affected villages and population, however the situation is becoming critical. Six out of nine districts namely Bishnupur,",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] Appeal: Emergency Response to Floods in Odisha State, India \u2013 IND 171. **Appeal Target:** US$ 76,800\n\n**Balance:** US$ 18,300\n\nThe state of Odisha has been witnessing incessant rainfall from 15.07.2017, because of which flash floods occurred in river Nagabali and Kalyani of Rayagada district. More than 28,000 people in 50 villages under Rayagada Block and 20 villages under Kalyansinghpur Block have been affected.\n\nThree bridges were washed away resulting in disruption of road communication. Flood water is flowing above the Rayagada \u2013 Andhra Pradesh road. Railway Br",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Alliance Preliminary Appeal - Cyclone Vardah in Tamil Nadu, India \u2013 IND162. **Preliminary Appeal Target: US$ 211,409** \n\n**Balance Requested: US$ 211,409**\n\n**PRIORITY NEEDS**\n\n \u2022 Emergency Assistance/NFI\n\n\u2022 Food Security\n\n\u2022 Shelter\n\n\u2022 Hygiene (WASH)",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Appeal: India - Uttarakhand, Floods & Landslides - IND132. Geneva, 25 June 2013\n\nDear colleagues,\n\nAs flood waters are ebbing and the torrential downpours have eased, indications of Uttarakhand's worst \nnatural disaster in 60 years are emerging. The death toll, officially placed at 680 on the basis of the current body count, could be frighteningly higher and estimates are running into many thousands. Over 70,000 people are still missing and the toll could go much higher as the process of recovery of bodies has not yet started in many places that are cut",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "Informs analysis on USA indicators and impact pathways.",
-      "source": "US Federal Government Open Data (USAspending)",
-      "url": "https://www.usaspending.gov/agency/247",
+      "claim": "Informs analysis on India indicators and impact pathways.",
+      "source": "UN OCHA ReliefWeb (ACT Alliance)",
+      "url": "https://reliefweb.int/node/1125231",
       "type": "evidence_item",
       "status": "SUPPORTED"
     },
     {
-      "claim": "Informs analysis on USA indicators and impact pathways.",
-      "source": "US Federal Government Open Data (USAspending)",
-      "url": "https://www.usaspending.gov/agency/310",
+      "claim": "Informs analysis on India indicators and impact pathways.",
+      "source": "UN OCHA ReliefWeb (ACT Alliance)",
+      "url": "https://reliefweb.int/node/2159574",
       "type": "evidence_item",
       "status": "SUPPORTED"
     },
     {
-      "claim": "Informs analysis on USA indicators and impact pathways.",
-      "source": "US Federal Government Open Data (USAspending)",
-      "url": "https://www.usaspending.gov/agency/302",
+      "claim": "Informs analysis on India indicators and impact pathways.",
+      "source": "UN OCHA ReliefWeb (ACT Alliance)",
+      "url": "https://reliefweb.int/node/1827834",
       "type": "evidence_item",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Alliance Preliminary Appeal:India Flooding in north & north-eastern India \u2013 IND151. Appeal Target: US$356,600\n\nGeneva, 13 August 2015\n\nDear Colleagues,\n\nManipur is battling with the worst flooding in 200 years due to incessant rainfall in the past few days with water overflowing from of all major rivers, washing away connecting bridges, breaching embankments and cutting off many villages from the mainland. Till date there are no firm details of the number of affected villages and population, however the situation is becoming critical. Six out of nine districts namely Bishnupur,",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Alliance Preliminary Appeal - Cyclone Vardah in Tamil Nadu, India \u2013 IND162. **Preliminary Appeal Target: US$ 211,409** \n\n**Balance Requested: US$ 211,409**\n\n**PRIORITY NEEDS**\n\n \u2022 Emergency Assistance/NFI\n\n\u2022 Food Security\n\n\u2022 Shelter\n\n\u2022 Hygiene (WASH)",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] Appeal: Emergency Response to Floods in Odisha State, India \u2013 IND 171. **Appeal Target:** US$ 76,800\n\n**Balance:** US$ 18,300\n\nThe state of Odisha has been witnessing incessant rainfall from 15.07.2017, because of which flash floods occurred in river Nagabali and Kalyani of Rayagada district. More than 28,000 people in 50 villages under Rayagada Block and 20 villages under Kalyansinghpur Block have been affected.\n\nThree bridges were washed away resulting in disruption of road communication. Flood water is flowing above the Rayagada \u2013 Andhra Pradesh road. Railway Br",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Appeal: India - Uttarakhand, Floods & Landslides - IND132. Geneva, 25 June 2013\n\nDear colleagues,\n\nAs flood waters are ebbing and the torrential downpours have eased, indications of Uttarakhand's worst \nnatural disaster in 60 years are emerging. The death toll, officially placed at 680 on the basis of the current body count, could be frighteningly higher and estimates are running into many thousands. Over 70,000 people are still missing and the toll could go much higher as the process of recovery of bodies has not yet started in many places that are cut",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "Informs analysis on USA indicators and impact pathways.",
-      "source": "US Federal Government Open Data (USAspending)",
-      "url": "https://www.usaspending.gov/agency/247",
+      "claim": "Informs analysis on India indicators and impact pathways.",
+      "source": "UN OCHA ReliefWeb (ACT Alliance)",
+      "url": "https://reliefweb.int/node/1125231",
       "type": "evidence_item",
       "status": "SUPPORTED"
     },
     {
-      "claim": "Informs analysis on USA indicators and impact pathways.",
-      "source": "US Federal Government Open Data (USAspending)",
-      "url": "https://www.usaspending.gov/agency/310",
+      "claim": "Informs analysis on India indicators and impact pathways.",
+      "source": "UN OCHA ReliefWeb (ACT Alliance)",
+      "url": "https://reliefweb.int/node/1827834",
       "type": "evidence_item",
       "status": "SUPPORTED"
     },
     {
-      "claim": "Informs analysis on USA indicators and impact pathways.",
-      "source": "US Federal Government Open Data (USAspending)",
-      "url": "https://www.usaspending.gov/agency/302",
+      "claim": "Informs analysis on India indicators and impact pathways.",
+      "source": "UN OCHA ReliefWeb (ACT Alliance)",
+      "url": "https://reliefweb.int/node/2159574",
       "type": "evidence_item",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: 400 Years of African-American History Commission (AAHC) reported official public budget and agency operational status.",
+      "claim": "[UN OCHA ReliefWeb (ACT Alliance)] [ACT Alliance] ACT Appeal: South China floods - CHN091. (replacing preliminary appeal issued 10\nJuly 2009)\n<p><b>Appeal Target: </b>US$ 179,417\n<p><b>Contributions/pledges received: </b>US$\n45,311\n<p><b>Balance requested: </b>US$ 134,106\n<p><b>Geneva, 2 October 2009</b>\n<p>Dear Colleagues,\n<p>Flooding and heavy rain in Southern China\nin July 2009 forced hundreds of thousands of people to evacuate their homes\nand has killed over 75 people. (Source China Ministry of Civil Affairs,\n5th July) The most severely affected areas include: Guangxi Zhuang Auton",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Access Board (USAB) reported official public budget and agency operational status.",
+      "claim": "[UN Statistics Division SDG API] United Nations Sustainable Development Framework (Goal 1, Target 1.1): By 2030, eradicate extreme poverty for all people everywhere, currently measured as people living on less than $1.25 a day.",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Administrative Conference of the U.S. (ACUS) reported official public budget and agency operational status.",
+      "claim": "[UN Statistics Division SDG API] United Nations Sustainable Development Framework (Goal 1, Target 1.2): By 2030, reduce at least by half the proportion of men, women and children of all ages living in poverty in all its dimensions according to national definitions.",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "[US Federal Government Open Data (USAspending)] US Federal Government Open Data: Advisory Council on Historic Preservation (ACHP) reported official public budget and agency operational status.",
+      "claim": "[UN Statistics Division SDG API] United Nations Sustainable Development Framework (Goal 1, Target 1.3): Implement nationally appropriate social protection systems and measures for all, including floors, and by 2030 achieve substantial coverage of the poor and the vulnerable.",
       "type": "verified_fact",
       "status": "SUPPORTED"
     },
     {
-      "claim": "Informs analysis on USA indicators and impact pathways.",
-      "source": "US Federal Government Open Data (USAspending)",
-      "url": "https://www.usaspending.gov/agency/247",
+      "claim": "[UN OCHA ReliefWeb (Salesian Missions)] [Salesian Missions] El Salvador: Furniture donation from IRN impacts close to 900 students, enhancing their learning environments. (MissionNewswire) The Salesian-run Don Bosco University in San Salvador, El Salvador has received 586 pieces of furniture for its School of Rehabilitation Sciences and School of Aeronautics thanks to a recent donation made possible by an ongoing partnership between Salesian Missions and IRN (Institution Recycling Network). IRN matches surplus items with organizations and people who need them. Those impacted by the recent donation include 159 first-year students of rehabilitation sciences and 737",
+      "type": "attributed_claim",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[UN OCHA ReliefWeb (World Organisation Against Torture)] [World Organisation Against Torture] Russian Fed. (Chechnya): Case RUS 100103 - Extrajudicial killings / Impunity. The International Secretariat of OMCT requests\nyour URGENT intervention in the following situation in the Russian Federation.\n<br><b>Brief description of the situation</b>\n<p>The International Secretariat of OMCT\nhas been informed by the Human Rights Center of Azerbaijan, a member of\nthe OMCT network, of the extra-judicial killing of seven civilians by the\nRussian Armed Forces in Chechnya during the last week of 2002.\n<p>According to the information received,\nthere have been a series of extrajud",
+      "type": "attributed_claim",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[UN OCHA ReliefWeb (World Organisation Against Torture)] [World Organisation Against Torture] Russia - RUS 002/0702/OBS 046 - Harassment and assault. RUS 002/0702/OBS 046\n<br>The Observatory for the Protection of\nHuman Rights Defenders, a joint FIDH and OMCT program, requests your urgent\nintervention in the following situation in the Russian Republic of Chechnya:\n<p><b>Brief description of the situation:</b>\n<p>The Observatory has been informed by\nMemorial, a Russian Human Rights NGO, that on July 18, 2002 in the morning,\nan armed unidentified military group attacked its premises in Grozny which\nare located near the FSB police department.\n<p>",
+      "type": "attributed_claim",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "[UN OCHA ReliefWeb (UN Human Rights Committee)] [UN Human Rights Committee] Sixth periodic reports of States parties: Russian Federation (CCPR/C/RUS/6). HUMAN RIGHTS COMMITTEE<br>\nCONSIDERATION OF REPORTS SUBMITTED BY STATES PARTIES UNDER ARTICLE 40 OF\nTHE COVENANT\n<p>INFORMATION CONCERNING PARTICULAR ARTICLES\nOF THE COVENANT\n<p><b>Article 1</b>\n<p>1. The federal concept of the State structure\nin the Russian Federation is grounded in a balance of the interests of\nequal constituent entities, having regard for their ethnic individuality\nand their geographical and other characteristics. The right to self-determination\nwithin the Russian Federation",
+      "type": "attributed_claim",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim": "Informs analysis on El Salvador indicators and impact pathways.",
+      "source": "UN OCHA ReliefWeb (Salesian Missions)",
+      "url": "https://reliefweb.int/node/2696429",
       "type": "evidence_item",
       "status": "SUPPORTED"
     },
     {
-      "claim": "Informs analysis on USA indicators and impact pathways.",
-      "source": "US Federal Government Open Data (USAspending)",
-      "url": "https://www.usaspending.gov/agency/310",
+      "claim": "Informs analysis on Russian Federation indicators and impact pathways.",
+      "source": "UN OCHA ReliefWeb (World Organisation Against Torture)",
+      "url": "https://reliefweb.int/node/116727",
       "type": "evidence_item",
       "status": "SUPPORTED"
     },
     {
-      "claim": "Informs analysis on USA indicators and impact pathways.",
-      "source": "US Federal Government Open Data (USAspending)",
-      "url": "https://www.usaspending.gov/agency/302",
+      "claim": "Informs analysis on Russian Federation indicators and impact pathways.",
+      "source": "UN OCHA ReliefWeb (World Organisation Against Torture)",
+      "url": "https://reliefweb.int/node/105933",
       "type": "evidence_item",
       "status": "SUPPORTED"
     }

@@ -252,7 +252,7 @@ def test_wikimedia_normalization_and_semantics():
     assert rec.source_id == "CONN_WIKIMEDIA"
     assert rec.data_origin == "LIVE"
     assert rec.evidence_type == "digital_attention_signal"
-    # Verify non-social-media semantics
+    assert rec.limitations is not None
     assert "does not measure emotional sentiment or public approval" in rec.limitations
     assert "45,200 views" in rec.claim_text
 

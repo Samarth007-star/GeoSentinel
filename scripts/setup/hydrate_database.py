@@ -19,7 +19,7 @@ def get_connection():
     )
 
 def compute_hash(text: str) -> str:
-    return hashlib.sha256(str(text).encode("utf-8")).hexdigest()
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 def hydrate():
     ref_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "data", "reference"))
@@ -230,7 +230,8 @@ def hydrate():
             print("\nFinal Record Counts in Database:")
             for tbl in ["countries", "events", "news", "organizations", "evidence", "entities", "entity_relationships", "users", "sources"]:
                 cur.execute(f"SELECT COUNT(*) as cnt FROM {tbl}")
-                cnt = cur.fetchone()["cnt"]
+                row = cur.fetchone()
+                cnt = row["cnt"] if row else 0
                 print(f"  {tbl:22}: {cnt} rows")
 
     finally:

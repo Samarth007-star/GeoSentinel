@@ -1,7 +1,7 @@
 # GeoSentinel — Implementation Status
 
-> **Last Updated**: 2026-10-03  
-> **Phase 1 Connectors State**: SIX LIVE PUBLIC DATA CONNECTORS IMPLEMENTED & VERIFIED  
+> **Last Updated**: 2026-10-05  
+> **Phase 1 Connectors State**: SIX LIVE PUBLIC DATA CONNECTORS IMPLEMENTED & EMPIRICALLY VERIFIED  
 > **Deployment Architecture**: 100% Native Windows (Zero Docker)  
 > **Audit Reference**: `docs/VERIFICATION_AUDIT.md`  
 > **Test Ledger**: `docs/TEST_RESULTS.md`  
@@ -26,28 +26,35 @@
 
 ---
 
-## Phase 1 Connector Verification Matrix
+## Phase 1 Connector Verification Matrix (Fresh Empirical Probes)
 
 | Connector | Category | Implemented | Real HTTP | Records Retrieved | Normalized | Dataset Builder Ingestion | Status |
 |---|---|:---:|:---:|:---:|:---:|:---:|---|
 | **ReliefWeb** | International Organizations | Yes (`reliefweb.py`) | Yes (v2 API) | 5 | Yes (`ev_rw_{id}`) | Yes | **LIVE_DATA_VERIFIED** |
-| **GDELT** | News | Yes (`gdelt.py`) | Yes (DOC 2.0 API) | 5 (When unthrottled) | Yes (`news_report`) | Yes | **LIVE_DATA_VERIFIED** |
+| **GDELT** | News | Yes (`gdelt.py`) | Yes (DOC 2.0 API) | 0 (When throttled) / 5 | Yes (`news_report`) | Yes | **RATE_LIMITED / LIVE_DATA_VERIFIED** |
 | **OONI** | Internet & Infrastructure | Yes (`ooni.py`) | Yes (v1 API) | 5 | Yes (`network_measurement`) | Yes | **LIVE_DATA_VERIFIED** |
-| **IODA** | Internet & Infrastructure | Yes (`ioda.py`) | Yes (v2 API) | 1 | Yes (`infrastructure_outage_signal`) | Yes | **LIVE_DATA_VERIFIED** |
+| **IODA** | Internet & Infrastructure | Yes (`ioda.py`) | Yes (v2 API) | 5 | Yes (`infrastructure_outage_signal`) | Yes | **LIVE_API + HISTORICAL_DATA** |
 | **Wikidata** | Geographic & Entities | Yes (`wikidata.py`) | Yes (SPARQL) | 4 | Yes (`entity_knowledge_graph`) | Yes | **LIVE_DATA_VERIFIED** |
 | **Wikimedia** | Public Digital Signals | Yes (`wikimedia.py`) | Yes (REST API) | 12 | Yes (`digital_attention_signal`) | Yes | **LIVE_DATA_VERIFIED** |
+| **IMF** | Economic & Financial Data | Yes (`imf.py`) | Yes (SDMX API) | 3 | Yes (`economic_indicator`) | Yes | **LIVE_DATA_VERIFIED** |
+| **NOAA** | Scientific & Disaster Data | Yes (`noaa.py`) | Yes (Weather.gov API) | 5 | Yes (`weather_alert`) | Yes | **LIVE_DATA_VERIFIED** |
 
 ---
 
 ## Verification Highlights & Audit Summary
 
-1. **Six Connectors Implemented**:
+1. **Eight Live Public Connectors Implemented**:
    - `CONN_RELIEFWEB`: ReliefWeb API v2 client with `RELIEFWEB_APPNAME` configuration handling.
-   - `CONN_GDELT`: GDELT DOC 2.0 API with 5-second throttling and rate limit backoff.
+   - `CONN_GDELT`: GDELT DOC 2.0 API with 5-second throttling, exponential backoff, and Retry-After header handling.
    - `CONN_OONI`: Open Observatory API with ISO-3166 alpha-3 to alpha-2 country resolution.
    - `CONN_IODA`: CAIDA/Georgia Tech IODA v2 API with live vs historical timestamp distinction.
    - `CONN_WIKIDATA`: Wikidata SPARQL with custom User-Agent and semantic entity normalization.
    - `CONN_WIKIMEDIA`: Wikimedia Foundation REST API capturing public digital attention (not social sentiment).
+   - `CONN_IMF`: International Monetary Fund (IMF) SDMX-JSON Data API fetching WEO macroeconomic indicators.
+   - `CONN_NOAA`: NOAA Severe Weather and Climate Data Online API with zero-auth public alerts fallback.
 2. **Mandatory Zero-Cost Compliance**: Zero paid APIs, commercial LLM subscriptions, or cloud hosting dependencies. 100% verified in `docs/COST_AND_SERVICE_AUDIT.md`.
 3. **Dynamic Dataset Builder Routing**: Updated `retrieval_planning.py` and `DatasetBuilder` to selectively query relevant connectors based on question domain.
-4. **Empirical User Questions Validated**: Q1 through Q5 executed through the complete 12-stage pipeline with live evidence ingested.
+4. **Empirical Test Coverage**:
+   - `ai-service`: 62 passing unit & integration tests (`pytest`).
+   - `backend`: 14 passing Spring Boot unit & integration tests (`mvn test`).
+   - `frontend`: 100% clean TypeScript build (`tsc && vite build`).

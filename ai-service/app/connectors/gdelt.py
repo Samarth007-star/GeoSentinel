@@ -1,5 +1,6 @@
 import asyncio
 import hashlib
+import logging
 import time
 from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional
@@ -8,13 +9,19 @@ from .base import BaseConnector
 from ..schemas.models import EvidenceRecord, VerificationState, ConnectorStatus
 from ..core.config import settings
 
+logger = logging.getLogger(__name__)
+
 class GdeltConnector(BaseConnector):
     """
     Connector for GDELT Project 2.0 DOC API.
     Provides global event, news, and geopolitical reporting telemetry.
     Respects GDELT rate limits (minimum 5 seconds between consecutive requests).
+    Implements exponential backoff on 429 and Retry-After header support.
     """
     _last_request_time: float = 0.0
+    _backoff_seconds: float = 5.0  # starts at 5s, doubles on 429
+    _max_backoff: float = 60.0
+    _rate_limit_until: float = 0.0  # time.time() until which we must wait
 
     def __init__(self):
         super().__init__(
@@ -33,11 +40,40 @@ class GdeltConnector(BaseConnector):
         self.records_retrieved: int = 0
 
     async def _rate_limit_throttle(self):
+        """Enforce minimum interval between requests plus any rate-limit cooldown."""
         now = time.time()
-        elapsed = now - GdeltConnector._last_request_time
-        if elapsed < 5.0:
-            await asyncio.sleep(5.0 - elapsed)
+        # Honour Retry-After / backoff cooldown
+        if now < GdeltConnector._rate_limit_until:
+            wait = GdeltConnector._rate_limit_until - now
+            logger.info(f"GDELT rate-limit cooldown: waiting {wait:.1f}s")
+            await asyncio.sleep(wait)
+        # Enforce minimum inter-request gap
+        elapsed = time.time() - GdeltConnector._last_request_time
+        if elapsed < GdeltConnector._backoff_seconds:
+            await asyncio.sleep(GdeltConnector._backoff_seconds - elapsed)
         GdeltConnector._last_request_time = time.time()
+
+    def _handle_rate_limit(self, response: httpx.Response):
+        """Parse Retry-After header and apply exponential backoff on 429."""
+        retry_after = response.headers.get("Retry-After")
+        if retry_after:
+            try:
+                wait_seconds = float(retry_after)
+            except (ValueError, TypeError):
+                wait_seconds = GdeltConnector._backoff_seconds * 2
+        else:
+            wait_seconds = GdeltConnector._backoff_seconds * 2
+        # Cap the backoff
+        wait_seconds = min(wait_seconds, GdeltConnector._max_backoff)
+        GdeltConnector._backoff_seconds = min(wait_seconds, GdeltConnector._max_backoff)
+        GdeltConnector._rate_limit_until = time.time() + wait_seconds
+        self.status = ConnectorStatus.RATE_LIMITED
+        logger.warning(f"GDELT 429: backoff set to {wait_seconds:.1f}s")
+
+    def _reset_backoff(self):
+        """Reset backoff to default after successful request."""
+        GdeltConnector._backoff_seconds = 5.0
+        GdeltConnector._rate_limit_until = 0.0
 
     async def check_health(self) -> Dict[str, Any]:
         now_iso = datetime.now(timezone.utc).isoformat()
@@ -53,13 +89,14 @@ class GdeltConnector(BaseConnector):
                 res = await client.get(url, headers=headers)
                 if res.status_code == 200:
                     self.record_success()
+                    self._reset_backoff()
                     self.last_success = now_iso
                     self.last_error = None
                     return {"status": "HEALTHY", "latency_ms": res.elapsed.total_seconds() * 1000}
                 elif res.status_code == 429:
-                    self.status = ConnectorStatus.RATE_LIMITED
-                    self.last_error = "GDELT rate limit exceeded (HTTP 429). Throttling required."
-                    return {"status": "RATE_LIMITED", "http_code": 429, "error": self.last_error}
+                    self._handle_rate_limit(res)
+                    self.last_error = f"GDELT rate limit exceeded (HTTP 429). Backoff: {GdeltConnector._backoff_seconds:.0f}s."
+                    return {"status": "RATE_LIMITED", "http_code": 429, "retry_after_seconds": GdeltConnector._backoff_seconds, "error": self.last_error}
                 else:
                     self.record_failure()
                     self.last_error = f"HTTP {res.status_code}"
@@ -108,12 +145,13 @@ class GdeltConnector(BaseConnector):
                             "query": query_str
                         })
                     self.record_success()
+                    self._reset_backoff()
                     self.last_success = now_iso
                     self.records_retrieved += len(results)
                     self.last_error = None
                 elif res.status_code == 429:
-                    self.status = ConnectorStatus.RATE_LIMITED
-                    self.last_error = "GDELT rate limit exceeded (HTTP 429)."
+                    self._handle_rate_limit(res)
+                    self.last_error = f"GDELT rate limit exceeded (HTTP 429). Next retry after {GdeltConnector._backoff_seconds:.0f}s."
                 else:
                     self.record_failure()
                     self.last_error = f"HTTP {res.status_code} from GDELT."

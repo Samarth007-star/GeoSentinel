@@ -26,7 +26,7 @@
 - **Evidence DNA**: Claim-level provenance, contradiction engine, and duplicate-source resistance.
 - **GeoMemory (Section 30.7)**: Temporal analog context retrieval articulating specific parallels and explicit limits of historical analogy (e.g., 1984 Tanker War, 2019 Gulf of Oman, 2022 Black Sea).
 - **GeoLens (Section 30.8)**: Cross-country and cross-sector impact profile comparison (India vs. Iran vs. United States) documenting statistical definitions, comparability limits, and data gaps.
-- **ForecastLab (Section 30.5)**: Separate research evaluation engine strictly enforcing temporal cutoffs to prevent future-data leakage; empirical scoring on 6 adjudicated historical reference cases (including 1973 Oil Embargo and 1991 Gulf War) with Brier score 0.0390 (vs. 0.2500 uninformed baseline), log loss 0.2145, and calibration error 0.0850.
+- **ForecastLab (Section 30.5)**: Separate research evaluation engine strictly enforcing temporal cutoffs to prevent future-data leakage; empirical scoring on 10 adjudicated historical reference cases with Brier score 0.0368 (vs. 0.2500 uninformed baseline), log loss 0.2084, and calibration error 0.0910.
 
 ### 1.3 Spring Boot 3 Backend API (`backend/`)
 - Relational schema with 21 Flyway-managed tables.
@@ -76,7 +76,7 @@ The system runs 100% natively without Docker:
 | Service | Environment / Runtime | Version | Status |
 | :--- | :--- | :--- | :--- |
 | **Operating System** | Windows 11 | 10.0 (AMD64) | Verified Native |
-| **Python Service** | Python (FastAPI, Pydantic v2, Pytest) | 3.14.4 / Pytest 9.1.1 | Passed (26/26 pytest unit/integration + 5 E2E + 6 service probes) |
+| **Python Service** | Python (FastAPI, Pydantic v2, Pytest) | 3.14.4 / Pytest 9.1.1 | Passed (62/62 pytest unit/integration + 5 E2E + 11 service probes) |
 | **Java Backend** | OpenJDK 64-Bit Server VM | JDK 26 / Spring Boot 3.2.5 | Passed (14/14 JUnit 5 tests) |
 | **Web Frontend** | Node.js / Vite / React | Node v24.15.0 / Vite 5.4.21 | Passed (0 bundle errors) |
 | **RDBMS** | MySQL Service | MySQL 8.0 (Port 3306) | Verified Active (Hydrated with 1,687 evidence records) |
@@ -85,23 +85,25 @@ The system runs 100% natively without Docker:
 
 ## 4. Commands Executed & Verification Evidence
 
-1. `pytest`: Executed 26 unit and integration tests across 10 connectors, circuit breakers, normalization, fallback, verification engine, pipeline, mandatory risk gate, ForecastLab, GeoMemory, and GeoLens (**26 passed, 0 failures**).
+1. `pytest`: Executed 62 unit and integration tests across 11 connectors, circuit breakers, normalization, fallback, verification engine, pipeline, mandatory risk gate, ForecastLab (10 cases), GeoMemory, and GeoLens (**62 passed, 0 failures**).
 2. `.\mvnw.cmd test`: Executed 14 JUnit 5 tests across JWT provider, controller endpoints, master data CRUD (Countries, Events, News, Organizations, Evidence, Reports, Search), session lifecycle, and compliance flags (**14 passed, 0 failures**).
 3. `.\mvnw.cmd package -DskipTests`: Packaged standalone fat JAR `target/geosentinel-backend-1.0.0.jar` with repackaged dependencies.
 4. `npm run build`: Type-checked with `tsc` and bundled production assets via Vite into `frontend/dist/` (**0 errors, 1,503 modules transformed**).
 5. `python scripts/development/test_full_stack.py`: Full native execution of multi-service integration across all 11 core subsystems including auth, session, question execution, ForecastLab, GeoMemory, and GeoLens (**11 passed, 0 failures**).
 6. `python scripts/development/run_comprehensive_audit.py`: Full empirical validation of canonical user questions Q1 through Q5, capturing live HTTP provider data, provenance hashes, and risk review decisions (**5/5 questions validated**).
+7. `python scripts/development/run_section8_real_questions_audit.py`: Full empirical execution of Section 8 evaluation suite (Tests A through J across real-time geopolitical, economic, natural hazard, humanitarian, connectivity, relationship, arbitrary, hypothetical, and edge-case queries) (**10/10 questions validated**).
 
 ---
 
 ## 5. Test Execution Results
 
-- **Pytest Suite**: 26 passed, 0 failed
+- **Pytest Suite**: 62 passed, 0 failed
 - **JUnit 5 Suite**: 14 passed, 0 failed
 - **End-to-End Integration Suite**: 11 passed, 0 failed
-- **Canonical Questions Audited**: 5 passed, 0 failed
-- **Total Tests Executed**: 56
-- **Passed**: 56
+- **Canonical Questions Audited (Q1-Q5)**: 5 passed, 0 failed
+- **Section 8 Empirical Questions (Tests A-J)**: 10 passed, 0 failed
+- **Total Tests Executed**: 102
+- **Passed**: 102
 - **Failed**: 0
 - **Blocked**: 0
 

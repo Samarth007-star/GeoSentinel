@@ -8,9 +8,11 @@ sys.path.insert(0, os.path.abspath("."))
 load_dotenv(dotenv_path=os.path.abspath("../.env"), override=True)
 load_dotenv(override=True)
 
+import pytest
 from app.schemas.models import QuestionIntakeRequest
 from app.orchestration.pipeline import geosentinel_pipeline
 
+@pytest.mark.anyio
 async def test_humanitarian_pipeline():
     question_text = "What recent humanitarian developments are relevant to the Middle East?"
     print(f"=== TESTING COMPLETE 12-STAGE PIPELINE WITH RELIEFWEB ===")

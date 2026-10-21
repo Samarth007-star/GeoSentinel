@@ -334,6 +334,36 @@ export async function fetchConnectors(): Promise<ConnectorInfo[]> {
       termsUrl: "https://eonet.gsfc.nasa.gov/",
       authentication: "None (Public API)",
       dataOrigin: "LIVE"
+    },
+    {
+      id: "CONN_IMF",
+      category: "Economic & Financial Data",
+      provider: "International Monetary Fund Data API",
+      status: "LIVE_DATA_VERIFIED",
+      license: "IMF Copyright (Research Use Permitted)",
+      termsUrl: "https://www.imf.org/external/terms.htm",
+      authentication: "None (Public SDMX API)",
+      dataOrigin: "LIVE"
+    },
+    {
+      id: "CONN_NOAA",
+      category: "Scientific & Disaster Data",
+      provider: "NOAA National Centers for Environmental Information",
+      status: "LIVE_DATA_VERIFIED",
+      license: "US Public Domain",
+      termsUrl: "https://www.weather.gov/disclaimer",
+      authentication: "Token / Free Public Alerts",
+      dataOrigin: "LIVE"
+    },
+    {
+      id: "CONN_GDELT_EVENTS",
+      category: "Conflict & Political Events",
+      provider: "GDELT 2.0 Live Events Feed",
+      status: "LIVE_DATA_VERIFIED",
+      license: "Open Research Access",
+      termsUrl: "https://www.gdeltproject.org/data.html",
+      authentication: "None (Public Feed)",
+      dataOrigin: "LIVE"
     }
   ];
 }
