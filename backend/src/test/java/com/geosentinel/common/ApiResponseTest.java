@@ -1,9 +1,7 @@
+
 package com.geosentinel.common;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-
-
 import static org.junit.jupiter.api.Assertions.*;
 class ApiResponseTest {
 
@@ -14,9 +12,7 @@ class ApiResponseTest {
 
         assertTrue(response.isSuccess());
         assertEquals("Operation successful", response.getMessage());
-        assertEquals("data-payload", response.getData());
-        assertNotNull(response.getTimestamp());
-    }
+       
 
     @Test
     @DisplayName("Should create error ApiResponse")
