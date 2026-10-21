@@ -1,8 +1,4 @@
-package com.geosentinel.reports;
 
-import jakarta.persistence.*;
-import java.time.Instant;
-import java.util.UUID;
 
 @Entity
 @Table(name = "reports")
