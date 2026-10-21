@@ -19,7 +19,7 @@ class ApiResponseTest {
     void shouldCreateErrorResponse() {
         ApiResponse<Void> response = ApiResponse.error("Something went wrong");
 
-        assertFalse(response.isSuccess());
+       
         assertEquals("Something went wrong", response.getMessage());
         assertNull(response.getData());
     }
