@@ -12,7 +12,7 @@ export async function executeAnalysis(
     question,
     time_horizon: timeHorizon,
     geographies,
-    include_categories: ['economic', 'scientific', 'international', 'news']
+    include_categories: []
   };
 
   try {

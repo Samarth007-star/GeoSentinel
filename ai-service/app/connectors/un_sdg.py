@@ -41,8 +41,12 @@ class UnSdgConnector(BaseConnector):
                 res = await client.get(f"{self.base_url}/sdg/Target/List?format=json", headers={"User-Agent": "GeoSentinel/1.0"})
                 if res.status_code == 200:
                     data = res.json()
-                    # Filter targets relevant to economic growth, infrastructure, or energy
-                    for item in data[:6]:
+                    # Target goals based on requested topic
+                    is_energy_econ = any(any(k in e.lower() for k in ["energy", "oil", "trade", "economic", "shipping", "industry"]) for e in target_entities)
+                    target_goals = ["7", "8", "9"] if is_energy_econ else ["1", "2", "8"]
+                    matching = [item for item in data if str(item.get("goal")) in target_goals]
+                    items_to_use = matching[:6] if matching else data[:6]
+                    for item in items_to_use:
                         results.append({
                             "goal": item.get("goal"),
                             "code": item.get("code"),

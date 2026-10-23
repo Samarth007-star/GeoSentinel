@@ -26,35 +26,54 @@ class RetrievalPlanningAgent:
         q_lower = request.question.lower()
         candidate_connectors = []
 
-        if request.include_categories:
-            candidate_connectors = request.include_categories
+        is_internet = any(w in q_lower for w in ["internet", "outage", "disruption", "censorship", "connectivity", "telecom", "cable", "ooni", "ioda", "bgp", "dns", "probe"])
+        is_humanitarian = any(w in q_lower for w in ["humanitarian", "refugee", "ocha", "aid", "famine", "displacement", "asylum"])
+        is_attention = any(w in q_lower for w in ["public digital attention", "digital attention", "pageviews", "wikipedia", "attention to", "attention"])
+        is_entity = any(w in q_lower for w in ["structured information", "organization", "entities", "wikidata", "relationship", "capital", "currency"])
+        is_economic = any(w in q_lower for w in ["economic", "gdp", "trade", "oil", "energy", "shipping", "sanction", "export", "import", "inflation", "financial", "crude", "petroleum", "fuel", "chokepoint"])
+        is_science = any(w in q_lower for w in ["earthquake", "seismic", "volcano", "wildfire", "cyclone", "flood", "weather", "tsunami", "hazard"])
+        is_geopolitical = any(w in q_lower for w in ["geopolitical", "escalate", "middle east", "impact on", "iran", "conflict", "military", "security", "developments", "hormuz", "strait", "persian gulf", "tensions"])
+
+        is_wb_specific = any(w in q_lower for w in ["world bank", "indicator's value", "observation year", "available world bank", "economic indicators"])
+
+        domain_categories: List[str] = []
+        if is_wb_specific and not is_geopolitical and not is_science and not is_humanitarian:
+            domain_categories = ["Economic & Financial Data"]
         else:
-            # Domain-targeted category selection
-            is_internet = any(w in q_lower for w in ["internet", "outage", "disruption", "censorship", "connectivity", "telecom", "cable", "ooni", "ioda", "bgp", "dns", "probe"])
-            is_humanitarian = any(w in q_lower for w in ["humanitarian", "crisis", "disaster", "relief", "refugee", "ocha", "aid", "famine", "displacement"])
-            is_attention = any(w in q_lower for w in ["public digital attention", "digital attention", "pageviews", "wikipedia", "attention to", "attention"])
-            is_entity = any(w in q_lower for w in ["structured information", "organization", "entities", "wikidata", "relationship", "capital", "currency"])
-            is_economic = any(w in q_lower for w in ["economic", "gdp", "trade", "oil", "energy", "shipping", "sanction", "export", "import", "inflation", "financial"])
-            is_science = any(w in q_lower for w in ["earthquake", "seismic", "volcano", "wildfire", "cyclone", "flood", "weather", "tsunami"])
-
             if is_internet:
-                candidate_connectors.extend(["Internet & Infrastructure", "News"])
+                domain_categories.extend(["Internet & Infrastructure", "News"])
             if is_humanitarian:
-                candidate_connectors.extend(["International Organizations", "News", "Geographic & Entities"])
-            if is_attention:
-                candidate_connectors.append("Public Social/Digital Signals")
-            if is_entity:
-                candidate_connectors.append("Geographic & Entities")
-            if is_economic:
-                candidate_connectors.extend(["Economic & Financial Data", "News", "Geographic & Entities", "Public Social/Digital Signals"])
+                domain_categories.extend(["International Organizations", "News", "Geographic & Entities"])
+            if is_attention or is_geopolitical:
+                domain_categories.append("Public Social/Digital Signals")
+            if is_entity or is_geopolitical:
+                domain_categories.append("Geographic & Entities")
+            if is_economic or is_geopolitical:
+                domain_categories.extend(["Economic & Financial Data", "News", "Conflict & Political Events"])
             if is_science:
-                candidate_connectors.extend(["Scientific & Disaster Data", "News"])
+                domain_categories.extend(["Scientific & Disaster Data", "News"])
 
-            # If broad geopolitical question (e.g. Test Question 1)
-            if not candidate_connectors or any(w in q_lower for w in ["geopolitical", "escalate", "middle east", "impact on"]):
-                for cat in ["Economic & Financial Data", "News", "International Organizations", "Geographic & Entities", "Public Social/Digital Signals"]:
-                    if cat not in candidate_connectors:
-                        candidate_connectors.append(cat)
+        if not domain_categories:
+            domain_categories = ["Economic & Financial Data", "News", "Geographic & Entities", "Public Social/Digital Signals"]
+
+        if request.include_categories:
+            candidate_connectors = []
+            for cat in request.include_categories:
+                # Prune scientific/disaster telemetry if the query has zero scientific keywords
+                if any(s in cat.lower() for s in ["scientific", "disaster"]) and not is_science:
+                    continue
+                # Prune humanitarian/UN SDG if strictly an energy/economic/military/indicator question
+                if any(s in cat.lower() for s in ["international"]) and not is_humanitarian and (is_economic or is_geopolitical or is_wb_specific):
+                    continue
+                # Prune news if strictly asking for official indicators
+                if is_wb_specific and any(s in cat.lower() for s in ["news", "social"]):
+                    continue
+                candidate_connectors.append(cat)
+            for d in domain_categories:
+                if d not in candidate_connectors:
+                    candidate_connectors.append(d)
+        else:
+            candidate_connectors = domain_categories
 
         gaps = []
         if any("conflict" in c.lower() for c in candidate_connectors):

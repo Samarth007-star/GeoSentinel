@@ -103,10 +103,10 @@ async def run_section8_tests():
 
     for tc in test_cases:
         t0 = time.time()
-        print(f"\n------------------------------------------------------------------")
-        print(f"[{tc['id']}] {tc['category']}")
-        print(f"Question: {tc['question']}")
-        print(f"------------------------------------------------------------------")
+        print(f"\n------------------------------------------------------------------", flush=True)
+        print(f"[{tc['id']}] {tc['category']}", flush=True)
+        print(f"Question: {tc['question']}", flush=True)
+        print(f"------------------------------------------------------------------", flush=True)
 
         req = QuestionIntakeRequest(
             session_id=f"audit_sess_{tc['id']}",
@@ -149,12 +149,12 @@ async def run_section8_tests():
 
         status = "PASSED" if (has_sec1 and has_sec2 and has_sec3 and has_sec4 and red_team_passed) else "FAILED"
 
-        print(f" -> Time: {elapsed_ms:.1f}ms | Status: {status}")
-        print(f" -> Facts: {len(ans.current_situation.verified_facts)} | Evidence: {len(ans.relevant_evidence)} | Impacts: {len(ans.impact_analysis)} | Strategies: {len(ans.strategy_recommendations)} | Scenarios: {len(ans.scenarios)}")
+        print(f" -> Time: {elapsed_ms:.1f}ms | Status: {status}", flush=True)
+        print(f" -> Facts: {len(ans.current_situation.verified_facts)} | Evidence: {len(ans.relevant_evidence)} | Impacts: {len(ans.impact_analysis)} | Strategies: {len(ans.strategy_recommendations)} | Scenarios: {len(ans.scenarios)}", flush=True)
         if ans.current_situation.verified_facts:
-            print(f" -> Sample Fact: {ans.current_situation.verified_facts[0][:90]}...")
+            print(f" -> Sample Fact: {ans.current_situation.verified_facts[0][:90]}...", flush=True)
         if ans.relevant_evidence:
-            print(f" -> Sample Source: {ans.relevant_evidence[0].source_name} ({ans.relevant_evidence[0].source_url})")
+            print(f" -> Sample Source: {ans.relevant_evidence[0].source_name} ({ans.relevant_evidence[0].source_url})", flush=True)
 
         results.append({
             "test_id": tc["id"],
@@ -173,7 +173,13 @@ async def run_section8_tests():
             "sample_urls": [e.source_url for e in ans.relevant_evidence[:3]]
         })
 
-    with open("docs/SECTION8_EMPIRICAL_TEST_RESULTS.json", "w", encoding="utf-8") as f:
+    import os
+    repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    out_dir = os.path.join(repo_root, "docs")
+    os.makedirs(out_dir, exist_ok=True)
+    out_path = os.path.join(out_dir, "SECTION8_EMPIRICAL_TEST_RESULTS.json")
+
+    with open(out_path, "w", encoding="utf-8") as f:
         json.dump({
             "audit_timestamp_utc": now_utc.isoformat(),
             "total_tests": len(results),
@@ -181,10 +187,10 @@ async def run_section8_tests():
             "results": results
         }, f, indent=2)
 
-    print("\n==================================================================")
-    print(f"AUDIT COMPLETE: {sum(1 for r in results if r['status'] == 'PASSED')}/{len(results)} PASSED")
-    print("Results saved to docs/SECTION8_EMPIRICAL_TEST_RESULTS.json")
-    print("==================================================================")
+    print("\n==================================================================", flush=True)
+    print(f"AUDIT COMPLETE: {sum(1 for r in results if r['status'] == 'PASSED')}/{len(results)} PASSED", flush=True)
+    print("Results saved to docs/SECTION8_EMPIRICAL_TEST_RESULTS.json", flush=True)
+    print("==================================================================", flush=True)
 
 if __name__ == "__main__":
     asyncio.run(run_section8_tests())

@@ -142,6 +142,105 @@ class StrategyRiskReviewAgent:
                 residual_risk_disclosure="Price hedging and multi-origin procurement buffer against outright physical shortages, but sovereign fiscal exposure remains substantial during prolonged geopolitical conflict."
             )
 
+        # Case 4: Disaster & Critical Infrastructure Resilience
+        elif any(k in title_lower for k in ["grid islanding", "civil defense", "arterial route", "redundancy"]):
+            return StrategyRiskReviewResult(
+                review_id=review_id,
+                reviewer="GeoSentinel_IndependentRedTeam_v1.0",
+                disposition=RiskReviewStatus.APPROVED_WITH_LIMITATIONS,
+                findings="High physical efficacy for life-safety and emergency utility continuity, but requires ongoing inter-agency training and capital allocation.",
+                unintended_consequences=[
+                    "Precautionary microgrid islanding temporarily sheds non-critical commercial and industrial loads.",
+                    "Emergency route clearance equipment mobilization may cause temporary secondary traffic bottlenecks."
+                ],
+                second_order_harms=[
+                    "Temporary revenue loss for private industrial facilities during precautionary load shedding.",
+                    "Logistical strain on municipal fuel depots supplying emergency generators."
+                ],
+                escalation_risks=[
+                    "Public anxiety or rumors if automated grid islanding occurs without rapid public transparency announcements."
+                ],
+                affected_vulnerable_groups=[
+                    "Elderly or medically dependent individuals in non-hospital residential areas during localized load shedding.",
+                    "Informal roadside commercial vendors displaced by arterial clearance corridors."
+                ],
+                required_mitigations=[
+                    StrategyMitigation(
+                        mitigation_id=f"mit_{uuid.uuid4().hex[:6]}",
+                        description="Mandate real-time SMS broadcasting of power islanding status and emergency shelter locations within 10 minutes of grid separation.",
+                        trigger_indicator="Automated circuit sectionalizing isolates >50,000 retail connections.",
+                        fallback_action="Deploy mobile solar-battery lighting trailers to affected municipal sectors."
+                    )
+                ],
+                residual_risk_disclosure="Engineering resilience significantly mitigates primary hazard mortality, but extreme multi-hazard compounding events may exceed local physical design parameters."
+            )
+
+        # Case 5: Telecommunications & Digital Infrastructure Diversity
+        elif any(k in title_lower for k in ["bgp", "mesh", "out-of-band", "peering", "edge content"]):
+            return StrategyRiskReviewResult(
+                review_id=review_id,
+                reviewer="GeoSentinel_IndependentRedTeam_v1.0",
+                disposition=RiskReviewStatus.APPROVED_WITH_LIMITATIONS,
+                findings="Architecturally sound and essential for digital sovereignty; requires strict cryptographic key management to prevent routing interception.",
+                unintended_consequences=[
+                    "Multi-homed BGP route diversity introduces complex route-leak vulnerabilities if peer filters are misconfigured.",
+                    "Offline-capable store-and-forward payment tokens create short-term double-spending fraud risks."
+                ],
+                second_order_harms=[
+                    "High operational overhead for domestic telecom operators maintaining standby international bandwidth leases.",
+                    "Potential regulatory divergence with foreign cloud providers over local data caching mandates."
+                ],
+                escalation_risks=[
+                    "Adversarial nation-states may interpret autonomous sovereign routing architectures as preparation for international cyber disengagement."
+                ],
+                affected_vulnerable_groups=[
+                    "Rural populations without access to high-tier multi-homed ISP infrastructure.",
+                    "Small MSME merchants unable to update offline-capable cryptographic payment hardware."
+                ],
+                required_mitigations=[
+                    StrategyMitigation(
+                        mitigation_id=f"mit_{uuid.uuid4().hex[:6]}",
+                        description="Deploy automated Resource Public Key Infrastructure (RPKI) Route Origin Validation (ROV) on all border gateway nodes.",
+                        trigger_indicator="Unvalidated BGP prefix announcement detected on international gateway.",
+                        fallback_action="Enforce strict static route filtering for sovereign banking and administrative subnets."
+                    )
+                ],
+                residual_risk_disclosure="Network diversity prevents total isolation, but physical intercontinental submarine fiber cuts require international diplomatic cooperation for maritime repair vessel clearance."
+            )
+
+        # Case 6: Humanitarian Corridor & Relief Escorts
+        elif any(k in title_lower for k in ["humanitarian relief corridor", "humanitarian escrow"]):
+            return StrategyRiskReviewResult(
+                review_id=review_id,
+                reviewer="GeoSentinel_IndependentRedTeam_v1.0",
+                disposition=RiskReviewStatus.APPROVED_WITH_LIMITATIONS,
+                findings="Indispensable for civilian survival; strictly requires third-party neutral certification (ICRC/UN) to avoid weaponization or sanctions breaches.",
+                unintended_consequences=[
+                    "Risk that armed belligerents leverage humanitarian pauses for tactical regrouping or resupply.",
+                    "Secondary compliance hesitation from commercial banks handling humanitarian financial channels."
+                ],
+                second_order_harms=[
+                    "Logistics bottlenecks if physical inspection points become targets for non-state mortar or drone harassment.",
+                    "Potential donor fatigue if protracted conflict prevents political resolution."
+                ],
+                escalation_risks=[
+                    "Misidentification of humanitarian airlift or convoy vehicles by active air defense systems."
+                ],
+                affected_vulnerable_groups=[
+                    "Unaccompanied minors and displaced elderly individuals unable to navigate official transit checkpoints.",
+                    "Frontline volunteer medical workers operating in non-demarcated contested perimeters."
+                ],
+                required_mitigations=[
+                    StrategyMitigation(
+                        mitigation_id=f"mit_{uuid.uuid4().hex[:6]}",
+                        description="Maintain dual redundant satellite tracking and distinct high-visibility fluorescent Geneva emblem markings on all transport vehicles.",
+                        trigger_indicator="Air defense alert level elevated in humanitarian transit zone.",
+                        fallback_action="Suspend overland transit and divert urgent medical cargo to tactical rotary-wing casualty clearing stations."
+                    )
+                ],
+                residual_risk_disclosure="Humanitarian protocols provide critical life-saving relief, but cannot substitute for sovereign political ceasefires or multilateral peace enforcement."
+            )
+
         # Case 4: Default / Financial Settlement & Bilateral Clearing
         else:
             return StrategyRiskReviewResult(
