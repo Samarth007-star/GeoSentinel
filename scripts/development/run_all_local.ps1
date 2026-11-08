@@ -23,7 +23,13 @@ Start-Sleep -Seconds 2
 
 # 2. Spring Boot Backend
 Write-Host "`n[2/3] Starting Spring Boot Backend API on http://localhost:8080..." -ForegroundColor Green
-$JavaExe = if (Test-Path 'C:\Program Files\Java\jdk-26\bin\java.exe') { 'C:\Program Files\Java\jdk-26\bin\java.exe' } else { 'java' }
+$JavaExe = if (Test-Path 'C:\Program Files\Eclipse Adoptium\jdk-21.0.13.9-hotspot\bin\java.exe') { 
+    'C:\Program Files\Eclipse Adoptium\jdk-21.0.13.9-hotspot\bin\java.exe' 
+} elseif (Test-Path 'C:\Program Files\Java\jdk-21\bin\java.exe') { 
+    'C:\Program Files\Java\jdk-21\bin\java.exe' 
+} else { 
+    'java' 
+}
 $BackendJar = Join-Path $BackendPath "target\geosentinel-backend-1.0.0.jar"
 $ActiveProfile = if ($env:SPRING_PROFILES_ACTIVE) { $env:SPRING_PROFILES_ACTIVE } else { "local" }
 if (Test-Path $BackendJar) {
