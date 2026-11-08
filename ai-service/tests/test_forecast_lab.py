@@ -53,3 +53,4 @@ def test_forecast_lab_unadjudicated_exclusion():
     assert report.metrics.sample_size == 10
     assert report.predictions_count == 11
     assert report.outcomes_count == 10
+

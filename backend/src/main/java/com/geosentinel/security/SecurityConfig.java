@@ -52,13 +52,18 @@ public class SecurityConfig {
                 // Admin-only management endpoints
                 .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
 
-                // Analyst & Admin query execution and session mutation
-                .requestMatchers(HttpMethod.POST, "/api/v1/sessions/*/questions/**").hasAnyRole("ANALYST", "ADMIN")
-                .requestMatchers(HttpMethod.POST, "/api/v1/pipeline/**").hasAnyRole("ANALYST", "ADMIN")
-                .requestMatchers(HttpMethod.POST, "/api/v1/sessions/**").hasAnyRole("ANALYST", "ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/sessions/**").hasAnyRole("ANALYST", "ADMIN")
+                // Specialized role-governed endpoints
+                .requestMatchers("/api/v1/strategy/**").hasAnyRole("DECISION_MAKER", "ADMIN")
+                .requestMatchers("/api/v1/risk-review/**").hasAnyRole("RISK_AUDITOR", "ADMIN")
+                .requestMatchers("/api/v1/connectors/**").hasAnyRole("DATA_ENGINEER", "ADMIN")
 
-                // Read-only access for Viewer, Analyst and Admin
+                // Analytical query execution & session creation
+                .requestMatchers(HttpMethod.POST, "/api/v1/sessions/*/questions/**").hasAnyRole("ANALYST", "RESEARCHER", "DECISION_MAKER", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/v1/pipeline/**").hasAnyRole("ANALYST", "RESEARCHER", "DECISION_MAKER", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/v1/sessions/**").hasAnyRole("ANALYST", "RESEARCHER", "DECISION_MAKER", "DATA_ENGINEER", "ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/sessions/**").hasRole("ADMIN")
+
+                // Read-only access for all seven canonical roles
                 .requestMatchers(HttpMethod.GET, 
                     "/api/v1/dashboard/**",
                     "/api/v1/sources/**",
@@ -70,7 +75,7 @@ public class SecurityConfig {
                     "/api/v1/evidence/**",
                     "/api/v1/reports/**",
                     "/api/v1/search/**"
-                ).hasAnyRole("VIEWER", "ANALYST", "ADMIN")
+                ).hasAnyRole("VIEWER", "ANALYST", "RESEARCHER", "DECISION_MAKER", "RISK_AUDITOR", "DATA_ENGINEER", "ADMIN")
 
                 .anyRequest().authenticated()
             )

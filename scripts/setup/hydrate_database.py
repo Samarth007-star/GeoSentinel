@@ -207,11 +207,31 @@ def hydrate():
                 conn.commit()
                 print(f"Entities and {rel_count} relationships hydrated.")
 
-            # 8. Users Seed
-            print("Seeding demo users...")
+            # 8. Users & Roles Seed (All Seven Canonical SRS Roles)
+            print("Seeding canonical roles and demo users...")
+            roles_seed = [
+                ("role_admin", "ROLE_ADMIN", "Administrator with full system & user management"),
+                ("role_analyst", "ROLE_ANALYST", "Geopolitical Analyst with query & scenario authority"),
+                ("role_researcher", "ROLE_RESEARCHER", "Empirical Researcher with ForecastLab & historical replay access"),
+                ("role_decision_maker", "ROLE_DECISION_MAKER", "Strategic Executive with intervention decision authority"),
+                ("role_risk_auditor", "ROLE_RISK_AUDITOR", "Independent Red Team Auditor with Stage 11 Risk Review authority"),
+                ("role_data_engineer", "ROLE_DATA_ENGINEER", "Data Ingestion Engineer with Dataset Builder & connector authority"),
+                ("role_viewer", "ROLE_VIEWER", "Read-only observer access to reports and evidence")
+            ]
+            for r_id, r_key, r_desc in roles_seed:
+                cur.execute("""
+                    INSERT INTO roles (id, role_key, description)
+                    VALUES (%s, %s, %s)
+                    ON DUPLICATE KEY UPDATE description=VALUES(description)
+                """, (r_id, r_key, r_desc))
+
             demo_users = [
                 ("usr_admin_001", "admin@geosentinel.org", "GeoSentinel Administrator", "role_admin"),
                 ("usr_analyst_001", "analyst@geosentinel.org", "Senior Geopolitical Analyst", "role_analyst"),
+                ("usr_researcher_001", "researcher@geosentinel.org", "Empirical Researcher", "role_researcher"),
+                ("usr_decision_001", "decision@geosentinel.org", "Strategic Decision Maker", "role_decision_maker"),
+                ("usr_auditor_001", "auditor@geosentinel.org", "Independent Risk Auditor", "role_risk_auditor"),
+                ("usr_dataeng_001", "dataeng@geosentinel.org", "Data Ingestion Engineer", "role_data_engineer"),
                 ("usr_viewer_001", "viewer@geosentinel.org", "Research Observer", "role_viewer")
             ]
             for u_id, email, d_name, r_id in demo_users:
@@ -225,7 +245,7 @@ def hydrate():
                     VALUES (%s, %s)
                 """, (u_id, r_id))
             conn.commit()
-            print("Demo users seeded.")
+            print("All 7 canonical SRS roles and demo users seeded.")
 
             # Check counts
             print("\nFinal Record Counts in Database:")

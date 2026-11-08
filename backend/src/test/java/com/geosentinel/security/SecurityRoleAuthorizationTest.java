@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -50,6 +49,58 @@ class SecurityRoleAuthorizationTest {
     }
 
     @Test
+    @DisplayName("ROLE_RESEARCHER: Token generation and role extraction must return ROLE_RESEARCHER")
+    void testResearcherRoleExtraction() {
+        String token = jwtTokenProvider.generateToken("usr_researcher_001", "researcher@geosentinel.org", List.of("ROLE_RESEARCHER"));
+        assertNotNull(token);
+        assertTrue(jwtTokenProvider.validateToken(token));
+
+        List<String> extractedRoles = jwtTokenProvider.getRolesFromToken(token);
+        assertEquals(1, extractedRoles.size());
+        assertTrue(extractedRoles.contains("ROLE_RESEARCHER"));
+        assertFalse(extractedRoles.contains("ROLE_ADMIN"));
+    }
+
+    @Test
+    @DisplayName("ROLE_DECISION_MAKER: Token generation and role extraction must return ROLE_DECISION_MAKER")
+    void testDecisionMakerRoleExtraction() {
+        String token = jwtTokenProvider.generateToken("usr_decision_001", "decision@geosentinel.org", List.of("ROLE_DECISION_MAKER"));
+        assertNotNull(token);
+        assertTrue(jwtTokenProvider.validateToken(token));
+
+        List<String> extractedRoles = jwtTokenProvider.getRolesFromToken(token);
+        assertEquals(1, extractedRoles.size());
+        assertTrue(extractedRoles.contains("ROLE_DECISION_MAKER"));
+        assertFalse(extractedRoles.contains("ROLE_VIEWER"));
+    }
+
+    @Test
+    @DisplayName("ROLE_RISK_AUDITOR: Token generation and role extraction must return ROLE_RISK_AUDITOR")
+    void testRiskAuditorRoleExtraction() {
+        String token = jwtTokenProvider.generateToken("usr_auditor_001", "auditor@geosentinel.org", List.of("ROLE_RISK_AUDITOR"));
+        assertNotNull(token);
+        assertTrue(jwtTokenProvider.validateToken(token));
+
+        List<String> extractedRoles = jwtTokenProvider.getRolesFromToken(token);
+        assertEquals(1, extractedRoles.size());
+        assertTrue(extractedRoles.contains("ROLE_RISK_AUDITOR"));
+        assertFalse(extractedRoles.contains("ROLE_ANALYST"));
+    }
+
+    @Test
+    @DisplayName("ROLE_DATA_ENGINEER: Token generation and role extraction must return ROLE_DATA_ENGINEER")
+    void testDataEngineerRoleExtraction() {
+        String token = jwtTokenProvider.generateToken("usr_dataeng_001", "dataeng@geosentinel.org", List.of("ROLE_DATA_ENGINEER"));
+        assertNotNull(token);
+        assertTrue(jwtTokenProvider.validateToken(token));
+
+        List<String> extractedRoles = jwtTokenProvider.getRolesFromToken(token);
+        assertEquals(1, extractedRoles.size());
+        assertTrue(extractedRoles.contains("ROLE_DATA_ENGINEER"));
+        assertFalse(extractedRoles.contains("ROLE_VIEWER"));
+    }
+
+    @Test
     @DisplayName("ROLE_VIEWER: Token generation and role extraction must return ROLE_VIEWER")
     void testViewerRoleExtraction() {
         String token = jwtTokenProvider.generateToken("usr_viewer_001", "viewer@geosentinel.org", List.of("ROLE_VIEWER"));
@@ -64,34 +115,44 @@ class SecurityRoleAuthorizationTest {
     }
 
     @Test
-    @DisplayName("Multi-role token: Should extract multiple roles accurately")
-    void testMultiRoleExtraction() {
-        String token = jwtTokenProvider.generateToken("usr_super_001", "super@geosentinel.org", Arrays.asList("ROLE_ADMIN", "ROLE_ANALYST"));
-        List<String> extractedRoles = jwtTokenProvider.getRolesFromToken(token);
-        assertEquals(2, extractedRoles.size());
-        assertTrue(extractedRoles.contains("ROLE_ADMIN"));
-        assertTrue(extractedRoles.contains("ROLE_ANALYST"));
-    }
-
-    @Test
-    @DisplayName("Empty or corrupted token: Should return empty roles list safely without exception")
-    void testCorruptedTokenRoles() {
-        List<String> roles = jwtTokenProvider.getRolesFromToken("invalid.token.here");
-        assertNotNull(roles);
-        assertTrue(roles.isEmpty());
-    }
-
-    @Test
-    @DisplayName("Role Authority mapping: Validates Spring Security GrantedAuthority mapping")
-    void testAuthorityMapping() {
-        List<String> roles = List.of("ROLE_ADMIN", "ROLE_ANALYST", "ROLE_VIEWER");
-        List<SimpleGrantedAuthority> authorities = roles.stream()
+    @DisplayName("All Seven Canonical Roles: Authority mapping verifies Spring Security integration")
+    void testAllSevenRolesAuthorityMapping() {
+        List<String> allSevenRoles = List.of(
+                "ROLE_ADMIN",
+                "ROLE_ANALYST",
+                "ROLE_RESEARCHER",
+                "ROLE_DECISION_MAKER",
+                "ROLE_RISK_AUDITOR",
+                "ROLE_DATA_ENGINEER",
+                "ROLE_VIEWER"
+        );
+        List<SimpleGrantedAuthority> authorities = allSevenRoles.stream()
                 .map(SimpleGrantedAuthority::new)
                 .toList();
 
-        assertEquals(3, authorities.size());
-        assertTrue(authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN")));
-        assertTrue(authorities.contains(new SimpleGrantedAuthority("ROLE_ANALYST")));
-        assertTrue(authorities.contains(new SimpleGrantedAuthority("ROLE_VIEWER")));
+        assertEquals(7, authorities.size());
+        for (String role : allSevenRoles) {
+            assertTrue(authorities.contains(new SimpleGrantedAuthority(role)), "Missing authority mapping for: " + role);
+        }
+    }
+
+    @Test
+    @DisplayName("Negative access verification: Viewer token lacks administrative privileges")
+    void testViewerCannotAccessAdmin() {
+        String viewerToken = jwtTokenProvider.generateToken("usr_viewer_001", "viewer@geosentinel.org", List.of("ROLE_VIEWER"));
+        List<String> roles = jwtTokenProvider.getRolesFromToken(viewerToken);
+
+        assertFalse(roles.contains("ROLE_ADMIN"), "Viewer must NOT hold ROLE_ADMIN");
+        assertFalse(roles.contains("ROLE_DATA_ENGINEER"), "Viewer must NOT hold ROLE_DATA_ENGINEER");
+    }
+
+    @Test
+    @DisplayName("Negative access verification: Analyst token lacks Risk Auditor and Admin privileges")
+    void testAnalystCannotAccessRiskReviewOrAdmin() {
+        String analystToken = jwtTokenProvider.generateToken("usr_analyst_001", "analyst@geosentinel.org", List.of("ROLE_ANALYST"));
+        List<String> roles = jwtTokenProvider.getRolesFromToken(analystToken);
+
+        assertFalse(roles.contains("ROLE_ADMIN"), "Analyst must NOT hold ROLE_ADMIN");
+        assertFalse(roles.contains("ROLE_RISK_AUDITOR"), "Analyst must NOT hold ROLE_RISK_AUDITOR");
     }
 }

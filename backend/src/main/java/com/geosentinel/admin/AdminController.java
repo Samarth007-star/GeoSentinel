@@ -70,3 +70,4 @@ public class AdminController {
         return ResponseEntity.ok(ApiResponse.success("User registry", userDtos));
     }
 }
+
