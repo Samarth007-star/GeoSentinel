@@ -317,7 +317,8 @@ class ForecastEvaluationMetrics(BaseModel):
     brier_score: float
     log_loss: float
     calibration_error: float
-    baseline_brier_comparison: float
+    baseline_brier_comparison: float  # Uninformed constant 0.5 prior (0.2500)
+    baseline_brier_historical: Optional[float] = None  # Chronological expanding-window prior
     methodology_notes: str
 
 class ForecastEvaluationReport(BaseModel):

@@ -15,11 +15,12 @@ class SampleSchema(BaseModel):
 def test_llm_adapter_health_check_offline():
     async def _run():
         adapter = ModelAdapter()
-        health = await adapter.check_health()
-        assert "status" in health
-        assert "provider" in health
-        assert health["provider"] == "ollama"
-        assert health["active_model"] == "llama3"
+        with patch("httpx.AsyncClient.get", AsyncMock(side_effect=httpx.ConnectError("Offline"))):
+            health = await adapter.check_health()
+            assert "status" in health
+            assert "provider" in health
+            assert health["provider"] == "ollama"
+            assert health["active_model"] == "llama3"
     asyncio.run(_run())
 
 def test_llm_adapter_deterministic_fallback():
@@ -49,17 +50,18 @@ def test_llm_adapter_connection_error_fallback():
     async def _run():
         adapter = ModelAdapter()
         with patch.object(settings, "MODEL_PROVIDER", "ollama"):
-            def sample_fallback():
-                return SampleSchema(intent="LOGISTICS_DISRUPTION", confidence=0.88, entities=["SGP"])
+            with patch("httpx.AsyncClient.post", AsyncMock(side_effect=httpx.ConnectError("Connection refused"))):
+                def sample_fallback():
+                    return SampleSchema(intent="LOGISTICS_DISRUPTION", confidence=0.88, entities=["SGP"])
 
-            res, meta = await adapter.generate_structured(
-                "Simulate Singapore port delay",
-                SampleSchema,
-                fallback_factory=sample_fallback
-            )
-            assert res.intent == "LOGISTICS_DISRUPTION"
-            assert meta["inference_mode"] == "deterministic_fallback"
-            assert "unavailable" in meta["reason"] or "Connection" in meta["reason"] or "error" in meta["reason"]
+                res, meta = await adapter.generate_structured(
+                    "Simulate Singapore port delay",
+                    SampleSchema,
+                    fallback_factory=sample_fallback
+                )
+                assert res.intent == "LOGISTICS_DISRUPTION"
+                assert meta["inference_mode"] == "deterministic_fallback"
+                assert "unavailable" in meta["reason"] or "Connection" in meta["reason"] or "error" in meta["reason"]
     asyncio.run(_run())
 
 def test_llm_adapter_successful_mock_inference():

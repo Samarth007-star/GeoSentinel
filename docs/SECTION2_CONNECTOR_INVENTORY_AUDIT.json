@@ -1,0 +1,314 @@
+[
+  {
+    "connector_id": "CONN_RELIEFWEB",
+    "provider_name": "UN OCHA ReliefWeb API",
+    "category": "International Organizations",
+    "timestamp": "2026-11-08T16:58:11.484815+00:00",
+    "duration_ms": 2534.2,
+    "http_status": 200,
+    "raw_record_count": 5,
+    "normalized_record_count": 5,
+    "status_enum": "LIVE_DATA_RETRIEVED",
+    "health_status": "HEALTHY",
+    "sample_record": {
+      "id": "4237392",
+      "title": "Afghanistan: Health Cluster Dashboard for Humanitarian Response Services (September 2026)",
+      "body": "The dashboard provides an overview of humanitarian health services across Afghanistan, showing cover...",
+      "date": "2026-11-08T03:46:09+00:00",
+      "url": "https://reliefweb.int/node/4237392"
+    },
+    "error_msg": null
+  },
+  {
+    "connector_id": "CONN_UN_SDG",
+    "provider_name": "UN Statistics Division SDG API",
+    "category": "International Organizations",
+    "timestamp": "2026-11-08T16:58:14.019155+00:00",
+    "duration_ms": 2951.02,
+    "http_status": 200,
+    "raw_record_count": 6,
+    "normalized_record_count": 6,
+    "status_enum": "LIVE_DATA_RETRIEVED",
+    "health_status": "HEALTHY",
+    "sample_record": {
+      "goal": "1",
+      "code": "1.1",
+      "title": "By 2030, eradicate extreme poverty for all people everywhere, currently measured as people living on...",
+      "description": "By 2030, eradicate extreme poverty for all people everywhere, currently measured as people living on...",
+      "url": "https://unstats.un.org/sdgs/indicators/database/?target=1.1"
+    },
+    "error_msg": null
+  },
+  {
+    "connector_id": "CONN_GDELT",
+    "provider_name": "GDELT Project (DOC 2.0 API)",
+    "category": "News",
+    "timestamp": "2026-11-08T16:58:16.970359+00:00",
+    "duration_ms": 8832.96,
+    "http_status": 429,
+    "raw_record_count": 0,
+    "normalized_record_count": 0,
+    "status_enum": "RATE_LIMITED",
+    "health_status": "RATE_LIMITED",
+    "sample_record": null,
+    "error_msg": null
+  },
+  {
+    "connector_id": "CONN_NEWS",
+    "provider_name": "UN News Service Global Feed",
+    "category": "News Sources",
+    "timestamp": "2026-11-08T16:58:25.803345+00:00",
+    "duration_ms": 33157.05,
+    "http_status": 200,
+    "raw_record_count": 6,
+    "normalized_record_count": 6,
+    "status_enum": "LIVE_DATA_RETRIEVED",
+    "health_status": "HEALTHY",
+    "sample_record": {
+      "guid": "https://www.bbc.co.uk/news/articles/cmd7q15drwgeo#0",
+      "title": "What we know so far after Krakow gun attack",
+      "link": "https://www.bbc.co.uk/news/articles/cmd7q15drwgeo?at_medium=RSS&at_campaign=rss",
+      "pub_date": "Sun, 08 Nov 2026 14:32:52 GMT",
+      "description": "Six people were killed in a random shooting in Krakow's main square, and three bodies were later fou..."
+    },
+    "error_msg": null
+  },
+  {
+    "connector_id": "CONN_OONI",
+    "provider_name": "Open Observatory of Network Interference (OONI)",
+    "category": "Internet & Infrastructure",
+    "timestamp": "2026-11-08T16:58:58.960561+00:00",
+    "duration_ms": 4394.32,
+    "http_status": 200,
+    "raw_record_count": 5,
+    "normalized_record_count": 5,
+    "status_enum": "HISTORICAL_DATA_RETRIEVED",
+    "health_status": "HEALTHY",
+    "sample_record": {
+      "measurement_uid": "20261108165859.125155_IN_dnscheck_f09ab5262825e129",
+      "probe_cc": "IN",
+      "probe_asn": "AS55836",
+      "test_name": "dnscheck",
+      "input": "https://cloudflare-dns.com/dns-query"
+    },
+    "error_msg": null
+  },
+  {
+    "connector_id": "CONN_IODA",
+    "provider_name": "Internet Outage Detection & Analysis (IODA)",
+    "category": "Internet & Infrastructure",
+    "timestamp": "2026-11-08T16:59:03.355000+00:00",
+    "duration_ms": 17490.49,
+    "http_status": 200,
+    "raw_record_count": 0,
+    "normalized_record_count": 0,
+    "status_enum": "LIVE_EMPTY_RESULT",
+    "health_status": "HEALTHY",
+    "sample_record": null,
+    "error_msg": null
+  },
+  {
+    "connector_id": "CONN_WIKIDATA",
+    "provider_name": "Wikidata Knowledge Base (SPARQL)",
+    "category": "Geographic & Entities",
+    "timestamp": "2026-11-08T16:59:20.845524+00:00",
+    "duration_ms": 5275.34,
+    "http_status": 200,
+    "raw_record_count": 9,
+    "normalized_record_count": 6,
+    "status_enum": "LIVE_DATA_RETRIEVED",
+    "health_status": "HEALTHY",
+    "sample_record": {
+      "qid": "Q668",
+      "label": "India",
+      "description": "country in South Asia",
+      "instance_of": "country",
+      "uri": "http://www.wikidata.org/entity/Q668"
+    },
+    "error_msg": null
+  },
+  {
+    "connector_id": "CONN_NOMINATIM",
+    "provider_name": "OpenStreetMap Nominatim Spatial API",
+    "category": "Geographic Data",
+    "timestamp": "2026-11-08T16:59:26.120987+00:00",
+    "duration_ms": 669.82,
+    "http_status": 200,
+    "raw_record_count": 2,
+    "normalized_record_count": 2,
+    "status_enum": "LIVE_DATA_RETRIEVED",
+    "health_status": "HEALTHY",
+    "sample_record": {
+      "place_id": 249869651,
+      "osm_id": 304716,
+      "name": "India",
+      "lat": "22.3511148",
+      "lon": "78.6677428"
+    },
+    "error_msg": null
+  },
+  {
+    "connector_id": "CONN_WIKIMEDIA",
+    "provider_name": "Wikimedia REST API (Pageviews)",
+    "category": "Public Social/Digital Signals",
+    "timestamp": "2026-11-08T16:59:26.790996+00:00",
+    "duration_ms": 2010.14,
+    "http_status": 200,
+    "raw_record_count": 12,
+    "normalized_record_count": 12,
+    "status_enum": "LIVE_DATA_RETRIEVED",
+    "health_status": "HEALTHY",
+    "sample_record": {
+      "project": "en.wikipedia",
+      "article": "India",
+      "granularity": "daily",
+      "timestamp": "2026110300",
+      "views": 17825
+    },
+    "error_msg": null
+  },
+  {
+    "connector_id": "CONN_WORLDBANK",
+    "provider_name": "World Bank Indicators API",
+    "category": "Economic & Financial",
+    "timestamp": "2026-11-08T16:59:28.803411+00:00",
+    "duration_ms": 755.72,
+    "http_status": 200,
+    "raw_record_count": 6,
+    "normalized_record_count": 6,
+    "status_enum": "HISTORICAL_DATA_RETRIEVED",
+    "health_status": "HEALTHY",
+    "sample_record": {
+      "geo": "IN",
+      "country_name": "IND",
+      "indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "indicator_name": "GDP growth (annual %)",
+      "year": "2025"
+    },
+    "error_msg": null
+  },
+  {
+    "connector_id": "CONN_IMF",
+    "provider_name": "International Monetary Fund Data API",
+    "category": "Economic & Financial",
+    "timestamp": "2026-11-08T16:59:29.559300+00:00",
+    "duration_ms": 7807.93,
+    "http_status": 200,
+    "raw_record_count": 15,
+    "normalized_record_count": 15,
+    "status_enum": "LIVE_DATA_RETRIEVED",
+    "health_status": "HEALTHY",
+    "sample_record": {
+      "indicator_code": "NGDP_RPCH",
+      "indicator_name": "Real GDP Growth (%)",
+      "country_code": "IND",
+      "period": "2031",
+      "value": "6.8"
+    },
+    "error_msg": null
+  },
+  {
+    "connector_id": "CONN_USGS",
+    "provider_name": "USGS Earthquake Hazards Program",
+    "category": "Scientific & Disaster",
+    "timestamp": "2026-11-08T16:59:37.367533+00:00",
+    "duration_ms": 1849.95,
+    "http_status": 200,
+    "raw_record_count": 5,
+    "normalized_record_count": 5,
+    "status_enum": "LIVE_DATA_RETRIEVED",
+    "health_status": "HEALTHY",
+    "sample_record": {
+      "event_id": "us7000twxn",
+      "title": "M 4.7 - Southwest Indian Ridge",
+      "mag": 4.7,
+      "place": "Southwest Indian Ridge",
+      "time_ms": 1794140957722
+    },
+    "error_msg": null
+  },
+  {
+    "connector_id": "CONN_NASA_EONET",
+    "provider_name": "NASA Earth Observatory Natural Event Tracker (EONET)",
+    "category": "Scientific & Disaster",
+    "timestamp": "2026-11-08T16:59:39.217647+00:00",
+    "duration_ms": 4803.7,
+    "http_status": 200,
+    "raw_record_count": 5,
+    "normalized_record_count": 5,
+    "status_enum": "LIVE_DATA_RETRIEVED",
+    "health_status": "HEALTHY",
+    "sample_record": {
+      "id": "EONET_26057",
+      "title": "Wildfire Wild River, Coos, New Hampshire",
+      "categories": [
+        "Wildfires"
+      ],
+      "sources": [
+        "https://irwin.doi.gov/observer/incidents/2026-NHWMF-000182"
+      ],
+      "geometries": "[{'magnitudeValue': 982.0, 'magnitudeUnit': 'acres', 'date': '2026-11-02T07:58:00Z', 'type': 'Point'..."
+    },
+    "error_msg": null
+  },
+  {
+    "connector_id": "CONN_NOAA",
+    "provider_name": "NOAA National Centers for Environmental Information",
+    "category": "Scientific & Disaster",
+    "timestamp": "2026-11-08T16:59:44.021521+00:00",
+    "duration_ms": 2030.28,
+    "http_status": 200,
+    "raw_record_count": 5,
+    "normalized_record_count": 5,
+    "status_enum": "LIVE_DATA_RETRIEVED",
+    "health_status": "HEALTHY",
+    "sample_record": {
+      "alert_id": "urn:oid:2.49.0.1.840.0.7e74deac5dbb7553048759db9974493175d42363.001.1",
+      "event": "Flash Flood Warning",
+      "headline": "Flash Flood Warning issued November 8 at 10:57AM CST until November 8 at 1:15PM CST by NWS Corpus Ch...",
+      "description": "FFWCRP\n\nThe National Weather Service in Corpus Christi has extended the\n\n* Flash Flood Warning for.....",
+      "severity": "Severe"
+    },
+    "error_msg": null
+  },
+  {
+    "connector_id": "CONN_USASPENDING",
+    "provider_name": "US Federal Government Open Data (USAspending)",
+    "category": "Government Open Data",
+    "timestamp": "2026-11-08T16:59:46.052027+00:00",
+    "duration_ms": 3665.91,
+    "http_status": 200,
+    "raw_record_count": 5,
+    "normalized_record_count": 5,
+    "status_enum": "LIVE_DATA_RETRIEVED",
+    "health_status": "HEALTHY",
+    "sample_record": {
+      "agency_id": 1525,
+      "agency_name": "400 Years of African-American History Commission",
+      "abbreviation": "AAHC",
+      "toptier_code": "247",
+      "url": "https://www.usaspending.gov/agency/247"
+    },
+    "error_msg": null
+  },
+  {
+    "connector_id": "CONN_GDELT_EVENTS",
+    "provider_name": "GDELT Project Real-Time Events Feed",
+    "category": "Conflict & Political Events",
+    "timestamp": "2026-11-08T16:59:49.718098+00:00",
+    "duration_ms": 2011.03,
+    "http_status": 200,
+    "raw_record_count": 3,
+    "normalized_record_count": 3,
+    "status_enum": "LIVE_DATA_RETRIEVED",
+    "health_status": "HEALTHY",
+    "sample_record": {
+      "file_name": "20261108170000.export.CSV.zip",
+      "file_url": "http://data.gdeltproject.org/gdeltv2/20261108170000.export.CSV.zip",
+      "file_md5": "ca2b115806424d2768ff23f2a1d0b19d",
+      "size_bytes": "31616",
+      "retrieved_at": "2026-11-08T16:59:51.728555+00:00"
+    },
+    "error_msg": null
+  }
+]

@@ -296,6 +296,22 @@ class ForecastLabService:
         mean_log_loss = round(total_log_loss / n, 4)
         baseline_brier = round(total_baseline_brier / n, 4)
 
+        # Chronological expanding-window historical base-rate baseline
+        sorted_pairs = sorted(paired, key=lambda pair: pair[0].cutoff_timestamp)
+        expanding_brier_sum = 0.0
+        for pred_i, out_i in sorted_pairs:
+            prior_positives = 0
+            prior_total = 0
+            for prior_pred, prior_out in sorted_pairs:
+                if prior_out.observation_date < pred_i.cutoff_timestamp:
+                    prior_total += 1
+                    if prior_out.actual_occurrence:
+                        prior_positives += 1
+            base_rate = (prior_positives / prior_total) if prior_total > 0 else 0.5
+            y_i = 1.0 if out_i.actual_occurrence else 0.0
+            expanding_brier_sum += (base_rate - y_i) ** 2
+        historical_brier = round(expanding_brier_sum / n, 4)
+
         # Calibration error: |mean(p) - mean(y)|
         calibration_error = round(abs((prob_sum / n) - (actual_positives / n)), 4)
 
@@ -305,10 +321,12 @@ class ForecastLabService:
             log_loss=mean_log_loss,
             calibration_error=calibration_error,
             baseline_brier_comparison=baseline_brier,
+            baseline_brier_historical=historical_brier,
             methodology_notes=(
-                f"Evaluated {n} adjudicated historical cases. Lower Brier score indicates higher accuracy "
-                f"(model: {mean_brier} vs uninformed baseline: {baseline_brier}). "
-                "Temporal integrity verified: all inputs strictly restricted to cutoff timestamps."
+                f"Evaluated {n} adjudicated historical cases. Model Brier: {mean_brier} vs. uninformed constant 0.5 baseline: {baseline_brier} "
+                f"and chronological expanding-window historical base-rate baseline: {historical_brier}. "
+                "Temporal integrity verified: all observation dates strictly postdate forecast cutoffs. "
+                "Research-stage evaluation with N=10 sample size constraint; does not establish prospective validity."
             )
         )
 

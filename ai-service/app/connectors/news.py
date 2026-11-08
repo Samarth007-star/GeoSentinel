@@ -25,7 +25,12 @@ class NewsFeedConnector(BaseConnector):
                 res = await client.get(self.feed_url, headers={"User-Agent": "GeoSentinel/1.0"})
                 if res.status_code == 200:
                     self.record_success()
-                    return {"status": "HEALTHY", "latency_ms": res.elapsed.total_seconds() * 1000}
+                    return {"status": "HEALTHY", "latency_ms": res.elapsed.total_seconds() * 1000, "feed": "primary"}
+                # Try fallback
+                fallback_res = await client.get("https://feeds.bbci.co.uk/news/world/rss.xml", headers={"User-Agent": "GeoSentinel/1.0"})
+                if fallback_res.status_code == 200:
+                    self.record_success()
+                    return {"status": "HEALTHY", "latency_ms": fallback_res.elapsed.total_seconds() * 1000, "feed": "secondary_fallback"}
                 self.record_failure()
                 return {"status": "DEGRADED", "http_code": res.status_code}
         except Exception as e:
@@ -40,6 +45,11 @@ class NewsFeedConnector(BaseConnector):
         try:
             async with httpx.AsyncClient(timeout=self.timeout, follow_redirects=True) as client:
                 res = await client.get(self.feed_url, headers={"User-Agent": "GeoSentinel/1.0"})
+                # Fallback to secondary multilateral world news feed if primary feed is unavailable
+                if res.status_code != 200:
+                    secondary_url = "https://feeds.bbci.co.uk/news/world/rss.xml"
+                    res = await client.get(secondary_url, headers={"User-Agent": "GeoSentinel/1.0"})
+
                 if res.status_code == 200:
                     root = ET.fromstring(res.content)
                     items = root.findall(".//item")
@@ -57,7 +67,9 @@ class NewsFeedConnector(BaseConnector):
                                 "pub_date": pub_date,
                                 "description": description[:300]
                             })
-            self.record_success()
+                    self.record_success()
+                else:
+                    self.record_failure()
         except Exception:
             self.record_failure()
         return results

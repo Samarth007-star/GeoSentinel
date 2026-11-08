@@ -15,6 +15,7 @@ def test_forecast_lab_ten_historical_cases_reproducibility():
     assert report.metrics.log_loss == 0.2084
     assert report.metrics.calibration_error == 0.0910
     assert report.metrics.baseline_brier_comparison == 0.2500
+    assert report.metrics.baseline_brier_historical == 0.2658
     assert report.temporal_leakage_checks_passed is True
 
 def test_forecast_lab_temporal_integrity_no_future_leakage():
