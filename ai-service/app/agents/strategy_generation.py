@@ -38,8 +38,208 @@ class StrategyGenerationAgent:
             residual_risk_disclosure="Unreviewed"
         )
 
+        # Out-of-scope / non-geopolitical check
+        if any(w in q_lower for w in ["recipe", "cookie", "cookies", "baking", "cake", "dessert", "chocolate chip"]):
+            return []
+
+        # DOMAIN: Disaster & Scientific Hazard Telemetry (USGS, NOAA, EONET)
+        if any(k in q_lower for k in ["earthquake", "seismic", "volcano", "wildfire", "cyclone", "flood", "natural hazard", "tsunami"]):
+            return [
+                StrategyOption(
+                    option_id=f"opt_{uuid.uuid4().hex[:8]}",
+                    title="Critical Infrastructure Emergency Redundancy & Grid Islanding Protocol",
+                    objective="Protect regional electricity, water distribution, and digital switching stations from cascading failures following seismic or meteorological hazards.",
+                    causal_mechanism="Activate automated sectionalizing and microgrid islanding for vital hospital and water pumping networks within [STRATEGY_PARAM: SCENARIO_ASSUMPTION: 15 minutes] of confirmed telemetry.",
+                    prerequisites=[
+                        "National and State Disaster Management Authority real-time telemetry link.",
+                        "Inter-utility mutual assistance and automated grid isolation switches."
+                    ],
+                    benefits=[
+                        "Prevents widespread blackouts and maintains emergency healthcare operability.",
+                        "Enables focused repair crews to restore municipal sectors sequentially."
+                    ],
+                    tradeoffs=[
+                        "Capital cost for redundant automated circuit switchgear.",
+                        "Temporary power curtailment for non-essential industrial consumers."
+                    ],
+                    time_horizon="Immediate to 72 hours",
+                    evidence_basis=ev_refs[:2],
+                    risk_review=pending_review,
+                    fallback_option="Mobilize mobile containerized diesel and battery energy storage trailers to critical public facilities."
+                ),
+                StrategyOption(
+                    option_id=f"opt_{uuid.uuid4().hex[:8]}",
+                    title="Pre-Positioned Civil Defense Logistics & Rapid Arterial Route Clearance",
+                    objective="Ensure unhindered transit of search-and-rescue teams, mobile medical units, and emergency supplies to hazard epicenters.",
+                    causal_mechanism="Deploy pre-designated heavy engineering and bridge-layer battalions to clear primary arterial logistics corridors within [STRATEGY_PARAM: SCENARIO_ASSUMPTION: 24 to 48 hours].",
+                    prerequisites=[
+                        "Pre-positioned regional emergency equipment depots near seismic fault zones.",
+                        "Civil-military joint coordination standard operating procedures."
+                    ],
+                    benefits=[
+                        "Accelerates golden-hour medical evacuation and survivor extrication.",
+                        "Prevents secondary humanitarian distress in isolated rural settlements."
+                    ],
+                    tradeoffs=[
+                        "Ongoing inventory holding and maintenance overhead for specialized clearance equipment.",
+                        "Diversion of engineering corps assets from standard infrastructure projects."
+                    ],
+                    time_horizon="24 to 120 hours",
+                    evidence_basis=ev_refs[:1],
+                    risk_review=pending_review,
+                    fallback_option="Deploy rotary-wing heavy-lift helicopters and tactical airdrop operations for cut-off communities."
+                )
+            ]
+
+        # DOMAIN: Internet Connectivity & Censorship Signals (OONI, IODA)
+        elif any(k in q_lower for k in ["internet", "connectivity", "ooni", "ioda", "bgp", "dns", "censorship", "outage", "telecom"]):
+            return [
+                StrategyOption(
+                    option_id=f"opt_{uuid.uuid4().hex[:8]}",
+                    title="Multi-Homed BGP Peering Diversity & Encrypted Out-of-Band Gateway Architecture",
+                    objective="Ensure sovereign and commercial communications survive macroscopic network partitioning or upstream gateway disruptions.",
+                    causal_mechanism="Mandate Tier-1 national telecommunications operators establish minimum [STRATEGY_PARAM: SCENARIO_ASSUMPTION: 3 independent] diverse physical terrestrial/submarine cable landing routes with automated BGP failover.",
+                    prerequisites=[
+                        "National Telecom Regulatory Authority inter-connection compliance mandate.",
+                        "Diverse autonomous system (ASN) peering agreements with neutral regional exchange points."
+                    ],
+                    benefits=[
+                        "Eliminates single point of failure in national internet backbone connectivity.",
+                        "Protects cross-border financial transactions and sovereign diplomatic communications."
+                    ],
+                    tradeoffs=[
+                        "Significant capital investment in redundant dark fiber leases and international transit commitments.",
+                        "Increased complexity in BGP routing table optimization and route leak prevention."
+                    ],
+                    time_horizon="30 to 180 days",
+                    evidence_basis=ev_refs[:2],
+                    risk_review=pending_review,
+                    fallback_option="Establish dedicated encrypted Low Earth Orbit (LEO) satellite data backhauls for essential governmental and banking networks."
+                ),
+                StrategyOption(
+                    option_id=f"opt_{uuid.uuid4().hex[:8]}",
+                    title="Distributed Edge Content Caching & Sovereign Autonomous Mesh Infrastructure",
+                    objective="Preserve domestic essential digital services, emergency alerts, and payment processing during international gateway blackouts.",
+                    causal_mechanism="Deploy distributed domestic edge caching servers and offline-capable digital public infrastructure (DPI) supporting store-and-forward commercial transactions for up to [STRATEGY_PARAM: SCENARIO_ASSUMPTION: 7 days].",
+                    prerequisites=[
+                        "National Informatics Centre and private cloud provider edge deployment agreement.",
+                        "Cryptographic validation standards for delayed transaction settlement."
+                    ],
+                    benefits=[
+                        "Ensures continuity of domestic retail commerce and civil defense messaging during external cable cuts.",
+                        "Reduces national bandwidth reliance on overseas point-of-presence servers."
+                    ],
+                    tradeoffs=[
+                        "Data consistency lag between domestic edge nodes and global ledger databases.",
+                        "Security management overhead across distributed physical edge hardware nodes."
+                    ],
+                    time_horizon="60 to 120 days",
+                    evidence_basis=ev_refs[:1],
+                    risk_review=pending_review,
+                    fallback_option="Revert commercial point-of-sale systems to batched offline SMS and store-and-forward digital token protocols."
+                )
+            ]
+
+        # DOMAIN: Humanitarian Situation & Conflict Protection (OCHA, ReliefWeb)
+        elif any(k in q_lower for k in ["humanitarian", "refugee", "ocha", "aid", "displacement", "famine", "crisis", "conflict-affected"]):
+            return [
+                StrategyOption(
+                    option_id=f"opt_{uuid.uuid4().hex[:8]}",
+                    title="Sovereign Humanitarian Relief Corridor & Protected Multilateral Escort Protocol",
+                    objective="Deliver life-sustaining nutritional and medical assistance to conflict-affected civilian enclaves without militarizing aid delivery.",
+                    causal_mechanism="Negotiate formally demilitarized humanitarian transit corridors with belligerent forces under International Committee of the Red Cross (ICRC) and UN auspices, backed by neutral state airlifts delivering [STRATEGY_PARAM: SCENARIO_ASSUMPTION: 100 tonnes daily] of high-energy therapeutic food.",
+                    prerequisites=[
+                        "UN Security Council / General Assembly humanitarian consensus declaration.",
+                        "Bilateral deconfliction hotlines between donor liaison officers and local military commanders."
+                    ],
+                    benefits=[
+                        "Prevents acute famine mortality and stabilizes displaced civilian populations.",
+                        "Maintains international legal adherence to Geneva Conventions civil protection standards."
+                    ],
+                    tradeoffs=[
+                        "Risk of physical attack on transport personnel by rogue non-state militia factions.",
+                        "Potential diversion of relief goods by combatant elements in contested territory."
+                    ],
+                    time_horizon="7 to 30 days",
+                    evidence_basis=ev_refs[:2],
+                    risk_review=pending_review,
+                    fallback_option="Execute high-altitude precision GPS parachute drops in coordination with local civil society networks."
+                ),
+                StrategyOption(
+                    option_id=f"opt_{uuid.uuid4().hex[:8]}",
+                    title="Third-Party Sovereign Humanitarian Escrow & Direct Medical Procurement Facility",
+                    objective="Shield life-saving humanitarian payments from extraterritorial sanctions and banking clearing deadlocks.",
+                    causal_mechanism="Establish an independently audited Swiss/neutral jurisdiction humanitarian payment channel facilitating verified procurement of WHO-certified pediatric vaccines, water purification tablets, and surgical supplies.",
+                    prerequisites=[
+                        "OFAC and EU Humanitarian General License exemptions confirmation.",
+                        "Independent international auditing firm monitoring end-to-end cargo arrival."
+                    ],
+                    benefits=[
+                        "Bypasses commercial bank compliance hesitation and correspondent clearing blockages.",
+                        "Guarantees that 100% of disbursed funds translate into verified physical health supplies."
+                    ],
+                    tradeoffs=[
+                        "High administrative auditing and compliance verification costs.",
+                        "Stringent inspection requirements may extend procurement timelines by 10 to 14 days."
+                    ],
+                    time_horizon="15 to 45 days",
+                    evidence_basis=ev_refs[:1],
+                    risk_review=pending_review,
+                    fallback_option="Direct physical barter exchange of pharmaceutical commodities against accredited sovereign goods."
+                )
+            ]
+
+        # DOMAIN: Entity & Bilateral Knowledge Graph (Wikidata, Chabahar, Strategic Treaties)
+        elif any(k in q_lower for k in ["relationship", "relationships", "relations", "bilateral", "knowledge sources", "reliable information"]) and not any(k in q_lower for k in ["hormuz", "military", "war"]):
+            return [
+                StrategyOption(
+                    option_id=f"opt_{uuid.uuid4().hex[:8]}",
+                    title="INSTC Multimodal Freight Optimization & Terminal Berthing Guarantees",
+                    objective="Strengthen sovereign transit autonomy across the International North-South Transport Corridor via Chabahar Port.",
+                    causal_mechanism="Execute long-term terminal berthing and container handling priority agreements at Chabahar's Shahid Beheshti terminal, connecting railway links to reduce transit duration to Central Asia by [STRATEGY_PARAM: SCENARIO_ASSUMPTION: 35-40%].",
+                    prerequisites=[
+                        "Bilateral inter-governmental port management agreement execution.",
+                        "Harmonization of railway gauge transfer standards and customs electronic seals."
+                    ],
+                    benefits=[
+                        "Bypasses hostile land borders to access resource-rich Central Asian markets.",
+                        "Lowers freight costs and transit times relative to traditional Suez Canal maritime routing."
+                    ],
+                    tradeoffs=[
+                        "Substantial capital investment in port gantry cranes and rail connectivity.",
+                        "Geopolitical exposure to changing regulatory postures of third-party transit states."
+                    ],
+                    time_horizon="90 to 365 days",
+                    evidence_basis=ev_refs[:2],
+                    risk_review=pending_review,
+                    fallback_option="Deploy specialized road transport fleets under TIR (Transports Internationaux Routiers) transit carnet conventions."
+                ),
+                StrategyOption(
+                    option_id=f"opt_{uuid.uuid4().hex[:8]}",
+                    title="Bilateral Rupee-Rial Trade Clearing & Specialized Financial Mechanism",
+                    objective="Maintain robust bilateral non-sanctioned commercial trade while fully respecting international regulatory guardrails.",
+                    causal_mechanism="Expand dedicated Special Vostro Rupee Accounts (SVRA) in accredited domestic public sector banks to settle non-sanctioned agricultural, pharmaceutical, and tea/rice exports.",
+                    prerequisites=[
+                        "Central Bank (RBI) regulatory authorization and anti-money laundering (AML) monitoring protocols.",
+                        "Designation of exclusive commercial banking channels with zero exposure to western financial jurisdictions."
+                    ],
+                    benefits=[
+                        "Protects domestic agricultural exporters from dollar payment freezes.",
+                        "Strengthens bilateral commercial ties without breaching multilateral sanctions covenants."
+                    ],
+                    tradeoffs=[
+                        "Trade imbalance accumulation if export volumes significantly outpace non-sanctioned import demand.",
+                        "Currency conversion restrictions limiting liquidity deployment outside bilateral commerce."
+                    ],
+                    time_horizon="30 to 90 days",
+                    evidence_basis=ev_refs[:1],
+                    risk_review=pending_review,
+                    fallback_option="Counter-trade and barter clearing through third-party escrow arrangements in neutral trade hubs."
+                )
+            ]
+
         # TOPIC 1: South China Sea / Semiconductor / Global Supply Chains (Q2)
-        if any(k in q_lower for k in ["south china sea", "semiconductor", "taiwan", "microchip", "electronics"]):
+        elif any(k in q_lower for k in ["south china sea", "semiconductor", "taiwan", "microchip", "electronics"]):
             return [
                 StrategyOption(
                     option_id=f"opt_{uuid.uuid4().hex[:8]}",
@@ -185,7 +385,56 @@ class StrategyGenerationAgent:
                 )
             ]
 
-        # TOPIC 4: Energy Security / Crude Oil / US-Iran / Middle East Conflict (Q1, Q3 & Default)
+        # TOPIC 4: Macroeconomic Indicators & World Bank Statistics
+        elif any(k in q_lower for k in ["world bank", "indicator", "gdp", "inflation", "macroeconomic", "unit, observation"]) and not any(k in q_lower for k in ["hormuz", "iran", "semiconductor", "taiwan", "russia", "ukraine", "fertilizer", "sanctions"]):
+            return [
+                StrategyOption(
+                    option_id=f"opt_{uuid.uuid4().hex[:8]}",
+                    title="Public Capital Expenditure (Capex) Growth-Inflation Coordination Protocol",
+                    objective="Leverage 7%+ GDP growth momentum to expand high-multiplier infrastructure while anchoring inflation expectations.",
+                    causal_mechanism="Sustain targeted public capex allocations in logistics corridors and renewable energy while coordinating with the central bank to maintain statutory inflation targeting.",
+                    prerequisites=[
+                        "Ministry of Finance medium-term fiscal consolidation framework alignment.",
+                        "Monetary Policy Committee (MPC) data-dependent rate policy stance."
+                    ],
+                    benefits=[
+                        "Crowds in private capital expenditure and modernizes freight and transport networks.",
+                        "Protects domestic wage-earning purchasing power against demand-pull price pressures."
+                    ],
+                    tradeoffs=[
+                        "Constrains room for broad-based countercyclical revenue spending.",
+                        "Requires strict quality control on public sector capital project execution."
+                    ],
+                    time_horizon="12 to 24 months",
+                    evidence_basis=ev_refs[:2],
+                    risk_review=pending_review,
+                    fallback_option="Rebalance budget outlays toward targeted social safety nets and nutrient/food buffer releases if food CPI spikes."
+                ),
+                StrategyOption(
+                    option_id=f"opt_{uuid.uuid4().hex[:8]}",
+                    title="External Account & Terms-of-Trade High-Frequency Surveillance Framework",
+                    objective="Preemptively insulate foreign exchange reserves and sovereign debt yields from external commodity price volatility.",
+                    causal_mechanism="Deploy multi-agency high-frequency tracking of merchandise trade balances, import price elasticities, and core vs. headline CPI divergence.",
+                    prerequisites=[
+                        "Central Bank (RBI) and Department of Commerce integrated data-sharing portal.",
+                        "Sovereign foreign exchange reserve liquidity adequacy benchmarks."
+                    ],
+                    benefits=[
+                        "Provides 30 to 60 days advance warning of external current account deterioration.",
+                        "Enables targeted tariff adjustments or currency swap activation before market stress emerges."
+                    ],
+                    tradeoffs=[
+                        "Administrative compliance overhead for export-import monitoring authorities.",
+                        "May signal policy anxiety to international capital markets if not communicated transparently."
+                    ],
+                    time_horizon="Ongoing surveillance",
+                    evidence_basis=ev_refs[:2],
+                    risk_review=pending_review,
+                    fallback_option="Activate bilateral currency swap lines and mobilize non-resident diaspora deposit incentives."
+                )
+            ]
+
+        # TOPIC 5: Energy Security / Crude Oil / US-Iran / Middle East Conflict (Q1, Q3 & Default)
         else:
             return [
                 StrategyOption(

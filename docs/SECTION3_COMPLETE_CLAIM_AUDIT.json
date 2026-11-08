@@ -1,0 +1,975 @@
+{
+  "audit_timestamp_utc": "2026-11-08T17:05:48.626771+00:00",
+  "total_questions_audited": 10,
+  "total_claims_audited": 37,
+  "question_summaries": [
+    {
+      "test_id": "TEST_A",
+      "category": "Current Geopolitical Situation",
+      "question": "What are the latest verified developments involving Iran and the Strait of Hormuz, and what potential implications could they have for India's energy security?",
+      "elapsed_ms": 35669.4,
+      "total_facts_audited": 4,
+      "total_attributed_claims_audited": 0,
+      "total_evidence_records": 82,
+      "has_scenarios_labeled": true,
+      "has_guardrail_applied": true
+    },
+    {
+      "test_id": "TEST_B",
+      "category": "Current Energy & Economic Indicators",
+      "question": "What are the latest available indicators relevant to India's energy imports and economic exposure to Middle East instability?",
+      "elapsed_ms": 37871.8,
+      "total_facts_audited": 4,
+      "total_attributed_claims_audited": 0,
+      "total_evidence_records": 81,
+      "has_scenarios_labeled": true,
+      "has_guardrail_applied": true
+    },
+    {
+      "test_id": "TEST_C",
+      "category": "Current Disaster or Scientific Event",
+      "question": "What significant recent earthquakes or natural hazards are reported by the configured scientific data sources, and what evidence supports the findings?",
+      "elapsed_ms": 17533.6,
+      "total_facts_audited": 4,
+      "total_attributed_claims_audited": 0,
+      "total_evidence_records": 17,
+      "has_scenarios_labeled": true,
+      "has_guardrail_applied": true
+    },
+    {
+      "test_id": "TEST_D",
+      "category": "Recent Humanitarian Situation",
+      "question": "What recent humanitarian developments are reported for a currently relevant conflict-affected region?",
+      "elapsed_ms": 31540.1,
+      "total_facts_audited": 4,
+      "total_attributed_claims_audited": 0,
+      "total_evidence_records": 63,
+      "has_scenarios_labeled": true,
+      "has_guardrail_applied": true
+    },
+    {
+      "test_id": "TEST_E",
+      "category": "Internet Connectivity & Censorship Signals",
+      "question": "What recent network interference or connectivity anomalies are reported for a selected country by the configured OONI or IODA integrations?",
+      "elapsed_ms": 17809.1,
+      "total_facts_audited": 4,
+      "total_attributed_claims_audited": 0,
+      "total_evidence_records": 16,
+      "has_scenarios_labeled": true,
+      "has_guardrail_applied": true
+    },
+    {
+      "test_id": "TEST_F",
+      "category": "Entity & Relationship Question",
+      "question": "What reliable information do the configured knowledge sources provide about India, Iran, and their relevant international or economic relationships?",
+      "elapsed_ms": 18033.2,
+      "total_facts_audited": 4,
+      "total_attributed_claims_audited": 0,
+      "total_evidence_records": 52,
+      "has_scenarios_labeled": true,
+      "has_guardrail_applied": true
+    },
+    {
+      "test_id": "TEST_G",
+      "category": "Arbitrary Natural-Language Question",
+      "question": "How will recent semiconductor supply chain agreements between India and East Asian economies affect high-tech manufacturing resilience?",
+      "elapsed_ms": 26769.6,
+      "total_facts_audited": 4,
+      "total_attributed_claims_audited": 0,
+      "total_evidence_records": 67,
+      "has_scenarios_labeled": true,
+      "has_guardrail_applied": true
+    },
+    {
+      "test_id": "TEST_H",
+      "category": "Hypothetical Scenario",
+      "question": "If a major disruption occurred in the Strait of Hormuz, what possible effects could it have on India's energy security, trade, and economy?",
+      "elapsed_ms": 28417.2,
+      "total_facts_audited": 4,
+      "total_attributed_claims_audited": 0,
+      "total_evidence_records": 81,
+      "has_scenarios_labeled": true,
+      "has_guardrail_applied": true
+    },
+    {
+      "test_id": "TEST_I",
+      "category": "Insufficient-Evidence Question",
+      "question": "What will the exact price of crude oil in India be on a specific date next month?",
+      "elapsed_ms": 17207.9,
+      "total_facts_audited": 4,
+      "total_attributed_claims_audited": 0,
+      "total_evidence_records": 26,
+      "has_scenarios_labeled": true,
+      "has_guardrail_applied": true
+    },
+    {
+      "test_id": "TEST_J",
+      "category": "Unrelated or Ambiguous Question",
+      "question": "What is the best recipe for baking chocolate chip cookies in cold weather?",
+      "elapsed_ms": 17285.4,
+      "total_facts_audited": 1,
+      "total_attributed_claims_audited": 0,
+      "total_evidence_records": 0,
+      "has_scenarios_labeled": true,
+      "has_guardrail_applied": true
+    }
+  ],
+  "claims": [
+    {
+      "question_id": "TEST_A",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 1,
+      "complete_claim_text": "[World Bank Energy Statistics] India imports approximately 85% to 88% of its domestic crude oil requirements, with roughly 55% to 60% of total crude imports historically routed through the Persian Gulf and Strait of Hormuz.",
+      "evidence_id": "ev_ref_energy_import_ind",
+      "original_provider": "World Bank Energy Statistics",
+      "source_url": "https://api.worldbank.org/v2/country/IND/indicator/EG.IMP.CONS.ZS",
+      "publication_or_observation_date": "2026-02-01T00:00:00Z",
+      "retrieval_date": "2026-09-25T12:00:00Z",
+      "geographic_references": [
+        "IRN",
+        "IND",
+        "USA"
+      ],
+      "extracted_numbers_and_units": [
+        "85",
+        "88",
+        "55",
+        "60"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_A",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 2,
+      "complete_claim_text": "[Indian Strategic Petroleum Reserves Limited (ISPRL)] India maintains 5.33 million metric tonnes (MMT) of underground strategic crude oil storage at Padur (2.5 MMT), Mangalore (1.5 MMT), and Visakhapatnam (1.33 MMT), providing approximately 9.5 days of net crude import protection.",
+      "evidence_id": "ev_ref_isprl_strategic_reserve",
+      "original_provider": "Indian Strategic Petroleum Reserves Limited (ISPRL)",
+      "source_url": "https://isprl.india.gov.in/facilities",
+      "publication_or_observation_date": "2026-01-10T00:00:00Z",
+      "retrieval_date": "2026-09-25T12:00:00Z",
+      "geographic_references": [
+        "IRN",
+        "IND",
+        "USA"
+      ],
+      "extracted_numbers_and_units": [
+        "5.33 million",
+        "2.5",
+        "1.5",
+        "1.33",
+        "9.5 days"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_A",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 3,
+      "complete_claim_text": "[U.S. Energy Information Administration (EIA) Chokepoints] Approximately 20.5 to 21 million barrels per day of petroleum liquids transit the Strait of Hormuz (~21% of global petroleum liquids consumption), representing the world's primary maritime energy chokepoint.",
+      "evidence_id": "ev_ref_hormuz_transit_telemetry",
+      "original_provider": "U.S. Energy Information Administration (EIA) Chokepoints",
+      "source_url": "https://www.eia.gov/international/analysis/special-topics/World_Oil_Transit_Chokepoints",
+      "publication_or_observation_date": "2026-01-20T00:00:00Z",
+      "retrieval_date": "2026-09-25T12:00:00Z",
+      "geographic_references": [
+        "IRN",
+        "IND",
+        "USA"
+      ],
+      "extracted_numbers_and_units": [
+        "20.5",
+        "21 million",
+        "21"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_A",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 4,
+      "complete_claim_text": "[Lloyd's Market Association Joint War Committee] The Strait of Hormuz, Persian Gulf, and Gulf of Oman are designated as Listed Areas under JWLA-032, requiring commercial shipping hull war risk notices and additional premium (AP) underwriting.",
+      "evidence_id": "ev_ref_lloyds_jwc_hormuz",
+      "original_provider": "Lloyd's Market Association Joint War Committee",
+      "source_url": "https://www.lmalloyds.com/lma/jointwar",
+      "publication_or_observation_date": "2026-02-15T00:00:00Z",
+      "retrieval_date": "2026-09-25T12:00:00Z",
+      "geographic_references": [
+        "IRN",
+        "IND",
+        "USA"
+      ],
+      "extracted_numbers_and_units": [
+        "032"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_B",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 1,
+      "complete_claim_text": "[World Bank Energy Statistics] India imports approximately 85% to 88% of its domestic crude oil requirements, with roughly 55% to 60% of total crude imports historically routed through the Persian Gulf and Strait of Hormuz.",
+      "evidence_id": "ev_ref_energy_import_ind",
+      "original_provider": "World Bank Energy Statistics",
+      "source_url": "https://api.worldbank.org/v2/country/IND/indicator/EG.IMP.CONS.ZS",
+      "publication_or_observation_date": "2026-02-01T00:00:00Z",
+      "retrieval_date": "2026-09-25T12:00:00Z",
+      "geographic_references": [
+        "IND",
+        "SAU",
+        "IRN"
+      ],
+      "extracted_numbers_and_units": [
+        "85",
+        "88",
+        "55",
+        "60"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_B",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 2,
+      "complete_claim_text": "[Indian Strategic Petroleum Reserves Limited (ISPRL)] India maintains 5.33 million metric tonnes (MMT) of underground strategic crude oil storage at Padur (2.5 MMT), Mangalore (1.5 MMT), and Visakhapatnam (1.33 MMT), providing approximately 9.5 days of net crude import protection.",
+      "evidence_id": "ev_ref_isprl_strategic_reserve",
+      "original_provider": "Indian Strategic Petroleum Reserves Limited (ISPRL)",
+      "source_url": "https://isprl.india.gov.in/facilities",
+      "publication_or_observation_date": "2026-01-10T00:00:00Z",
+      "retrieval_date": "2026-09-25T12:00:00Z",
+      "geographic_references": [
+        "IND",
+        "SAU",
+        "IRN"
+      ],
+      "extracted_numbers_and_units": [
+        "5.33 million",
+        "2.5",
+        "1.5",
+        "1.33",
+        "9.5 days"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_B",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 3,
+      "complete_claim_text": "[U.S. Energy Information Administration (EIA) Chokepoints] Approximately 20.5 to 21 million barrels per day of petroleum liquids transit the Strait of Hormuz (~21% of global petroleum liquids consumption), representing the world's primary maritime energy chokepoint.",
+      "evidence_id": "ev_ref_hormuz_transit_telemetry",
+      "original_provider": "U.S. Energy Information Administration (EIA) Chokepoints",
+      "source_url": "https://www.eia.gov/international/analysis/special-topics/World_Oil_Transit_Chokepoints",
+      "publication_or_observation_date": "2026-01-20T00:00:00Z",
+      "retrieval_date": "2026-09-25T12:00:00Z",
+      "geographic_references": [
+        "IND",
+        "SAU",
+        "IRN"
+      ],
+      "extracted_numbers_and_units": [
+        "20.5",
+        "21 million",
+        "21"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_B",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 4,
+      "complete_claim_text": "[Lloyd's Market Association Joint War Committee] The Strait of Hormuz, Persian Gulf, and Gulf of Oman are designated as Listed Areas under JWLA-032, requiring commercial shipping hull war risk notices and additional premium (AP) underwriting.",
+      "evidence_id": "ev_ref_lloyds_jwc_hormuz",
+      "original_provider": "Lloyd's Market Association Joint War Committee",
+      "source_url": "https://www.lmalloyds.com/lma/jointwar",
+      "publication_or_observation_date": "2026-02-15T00:00:00Z",
+      "retrieval_date": "2026-09-25T12:00:00Z",
+      "geographic_references": [
+        "IND",
+        "SAU",
+        "IRN"
+      ],
+      "extracted_numbers_and_units": [
+        "032"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_C",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 1,
+      "complete_claim_text": "[OpenStreetMap Nominatim Spatial API] Spatial reference for IRN: Identified as IRN, Strada Mihai Viteazul, Opri\u0219ani, Turda, Cluj, 401100, Rom\u00e2nia at coordinates (Lat: 46.5568247, Lon: 23.8058004) [Type: toys].",
+      "evidence_id": "ev_osm_64438080",
+      "original_provider": "OpenStreetMap Nominatim Spatial API",
+      "source_url": "https://www.openstreetmap.org/?mlat=46.5568247&mlon=23.8058004",
+      "publication_or_observation_date": "2026-11-08T17:03:11.561958+00:00",
+      "retrieval_date": "2026-11-08T17:03:11.561958+00:00",
+      "geographic_references": [
+        "IND",
+        "IRN",
+        "TUR"
+      ],
+      "extracted_numbers_and_units": [
+        "401100",
+        "46.5568247",
+        "23.8058004"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_C",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 2,
+      "complete_claim_text": "[OpenStreetMap Nominatim Spatial API] Spatial reference for IRN: Identified as Inst. Recursos Naturais, Rua J, Pinheirinho, Itajub\u00e1, Minas Gerais, Regi\u00e3o Sudeste, 37500-176, Brasil at coordinates (Lat: -22.4131014, Lon: -45.4523841) [Type: university].",
+      "evidence_id": "ev_osm_64438080",
+      "original_provider": "OpenStreetMap Nominatim Spatial API",
+      "source_url": "https://www.openstreetmap.org/?mlat=46.5568247&mlon=23.8058004",
+      "publication_or_observation_date": "2026-11-08T17:03:11.561958+00:00",
+      "retrieval_date": "2026-11-08T17:03:11.561958+00:00",
+      "geographic_references": [
+        "IND",
+        "IRN",
+        "TUR"
+      ],
+      "extracted_numbers_and_units": [
+        "37500",
+        "176",
+        "22.4131014",
+        "45.4523841"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_C",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 3,
+      "complete_claim_text": "[Wikidata Knowledge Base] Wikidata structured entity knowledge: 'Indonesia' (island country in Southeast Asia and Oceania). Classified as country. Query term: 'IND'. Canonical URI: http://www.wikidata.org/entity/Q252.",
+      "evidence_id": "ev_wd_Q252",
+      "original_provider": "Wikidata Knowledge Base",
+      "source_url": "http://www.wikidata.org/entity/Q252",
+      "publication_or_observation_date": "2026-11-08T17:03:11.561933+00:00",
+      "retrieval_date": "2026-11-08T17:03:11.561933+00:00",
+      "geographic_references": [
+        "IND",
+        "IRN",
+        "TUR"
+      ],
+      "extracted_numbers_and_units": [],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_C",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 4,
+      "complete_claim_text": "[Wikidata Knowledge Base] Wikidata structured entity knowledge: 'Iran' (country in Western Asia). Classified as country. Query term: 'IRN'. Canonical URI: http://www.wikidata.org/entity/Q794.",
+      "evidence_id": "ev_wd_Q252",
+      "original_provider": "Wikidata Knowledge Base",
+      "source_url": "http://www.wikidata.org/entity/Q252",
+      "publication_or_observation_date": "2026-11-08T17:03:11.561933+00:00",
+      "retrieval_date": "2026-11-08T17:03:11.561933+00:00",
+      "geographic_references": [
+        "IND",
+        "IRN",
+        "TUR"
+      ],
+      "extracted_numbers_and_units": [],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_D",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 1,
+      "complete_claim_text": "[World Bank Indicators API] GDP growth (annual %) for UKR was recorded at 1.82 in 2025.",
+      "evidence_id": "ev_wb_UKR_NY_GDP_MKTP_KD_ZG_2025",
+      "original_provider": "World Bank Indicators API",
+      "source_url": "https://api.worldbank.org/v2/country/UKR/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+      "publication_or_observation_date": "2025-12-31T00:00:00Z",
+      "retrieval_date": "2026-11-08T17:03:43.099773+00:00",
+      "geographic_references": [
+        "UKR",
+        "PSE",
+        "AFG"
+      ],
+      "extracted_numbers_and_units": [
+        "1.82",
+        "2025"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_D",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 2,
+      "complete_claim_text": "[World Bank Indicators API] GDP growth (annual %) for UKR was recorded at 3.25 in 2024.",
+      "evidence_id": "ev_wb_UKR_NY_GDP_MKTP_KD_ZG_2025",
+      "original_provider": "World Bank Indicators API",
+      "source_url": "https://api.worldbank.org/v2/country/UKR/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+      "publication_or_observation_date": "2025-12-31T00:00:00Z",
+      "retrieval_date": "2026-11-08T17:03:43.099773+00:00",
+      "geographic_references": [
+        "UKR",
+        "PSE",
+        "AFG"
+      ],
+      "extracted_numbers_and_units": [
+        "3.25",
+        "2024"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_D",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 3,
+      "complete_claim_text": "[World Bank Indicators API] GDP growth (annual %) for UKR was recorded at 5.53 in 2023.",
+      "evidence_id": "ev_wb_UKR_NY_GDP_MKTP_KD_ZG_2025",
+      "original_provider": "World Bank Indicators API",
+      "source_url": "https://api.worldbank.org/v2/country/UKR/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+      "publication_or_observation_date": "2025-12-31T00:00:00Z",
+      "retrieval_date": "2026-11-08T17:03:43.099773+00:00",
+      "geographic_references": [
+        "UKR",
+        "PSE",
+        "AFG"
+      ],
+      "extracted_numbers_and_units": [
+        "5.53",
+        "2023"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_D",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 4,
+      "complete_claim_text": "[World Bank Indicators API] Inflation, consumer prices (annual %) for UKR was recorded at 12.73 in 2025.",
+      "evidence_id": "ev_wb_UKR_NY_GDP_MKTP_KD_ZG_2025",
+      "original_provider": "World Bank Indicators API",
+      "source_url": "https://api.worldbank.org/v2/country/UKR/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+      "publication_or_observation_date": "2025-12-31T00:00:00Z",
+      "retrieval_date": "2026-11-08T17:03:43.099773+00:00",
+      "geographic_references": [
+        "UKR",
+        "PSE",
+        "AFG"
+      ],
+      "extracted_numbers_and_units": [
+        "12.73",
+        "2025"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_E",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 1,
+      "complete_claim_text": "[Wikimedia Pageviews API] Wikimedia Pageviews API recorded 1 views on English Wikipedia for 'Irn' on 2026-11-03. Public digital attention signal reflects relative open-source reading interest (distinguished from social media sentiment or opinion polls).",
+      "evidence_id": "ev_wpv_irn_2026110300",
+      "original_provider": "Wikimedia Pageviews API",
+      "source_url": "https://en.wikipedia.org/wiki/Irn",
+      "publication_or_observation_date": "2026-11-03T00:00:00+00:00",
+      "retrieval_date": "2026-11-08T17:04:00.911338+00:00",
+      "geographic_references": [
+        "IRN",
+        "RUS",
+        "IND"
+      ],
+      "extracted_numbers_and_units": [
+        "1",
+        "2026",
+        "11",
+        "03"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_E",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 2,
+      "complete_claim_text": "[Wikimedia Pageviews API] Wikimedia Pageviews API recorded 2 views on English Wikipedia for 'Irn' on 2026-11-05. Public digital attention signal reflects relative open-source reading interest (distinguished from social media sentiment or opinion polls).",
+      "evidence_id": "ev_wpv_irn_2026110300",
+      "original_provider": "Wikimedia Pageviews API",
+      "source_url": "https://en.wikipedia.org/wiki/Irn",
+      "publication_or_observation_date": "2026-11-03T00:00:00+00:00",
+      "retrieval_date": "2026-11-08T17:04:00.911338+00:00",
+      "geographic_references": [
+        "IRN",
+        "RUS",
+        "IND"
+      ],
+      "extracted_numbers_and_units": [
+        "2",
+        "2026",
+        "11",
+        "05"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_E",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 3,
+      "complete_claim_text": "[Wikimedia Pageviews API] Wikimedia Pageviews API recorded 1 views on English Wikipedia for 'Irn' on 2026-11-06. Public digital attention signal reflects relative open-source reading interest (distinguished from social media sentiment or opinion polls).",
+      "evidence_id": "ev_wpv_irn_2026110300",
+      "original_provider": "Wikimedia Pageviews API",
+      "source_url": "https://en.wikipedia.org/wiki/Irn",
+      "publication_or_observation_date": "2026-11-03T00:00:00+00:00",
+      "retrieval_date": "2026-11-08T17:04:00.911338+00:00",
+      "geographic_references": [
+        "IRN",
+        "RUS",
+        "IND"
+      ],
+      "extracted_numbers_and_units": [
+        "1",
+        "2026",
+        "11",
+        "06"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_E",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 4,
+      "complete_claim_text": "[Wikimedia Pageviews API] Wikimedia Pageviews API recorded 40 views on English Wikipedia for 'Rus' on 2026-11-03. Public digital attention signal reflects relative open-source reading interest (distinguished from social media sentiment or opinion polls).",
+      "evidence_id": "ev_wpv_irn_2026110300",
+      "original_provider": "Wikimedia Pageviews API",
+      "source_url": "https://en.wikipedia.org/wiki/Irn",
+      "publication_or_observation_date": "2026-11-03T00:00:00+00:00",
+      "retrieval_date": "2026-11-08T17:04:00.911338+00:00",
+      "geographic_references": [
+        "IRN",
+        "RUS",
+        "IND"
+      ],
+      "extracted_numbers_and_units": [
+        "40",
+        "2026",
+        "11",
+        "03"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_F",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 1,
+      "complete_claim_text": "[OpenStreetMap Nominatim Spatial API] Spatial reference for IND: Identified as Indiana, United States at coordinates (Lat: 40.3270127, Lon: -86.1746933) [Type: administrative].",
+      "evidence_id": "ev_osm_335263644",
+      "original_provider": "OpenStreetMap Nominatim Spatial API",
+      "source_url": "https://www.openstreetmap.org/?mlat=40.3270127&mlon=-86.1746933",
+      "publication_or_observation_date": "2026-11-08T17:04:18.942774+00:00",
+      "retrieval_date": "2026-11-08T17:04:18.942774+00:00",
+      "geographic_references": [
+        "IND",
+        "IRN"
+      ],
+      "extracted_numbers_and_units": [
+        "40.3270127",
+        "86.1746933"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_F",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 2,
+      "complete_claim_text": "[Wikidata Knowledge Base] Wikidata structured entity knowledge: 'India' (country in South Asia). Classified as country. Query term: 'India'. Canonical URI: http://www.wikidata.org/entity/Q668.",
+      "evidence_id": "ev_wd_Q668",
+      "original_provider": "Wikidata Knowledge Base",
+      "source_url": "http://www.wikidata.org/entity/Q668",
+      "publication_or_observation_date": "2026-11-08T17:04:18.942737+00:00",
+      "retrieval_date": "2026-11-08T17:04:18.942737+00:00",
+      "geographic_references": [
+        "IND",
+        "IRN"
+      ],
+      "extracted_numbers_and_units": [],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_F",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 3,
+      "complete_claim_text": "[Wikidata Knowledge Base] Wikidata structured entity knowledge: 'Indian Ocean' (ocean bounded by Africa, Asia, Australia, and Antarctica). Classified as sea. Query term: 'India'. Canonical URI: http://www.wikidata.org/entity/Q1239.",
+      "evidence_id": "ev_wd_Q668",
+      "original_provider": "Wikidata Knowledge Base",
+      "source_url": "http://www.wikidata.org/entity/Q668",
+      "publication_or_observation_date": "2026-11-08T17:04:18.942737+00:00",
+      "retrieval_date": "2026-11-08T17:04:18.942737+00:00",
+      "geographic_references": [
+        "IND",
+        "IRN"
+      ],
+      "extracted_numbers_and_units": [],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_F",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 4,
+      "complete_claim_text": "[Wikimedia Pageviews API] Wikimedia Pageviews API recorded 17,825 views on English Wikipedia for 'India' on 2026-11-03. Public digital attention signal reflects relative open-source reading interest (distinguished from social media sentiment or opinion polls).",
+      "evidence_id": "ev_wpv_india_2026110300",
+      "original_provider": "Wikimedia Pageviews API",
+      "source_url": "https://en.wikipedia.org/wiki/India",
+      "publication_or_observation_date": "2026-11-03T00:00:00+00:00",
+      "retrieval_date": "2026-11-08T17:04:18.942812+00:00",
+      "geographic_references": [
+        "IND",
+        "IRN"
+      ],
+      "extracted_numbers_and_units": [
+        "17",
+        "825",
+        "2026",
+        "11",
+        "03"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_G",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 1,
+      "complete_claim_text": "[World Bank Indicators API] GDP growth (annual %) for JPN was recorded at 1.19 in 2025.",
+      "evidence_id": "ev_wb_JPN_NY_GDP_MKTP_KD_ZG_2025",
+      "original_provider": "World Bank Indicators API",
+      "source_url": "https://api.worldbank.org/v2/country/JPN/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+      "publication_or_observation_date": "2025-12-31T00:00:00Z",
+      "retrieval_date": "2026-11-08T17:04:45.712416+00:00",
+      "geographic_references": [
+        "IND",
+        "TWN",
+        "JPN"
+      ],
+      "extracted_numbers_and_units": [
+        "1.19",
+        "2025"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_G",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 2,
+      "complete_claim_text": "[World Bank Indicators API] GDP growth (annual %) for JPN was recorded at -0.24 in 2024.",
+      "evidence_id": "ev_wb_JPN_NY_GDP_MKTP_KD_ZG_2025",
+      "original_provider": "World Bank Indicators API",
+      "source_url": "https://api.worldbank.org/v2/country/JPN/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+      "publication_or_observation_date": "2025-12-31T00:00:00Z",
+      "retrieval_date": "2026-11-08T17:04:45.712416+00:00",
+      "geographic_references": [
+        "IND",
+        "TWN",
+        "JPN"
+      ],
+      "extracted_numbers_and_units": [
+        "0.24",
+        "2024"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_G",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 3,
+      "complete_claim_text": "[World Bank Indicators API] GDP growth (annual %) for JPN was recorded at 0.72 in 2023.",
+      "evidence_id": "ev_wb_JPN_NY_GDP_MKTP_KD_ZG_2025",
+      "original_provider": "World Bank Indicators API",
+      "source_url": "https://api.worldbank.org/v2/country/JPN/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+      "publication_or_observation_date": "2025-12-31T00:00:00Z",
+      "retrieval_date": "2026-11-08T17:04:45.712416+00:00",
+      "geographic_references": [
+        "IND",
+        "TWN",
+        "JPN"
+      ],
+      "extracted_numbers_and_units": [
+        "0.72",
+        "2023"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_G",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 4,
+      "complete_claim_text": "[World Bank Indicators API] Inflation, consumer prices (annual %) for JPN was recorded at 3.17 in 2025.",
+      "evidence_id": "ev_wb_JPN_NY_GDP_MKTP_KD_ZG_2025",
+      "original_provider": "World Bank Indicators API",
+      "source_url": "https://api.worldbank.org/v2/country/JPN/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=3",
+      "publication_or_observation_date": "2025-12-31T00:00:00Z",
+      "retrieval_date": "2026-11-08T17:04:45.712416+00:00",
+      "geographic_references": [
+        "IND",
+        "TWN",
+        "JPN"
+      ],
+      "extracted_numbers_and_units": [
+        "3.17",
+        "2025"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_H",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 1,
+      "complete_claim_text": "[World Bank Energy Statistics] India imports approximately 85% to 88% of its domestic crude oil requirements, with roughly 55% to 60% of total crude imports historically routed through the Persian Gulf and Strait of Hormuz.",
+      "evidence_id": "ev_ref_energy_import_ind",
+      "original_provider": "World Bank Energy Statistics",
+      "source_url": "https://api.worldbank.org/v2/country/IND/indicator/EG.IMP.CONS.ZS",
+      "publication_or_observation_date": "2026-02-01T00:00:00Z",
+      "retrieval_date": "2026-09-25T12:00:00Z",
+      "geographic_references": [
+        "IND",
+        "IRN",
+        "OMN"
+      ],
+      "extracted_numbers_and_units": [
+        "85",
+        "88",
+        "55",
+        "60"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_H",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 2,
+      "complete_claim_text": "[Indian Strategic Petroleum Reserves Limited (ISPRL)] India maintains 5.33 million metric tonnes (MMT) of underground strategic crude oil storage at Padur (2.5 MMT), Mangalore (1.5 MMT), and Visakhapatnam (1.33 MMT), providing approximately 9.5 days of net crude import protection.",
+      "evidence_id": "ev_ref_isprl_strategic_reserve",
+      "original_provider": "Indian Strategic Petroleum Reserves Limited (ISPRL)",
+      "source_url": "https://isprl.india.gov.in/facilities",
+      "publication_or_observation_date": "2026-01-10T00:00:00Z",
+      "retrieval_date": "2026-09-25T12:00:00Z",
+      "geographic_references": [
+        "IND",
+        "IRN",
+        "OMN"
+      ],
+      "extracted_numbers_and_units": [
+        "5.33 million",
+        "2.5",
+        "1.5",
+        "1.33",
+        "9.5 days"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_H",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 3,
+      "complete_claim_text": "[U.S. Energy Information Administration (EIA) Chokepoints] Approximately 20.5 to 21 million barrels per day of petroleum liquids transit the Strait of Hormuz (~21% of global petroleum liquids consumption), representing the world's primary maritime energy chokepoint.",
+      "evidence_id": "ev_ref_hormuz_transit_telemetry",
+      "original_provider": "U.S. Energy Information Administration (EIA) Chokepoints",
+      "source_url": "https://www.eia.gov/international/analysis/special-topics/World_Oil_Transit_Chokepoints",
+      "publication_or_observation_date": "2026-01-20T00:00:00Z",
+      "retrieval_date": "2026-09-25T12:00:00Z",
+      "geographic_references": [
+        "IND",
+        "IRN",
+        "OMN"
+      ],
+      "extracted_numbers_and_units": [
+        "20.5",
+        "21 million",
+        "21"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_H",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 4,
+      "complete_claim_text": "[Lloyd's Market Association Joint War Committee] The Strait of Hormuz, Persian Gulf, and Gulf of Oman are designated as Listed Areas under JWLA-032, requiring commercial shipping hull war risk notices and additional premium (AP) underwriting.",
+      "evidence_id": "ev_ref_lloyds_jwc_hormuz",
+      "original_provider": "Lloyd's Market Association Joint War Committee",
+      "source_url": "https://www.lmalloyds.com/lma/jointwar",
+      "publication_or_observation_date": "2026-02-15T00:00:00Z",
+      "retrieval_date": "2026-09-25T12:00:00Z",
+      "geographic_references": [
+        "IND",
+        "IRN",
+        "OMN"
+      ],
+      "extracted_numbers_and_units": [
+        "032"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_I",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 1,
+      "complete_claim_text": "[World Bank Energy Statistics] India imports approximately 85% to 88% of its domestic crude oil requirements, with roughly 55% to 60% of total crude imports historically routed through the Persian Gulf and Strait of Hormuz.",
+      "evidence_id": "ev_ref_energy_import_ind",
+      "original_provider": "World Bank Energy Statistics",
+      "source_url": "https://api.worldbank.org/v2/country/IND/indicator/EG.IMP.CONS.ZS",
+      "publication_or_observation_date": "2026-02-01T00:00:00Z",
+      "retrieval_date": "2026-09-25T12:00:00Z",
+      "geographic_references": [
+        "IND"
+      ],
+      "extracted_numbers_and_units": [
+        "85",
+        "88",
+        "55",
+        "60"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_I",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 2,
+      "complete_claim_text": "[Indian Strategic Petroleum Reserves Limited (ISPRL)] India maintains 5.33 million metric tonnes (MMT) of underground strategic crude oil storage at Padur (2.5 MMT), Mangalore (1.5 MMT), and Visakhapatnam (1.33 MMT), providing approximately 9.5 days of net crude import protection.",
+      "evidence_id": "ev_ref_isprl_strategic_reserve",
+      "original_provider": "Indian Strategic Petroleum Reserves Limited (ISPRL)",
+      "source_url": "https://isprl.india.gov.in/facilities",
+      "publication_or_observation_date": "2026-01-10T00:00:00Z",
+      "retrieval_date": "2026-09-25T12:00:00Z",
+      "geographic_references": [
+        "IND"
+      ],
+      "extracted_numbers_and_units": [
+        "5.33 million",
+        "2.5",
+        "1.5",
+        "1.33",
+        "9.5 days"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_I",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 3,
+      "complete_claim_text": "[U.S. Energy Information Administration (EIA) Chokepoints] Approximately 20.5 to 21 million barrels per day of petroleum liquids transit the Strait of Hormuz (~21% of global petroleum liquids consumption), representing the world's primary maritime energy chokepoint.",
+      "evidence_id": "ev_ref_hormuz_transit_telemetry",
+      "original_provider": "U.S. Energy Information Administration (EIA) Chokepoints",
+      "source_url": "https://www.eia.gov/international/analysis/special-topics/World_Oil_Transit_Chokepoints",
+      "publication_or_observation_date": "2026-01-20T00:00:00Z",
+      "retrieval_date": "2026-09-25T12:00:00Z",
+      "geographic_references": [
+        "IND"
+      ],
+      "extracted_numbers_and_units": [
+        "20.5",
+        "21 million",
+        "21"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_I",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 4,
+      "complete_claim_text": "[Lloyd's Market Association Joint War Committee] The Strait of Hormuz, Persian Gulf, and Gulf of Oman are designated as Listed Areas under JWLA-032, requiring commercial shipping hull war risk notices and additional premium (AP) underwriting.",
+      "evidence_id": "ev_ref_lloyds_jwc_hormuz",
+      "original_provider": "Lloyd's Market Association Joint War Committee",
+      "source_url": "https://www.lmalloyds.com/lma/jointwar",
+      "publication_or_observation_date": "2026-02-15T00:00:00Z",
+      "retrieval_date": "2026-09-25T12:00:00Z",
+      "geographic_references": [
+        "IND"
+      ],
+      "extracted_numbers_and_units": [
+        "032"
+      ],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "VERIFIED"
+    },
+    {
+      "question_id": "TEST_J",
+      "claim_type": "VERIFIED_FACT",
+      "claim_index": 1,
+      "complete_claim_text": "GeoSentinel Domain Boundary: Operational intelligence models are strictly restricted to sovereign geopolitics, global trade corridors, macroeconomic indicators, disaster telemetry, and civil infrastructure.",
+      "evidence_id": "ev_TEST_J_vfact_1",
+      "original_provider": "Internal Knowledge/Guardrail",
+      "source_url": "N/A (Built-in Guardrail / Domain Taxonomy)",
+      "publication_or_observation_date": "2026-Q1",
+      "retrieval_date": "2026-11-08T17:05:48.626211+00:00",
+      "geographic_references": [
+        "IND"
+      ],
+      "extracted_numbers_and_units": [],
+      "conflict_detected": false,
+      "unsupported_statement": false,
+      "verification_status": "SYSTEM_GUARDRAIL_VERIFIED"
+    }
+  ]
+}

@@ -44,13 +44,12 @@ class ImfConnector(BaseConnector):
         self.user_agent = "GeoSentinel/1.0 (Research AI Platform; contact@geosentinel.org)"
 
     async def check_health(self) -> Dict[str, Any]:
-        """Check IMF API health by fetching dataflow catalogue."""
+        """Check IMF API health by fetching indicators catalogue."""
         try:
             headers = {"User-Agent": self.user_agent, "Accept": "application/json"}
             async with httpx.AsyncClient(timeout=self.timeout, follow_redirects=True) as client:
-                # Use the Dataflow endpoint to verify API is responsive
                 res = await client.get(
-                    f"{self.base_url}/Dataflow",
+                    f"{self.base_url}/indicators",
                     headers=headers
                 )
                 if res.status_code == 200:
@@ -68,23 +67,35 @@ class ImfConnector(BaseConnector):
     async def fetch(self, target_entities: List[str], target_geographies: List[str]) -> List[Dict[str, Any]]:
         """
         Fetch IMF WEO economic indicators for target countries.
-        Uses the IMF JSON RESTful API (SDMX-compliant).
+        Uses the IMF DataMapper API v1.
         """
         if not self.is_available():
             return []
 
         results = []
-        # Map ISO-3 country codes; IMF uses ISO-2 in some datasets but ISO-3 in WEO
-        geo_codes = [g.upper() for g in target_geographies if g and len(g) <= 3]
+        ISO2_TO_ISO3 = {
+            "IN": "IND", "US": "USA", "GB": "GBR", "CN": "CHN", "PK": "PAK", 
+            "BD": "BGD", "LK": "LKA", "UA": "UKR", "RU": "RUS", "DE": "DEU",
+            "FR": "FRA", "JP": "JPN", "BR": "BRA", "ZA": "ZAF", "NG": "NGA"
+        }
+        geo_codes = []
+        for g in target_geographies:
+            if not g:
+                continue
+            code = g.upper().strip()
+            if len(code) == 2 and code in ISO2_TO_ISO3:
+                geo_codes.append(ISO2_TO_ISO3[code])
+            elif len(code) == 3:
+                geo_codes.append(code)
+
         if not geo_codes:
             geo_codes = ["IND"]  # Default to India per project context
 
-        # Fetch from WEO (World Economic Outlook) dataset
+        # Fetch from WEO (World Economic Outlook) via DataMapper
         for indicator_code, indicator_name in self.WEO_INDICATORS.items():
-            for geo in geo_codes[:3]:  # Limit to 3 countries to respect rate limits
+            for geo in geo_codes[:3]:
                 try:
-                    # IMF CompactData endpoint: /CompactData/{database}/{frequency}.{country}.{indicator}
-                    url = f"{self.base_url}/CompactData/WEO/{geo}.{indicator_code}"
+                    url = f"{self.base_url}/{indicator_code}/{geo}"
                     headers = {
                         "User-Agent": self.user_agent,
                         "Accept": "application/json"
@@ -93,7 +104,6 @@ class ImfConnector(BaseConnector):
                         res = await client.get(url, headers=headers)
                         if res.status_code == 200:
                             data = res.json()
-                            # Navigate SDMX-JSON structure
                             series_data = self._extract_series(data, indicator_code, indicator_name, geo)
                             results.extend(series_data)
                             self.record_success()
@@ -104,9 +114,9 @@ class ImfConnector(BaseConnector):
                 except Exception as e:
                     logger.error(f"IMF fetch error for {geo}/{indicator_code}: {e}")
 
-            # Brief rate-limit courtesy delay between indicator batches
+            # Rate-limit courtesy delay
             import asyncio
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.3)
 
         if results:
             self.record_success()
@@ -116,15 +126,31 @@ class ImfConnector(BaseConnector):
     def _extract_series(
         self, data: dict, indicator_code: str, indicator_name: str, geo: str
     ) -> List[Dict[str, Any]]:
-        """Extract time-series observations from IMF SDMX-JSON response."""
+        """Extract time-series observations from IMF DataMapper or SDMX-JSON response."""
         records = []
         try:
-            # IMF CompactData structure varies; handle common patterns
+            # 1. Native IMF DataMapper v1 structure
+            values = data.get("values", {})
+            if indicator_code in values and geo in values[indicator_code]:
+                year_dict = values[indicator_code][geo]
+                sorted_years = sorted(year_dict.keys(), reverse=True)
+                for yr in sorted_years[:3]:
+                    records.append({
+                        "indicator_code": indicator_code,
+                        "indicator_name": indicator_name,
+                        "country_code": geo,
+                        "period": str(yr),
+                        "value": str(year_dict[yr]),
+                        "dataset": "WEO",
+                        "unit": "Percent" if "%" in indicator_name else "Index",
+                    })
+                return records
+
+            # 2. SDMX CompactData fallback
             structure = data.get("CompactData", data)
             dataset = structure.get("DataSet", {})
             series = dataset.get("Series", {})
 
-            # Series can be a dict (single) or list (multiple)
             if isinstance(series, dict):
                 series = [series]
             elif not isinstance(series, list):
@@ -150,7 +176,6 @@ class ImfConnector(BaseConnector):
         except Exception as e:
             logger.debug(f"IMF series extraction error: {e}")
 
-        # Return only most recent 3 observations per indicator
         records.sort(key=lambda x: x.get("period", ""), reverse=True)
         return records[:3]
 

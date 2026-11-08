@@ -1,5 +1,6 @@
 package com.geosentinel.security;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -40,17 +41,42 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                // Public authentication and OpenAPI docs
                 .requestMatchers(
                     "/api/v1/auth/**",
-                    "/api/v1/dashboard/**",
-                    "/api/v1/sources/**",
-                    "/api/v1/pipeline/**",
-                    "/api/v1/sessions/**",
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
                     "/swagger-ui.html"
                 ).permitAll()
+
+                // Admin-only management endpoints
                 .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+
+                // Specialized role-governed endpoints
+                .requestMatchers("/api/v1/strategy/**").hasAnyRole("DECISION_MAKER", "ADMIN")
+                .requestMatchers("/api/v1/risk-review/**").hasAnyRole("RISK_AUDITOR", "ADMIN")
+                .requestMatchers("/api/v1/connectors/**").hasAnyRole("DATA_ENGINEER", "ADMIN")
+
+                // Analytical query execution & session creation
+                .requestMatchers(HttpMethod.POST, "/api/v1/sessions/*/questions/**").hasAnyRole("ANALYST", "RESEARCHER", "DECISION_MAKER", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/v1/pipeline/**").hasAnyRole("ANALYST", "RESEARCHER", "DECISION_MAKER", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/v1/sessions/**").hasAnyRole("ANALYST", "RESEARCHER", "DECISION_MAKER", "DATA_ENGINEER", "ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/sessions/**").hasRole("ADMIN")
+
+                // Read-only access for all seven canonical roles
+                .requestMatchers(HttpMethod.GET, 
+                    "/api/v1/dashboard/**",
+                    "/api/v1/sources/**",
+                    "/api/v1/sessions/**",
+                    "/api/v1/countries/**",
+                    "/api/v1/events/**",
+                    "/api/v1/news/**",
+                    "/api/v1/organizations/**",
+                    "/api/v1/evidence/**",
+                    "/api/v1/reports/**",
+                    "/api/v1/search/**"
+                ).hasAnyRole("VIEWER", "ANALYST", "RESEARCHER", "DECISION_MAKER", "RISK_AUDITOR", "DATA_ENGINEER", "ADMIN")
+
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

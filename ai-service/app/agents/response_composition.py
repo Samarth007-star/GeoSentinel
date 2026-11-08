@@ -28,6 +28,34 @@ class ResponseCompositionAgent:
         strategies: List[StrategyOption]
     ) -> GeoSentinelAnswer:
         now_iso = datetime.now(timezone.utc).isoformat()
+        q_lower = question.lower()
+
+        # Out-of-scope guardrail
+        is_out_of_scope = any(w in q_lower for w in ["recipe", "cookie", "cookies", "baking", "cake", "dessert", "chocolate chip"]) or (
+            len(pathways) == 0 and len(strategies) == 0 and len(scenarios) == 0
+        )
+
+        if is_out_of_scope:
+            situation = CurrentSituationSection(
+                summary=f"Inquiry Assessment: The submitted question ('{question}') falls outside the operational domain scope of GeoSentinel (geopolitics, macroeconomics, natural hazards, critical infrastructure, and humanitarian crises). In accordance with defensive research guardrails, non-geopolitical inquiries generate zero unverified causal projections or military/economic strategies.",
+                as_of=now_iso,
+                verified_facts=[
+                    "GeoSentinel Domain Boundary: Operational intelligence models are strictly restricted to sovereign geopolitics, global trade corridors, macroeconomic indicators, disaster telemetry, and civil infrastructure."
+                ],
+                attributed_claims=[]
+            )
+            return GeoSentinelAnswer(
+                current_situation=situation,
+                relevant_evidence=[],
+                impact_analysis=[],
+                strategy_recommendations=[],
+                scenarios=[],
+                confidence_rationale="N/A: Submitted inquiry falls outside the operational domain scope of GeoSentinel.",
+                limitations=[
+                    "Defensive Guardrail: GeoSentinel declines processing of culinary, lifestyle, or non-geopolitical inquiries to maintain data integrity.",
+                    "All strategic models require contextually relevant geopolitical, economic, or hazard inputs."
+                ]
+            )
 
         # Section 1: Current Situation
         situation = CurrentSituationSection(
@@ -95,7 +123,15 @@ class ResponseCompositionAgent:
         if context.missing_data_disclosures:
             limitations.extend(context.missing_data_disclosures)
 
-        confidence_rationale = "High confidence regarding baseline macroeconomic dependency and official multilateral data; moderate confidence regarding geopolitical escalation time horizons."
+        # Check for exact point forecasting / insufficient evidence questions
+        is_exact_forecasting = any(k in q_lower for k in ["exact price", "exact date", "specific date", "exact value next month", "will the exact"])
+        if is_exact_forecasting:
+            limitations.append(
+                "Forecasting Methodological Limitation: GeoSentinel strictly adheres to empirical intelligence standards prohibiting deterministic point forecasting (e.g. projecting the exact future calendar price of crude oil or precise conflict onset date). Future asset spot prices and market valuations are governed by non-linear extrinsic factors, speculative financial flows, and unmodeled geopolitical shocks. Strategic decision-support must rely on conditional scenario stress-testing and buffer capacity rather than deterministic point price targets."
+            )
+            confidence_rationale = "High confidence regarding baseline macroeconomic dependency and official multilateral data; low/inapplicable confidence for deterministic point price forecasting due to irreducible extrinsic market volatility."
+        else:
+            confidence_rationale = "High confidence regarding baseline macroeconomic dependency and official multilateral data; moderate confidence regarding geopolitical escalation time horizons."
 
         return GeoSentinelAnswer(
             current_situation=situation,

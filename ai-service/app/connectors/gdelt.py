@@ -30,7 +30,7 @@ class GdeltConnector(BaseConnector):
             provider_name="GDELT Project (DOC 2.0 API)",
             terms_url="https://www.gdeltproject.org/data.html",
             license_type="Open Research Access",
-            timeout=15.0
+            timeout=settings.CONNECTOR_TIMEOUT_SECONDS
         )
         self.base_url = settings.GDELT_BASE_URL.rstrip('/')
         self.auth_type = "None (Public API)"
@@ -39,19 +39,25 @@ class GdeltConnector(BaseConnector):
         self.last_error: Optional[str] = None
         self.records_retrieved: int = 0
 
-    async def _rate_limit_throttle(self):
+    async def _rate_limit_throttle(self) -> bool:
         """Enforce minimum interval between requests plus any rate-limit cooldown."""
         now = time.time()
         # Honour Retry-After / backoff cooldown
         if now < GdeltConnector._rate_limit_until:
             wait = GdeltConnector._rate_limit_until - now
-            logger.info(f"GDELT rate-limit cooldown: waiting {wait:.1f}s")
+            if wait > 2.0:
+                logger.info(f"GDELT rate-limit cooldown active ({wait:.1f}s remaining); skipping live fetch to avoid latency.")
+                return False
             await asyncio.sleep(wait)
         # Enforce minimum inter-request gap
         elapsed = time.time() - GdeltConnector._last_request_time
         if elapsed < GdeltConnector._backoff_seconds:
-            await asyncio.sleep(GdeltConnector._backoff_seconds - elapsed)
+            gap = GdeltConnector._backoff_seconds - elapsed
+            if gap > 2.0:
+                return False
+            await asyncio.sleep(gap)
         GdeltConnector._last_request_time = time.time()
+        return True
 
     def _handle_rate_limit(self, response: httpx.Response):
         """Parse Retry-After header and apply exponential backoff on 429."""
@@ -129,7 +135,9 @@ class GdeltConnector(BaseConnector):
         }
 
         try:
-            await self._rate_limit_throttle()
+            proceed = await self._rate_limit_throttle()
+            if not proceed:
+                return []
             async with httpx.AsyncClient(timeout=self.timeout) as client:
                 res = await client.get(url, headers=headers)
                 if res.status_code == 200:

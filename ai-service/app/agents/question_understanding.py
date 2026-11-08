@@ -30,6 +30,17 @@ class QuestionUnderstandingAgent:
         "energy", "oil", "petroleum", "shipping", "logistics", "trade", "technology", "agriculture", "food"
     ]
 
+    KNOWN_STRATEGIC_LOCATIONS = {
+        "strait of hormuz": ("Strait of Hormuz", EntityType.INFRASTRUCTURE, "infra_hormuz"),
+        "hormuz": ("Strait of Hormuz", EntityType.INFRASTRUCTURE, "infra_hormuz"),
+        "persian gulf": ("Persian Gulf", EntityType.LOCATION, "loc_persian_gulf"),
+        "red sea": ("Red Sea", EntityType.LOCATION, "loc_red_sea"),
+        "suez canal": ("Suez Canal", EntityType.INFRASTRUCTURE, "infra_suez"),
+        "bab el-mandeb": ("Bab el-Mandeb", EntityType.INFRASTRUCTURE, "infra_bab_el_mandeb"),
+        "padur": ("Padur Strategic Petroleum Reserve", EntityType.INFRASTRUCTURE, "infra_spr_padur"),
+        "mangalore": ("Mangalore Strategic Petroleum Reserve", EntityType.INFRASTRUCTURE, "infra_spr_mangalore")
+    }
+
     def _fallback_process(self, request: QuestionIntakeRequest) -> Tuple[IntentOutput, EntityExtractionOutput]:
         q_lower = request.question.lower()
 
@@ -47,6 +58,11 @@ class QuestionUnderstandingAgent:
         elif any(w in q_lower for w in ["strategy", "mitigate", "recommend", "options", "policy"]):
             intent = IntentCategory.STRATEGY_COMPARISON
             requires_strategy = True
+        elif any(w in q_lower for w in ["indicator", "indicators", "world bank", "macroeconomic", "unit, observation"]):
+            intent = IntentCategory.SITUATIONAL_SUMMARY
+            requires_scenario = True
+            requires_strategy = True
+            rationale = "User inquiry requests verified macroeconomic and institutional indicators."
         elif any(w in q_lower for w in ["current situation", "status", "latest news", "update"]):
             intent = IntentCategory.SITUATIONAL_SUMMARY
 
@@ -81,6 +97,17 @@ class QuestionUnderstandingAgent:
                         aliases=[g_code]
                     ))
 
+        for loc_key, (loc_name, loc_type, loc_id) in self.KNOWN_STRATEGIC_LOCATIONS.items():
+            pattern = r'\b' + re.escape(loc_key) + r'\b'
+            if re.search(pattern, q_lower):
+                if not any(e.canonical_id == loc_id for e in entities):
+                    entities.append(ExtractedEntity(
+                        name=loc_name,
+                        entity_type=loc_type,
+                        canonical_id=loc_id,
+                        aliases=[loc_name, loc_key]
+                    ))
+
         for s in self.KNOWN_SECTORS:
             if s in q_lower:
                 entities.append(ExtractedEntity(
@@ -96,13 +123,21 @@ class QuestionUnderstandingAgent:
 
         return intent_out, entity_out
 
+    def _fallback_combined(self, request: QuestionIntakeRequest) -> QUCombinedOutput:
+        intent_out, entity_out = self._fallback_process(request)
+        return QUCombinedOutput(intent=intent_out, entities=entity_out)
+
     async def process(self, request: QuestionIntakeRequest) -> Tuple[IntentOutput, EntityExtractionOutput]:
         if settings.MODEL_PROVIDER == "local_fallback":
             return self._fallback_process(request)
 
         try:
             prompt = f"Analyze this geopolitical question: '{request.question}'. Extract the intent and any entities (countries, sectors, organizations)."
-            result = await llm_adapter.generate_structured(prompt, QUCombinedOutput)
+            result, meta = await llm_adapter.generate_structured(
+                prompt,
+                QUCombinedOutput,
+                fallback_factory=lambda: self._fallback_combined(request)
+            )
             return result.intent, result.entities
         except Exception:
             return self._fallback_process(request)

@@ -1,90 +1,120 @@
-import React, { useState } from 'react';
-import { Search, Sparkles, Globe, Clock, ArrowRight, Loader2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import {
+  Globe,
+  BarChart3,
+  AlertTriangle,
+  Users,
+  ArrowRight,
+  Plus,
+  Send,
+  Mic,
+  Loader2,
+  ChevronDown
+} from 'lucide-react';
 import { executeAnalysis } from '../../services/api';
 import { AnalysisResult } from '../../types';
 
 interface AskInterfaceProps {
   onAnalysisComplete: (result: AnalysisResult) => void;
+  selectedQuery?: string;
+  onClearResult?: () => void;
 }
 
-export const AskInterface: React.FC<AskInterfaceProps> = ({ onAnalysisComplete }) => {
-  const [question, setQuestion] = useState('What could be the effects on India if US-Iran tensions escalate?');
-  const [timeHorizon, setTimeHorizon] = useState('30d');
-  const [selectedGeos, setSelectedGeos] = useState<string[]>(['IND', 'IRN', 'USA']);
+export const AskInterface: React.FC<AskInterfaceProps> = ({
+  onAnalysisComplete,
+  selectedQuery,
+  onClearResult
+}) => {
+  const [question, setQuestion] = useState('');
+  const [useLiveData, setUseLiveData] = useState(true);
+  const [analysisMode, setAnalysisMode] = useState('Global Analysis');
+  const [showModeDropdown, setShowModeDropdown] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentStage, setCurrentStage] = useState<string>('');
+  const [stageIndex, setStageIndex] = useState(0);
 
-  const sampleQuestions = [
+  useEffect(() => {
+    if (selectedQuery) {
+      setQuestion(selectedQuery);
+    }
+  }, [selectedQuery]);
+
+  const suggestionCards = [
     {
-      title: 'Persian Gulf Naval Escalation & India',
-      q: 'What could be the effects on India if US-Iran tensions escalate?',
-      geos: ['IND', 'IRN', 'USA'],
+      id: 'middle-east',
+      title: 'Latest developments in the Middle East?',
+      icon: Globe,
+      color: 'text-blue-600 bg-blue-50',
+      geos: ['IRN', 'ISR', 'SAU', 'USA', 'IND'],
       horizon: '30d'
     },
     {
-      title: 'Red Sea Maritime & Shipping Shocks',
-      q: 'Evaluate the economic and shipping container freight impact of Red Sea transit disruptions.',
-      geos: ['EGY', 'YEM', 'IND', 'WLD'],
-      horizon: '60d'
+      id: 'india-economy',
+      title: "Impact on India's economy?",
+      icon: BarChart3,
+      color: 'text-emerald-600 bg-emerald-50',
+      geos: ['IND', 'WLD'],
+      horizon: '90d'
     },
     {
-      title: 'Critical Mineral & Energy Trade Bans',
-      q: 'Analyze potential domestic sector spillovers if crude oil trade routes face selective maritime blockades.',
-      geos: ['IND', 'SAU', 'ARE', 'IRN'],
-      horizon: '90d'
+      id: 'natural-disasters',
+      title: 'Recent natural disasters?',
+      icon: AlertTriangle,
+      color: 'text-rose-600 bg-rose-50',
+      geos: ['IND', 'JPN', 'IDN', 'USA'],
+      horizon: '15d'
+    },
+    {
+      id: 'india-china',
+      title: 'India and China relations?',
+      icon: Users,
+      color: 'text-indigo-600 bg-indigo-50',
+      geos: ['IND', 'CHN'],
+      horizon: '60d'
     }
   ];
 
-  const availableGeos = [
-    { code: 'IND', label: 'India' },
-    { code: 'IRN', label: 'Iran' },
-    { code: 'USA', label: 'United States' },
-    { code: 'CHN', label: 'China' },
-    { code: 'RUS', label: 'Russia' },
-    { code: 'UKR', label: 'Ukraine' },
-    { code: 'ISR', label: 'Israel' },
-    { code: 'EGY', label: 'Egypt' }
+  const analysisModes = [
+    'Global Analysis',
+    'India Strategic Impact',
+    'Economic Spillovers',
+    'Humanitarian & Disaster'
   ];
-
-  const handleToggleGeo = (code: string) => {
-    if (selectedGeos.includes(code)) {
-      if (selectedGeos.length > 1) {
-        setSelectedGeos(selectedGeos.filter(g => g !== code));
-      }
-    } else {
-      setSelectedGeos([...selectedGeos, code]);
-    }
-  };
 
   const handleRunAnalysis = async (customQ?: string, customGeos?: string[], customH?: string) => {
     const qToRun = customQ || question;
-    const geosToRun = customGeos || selectedGeos;
-    const hToRun = customH || timeHorizon;
+    if (!qToRun.trim() || loading) return;
 
-    if (!qToRun.trim()) return;
-
+    if (onClearResult) onClearResult();
     setLoading(true);
     setCurrentStage('Stage 1-3: Question Intake & Entity Resolution...');
+    setStageIndex(1);
 
     const stages = [
-      'Stage 4-5: Bounded Retrieval Planning & Dataset Builder...',
+      'Stage 1-3: Question Intake & Multi-entity Resolution...',
+      'Stage 4-5: Bounded Retrieval Planning & Live Dataset Builder...',
       'Stage 6-7: Evidence DNA Verification & Context Assembly...',
       'Stage 8-9: GeoCausal Propagation & GeoFork Scenario Lab...',
       'Stage 10: Strategy Option Formulation...',
       'Stage 11: Mandatory Independent Strategy Risk Review Gate...',
-      'Stage 12: 4-Section Composition & Explainability...'
+      'Stage 12: 4-Section Composition & Explainability Proof...'
     ];
 
-    let step = 0;
+    let step = 1;
     const interval = setInterval(() => {
       if (step < stages.length) {
         setCurrentStage(stages[step]);
+        setStageIndex(step + 1);
         step++;
       }
     }, 700);
 
     try {
-      const res = await executeAnalysis(qToRun, geosToRun, hToRun);
+      const res = await executeAnalysis(
+        qToRun,
+        customGeos || ['IND', 'IRN', 'USA'],
+        customH || '30d'
+      );
       clearInterval(interval);
       onAnalysisComplete(res);
     } catch (err) {
@@ -93,163 +123,202 @@ export const AskInterface: React.FC<AskInterfaceProps> = ({ onAnalysisComplete }
     } finally {
       setLoading(false);
       setCurrentStage('');
+      setStageIndex(0);
+    }
+  };
+
+  const handleCardClick = (card: typeof suggestionCards[0]) => {
+    setQuestion(card.title);
+    handleRunAnalysis(card.title, card.geos, card.horizon);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleRunAnalysis();
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="w-full max-w-4xl mx-auto flex flex-col items-center justify-center space-y-8 py-4 sm:py-6">
       
-      {/* Hero Header */}
-      <div className="text-center max-w-3xl mx-auto space-y-3 pt-4 pb-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold mb-2">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Explainable Decision-Support Intelligence</span>
+      {/* Center Welcome Hero matching Image 1 */}
+      <div className="flex flex-col items-center text-center space-y-3">
+        {/* Globe icon badge */}
+        <div className="w-16 h-16 rounded-full bg-blue-50 border border-blue-100/80 flex items-center justify-center text-blue-600 shadow-sm">
+          <Globe className="w-8 h-8 stroke-[2]" />
         </div>
-        <h1 className="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
-          Global Event Intelligence & <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-400">Impact Prediction</span>
+
+        <h1 className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-tight">
+          How can I help you today?
         </h1>
-        <p className="text-slate-400 text-xs sm:text-sm max-w-2xl mx-auto">
-          Ground complex geopolitical questions in verified multilateral data, physical sensor feeds, causal propagation chains, and independent red-team risk reviews.
+
+        <p className="text-xs sm:text-sm text-slate-500 max-w-lg leading-relaxed">
+          Ask any question about global events, conflicts, economies, organizations,
+          or their impact on India and get AI-powered analysis with real data sources.
         </p>
       </div>
 
-      {/* Query Form Panel */}
-      <div className="glass-panel rounded-2xl p-6 border-blue-500/20 max-w-4xl mx-auto space-y-5">
-        
-        {/* Main Textarea */}
-        <div className="relative">
-          <label className="text-xs font-semibold uppercase text-slate-400 block mb-2 tracking-wider flex items-center gap-1.5">
-            <Search className="w-3.5 h-3.5 text-blue-400" /> Enter Analytical Inquiry
-          </label>
+      {/* 4 Suggestion Cards matching Image 1 */}
+      <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3">
+        {suggestionCards.map((card) => {
+          const Icon = card.icon;
+          return (
+            <button
+              key={card.id}
+              onClick={() => handleCardClick(card)}
+              disabled={loading}
+              className="flex flex-col justify-between p-3.5 rounded-2xl bg-white border border-slate-200/90 hover:border-slate-300 hover:shadow-md transition-all text-left group min-h-[105px]"
+            >
+              <div className={`w-8 h-8 rounded-xl ${card.color} flex items-center justify-center mb-2.5`}>
+                <Icon className="w-4 h-4" />
+              </div>
+              <div className="flex items-end justify-between gap-2">
+                <span className="text-xs font-semibold text-slate-800 leading-snug group-hover:text-blue-600 transition-colors">
+                  {card.title}
+                </span>
+                <ArrowRight className="w-4 h-4 text-blue-600 transform group-hover:translate-x-1 transition-transform shrink-0 mb-0.5" />
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Main Question Input Box matching Image 1 & Image 3 */}
+      <div className="w-full relative">
+        <div className="w-full bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:border-slate-300 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-50 transition-all p-3 sm:p-4">
           <textarea
             rows={3}
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
+            onKeyDown={handleKeyDown}
             disabled={loading}
-            placeholder="e.g., What could be the effects on India if US-Iran tensions escalate?"
-            className="w-full bg-sentinel-900/90 text-white rounded-xl p-4 text-sm border border-sentinel-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition resize-none placeholder-slate-500"
+            placeholder="Enter your question here..."
+            className="w-full resize-none border-none outline-none text-slate-800 placeholder-slate-400 text-sm sm:text-base leading-relaxed bg-transparent"
           />
-        </div>
 
-        {/* Filter Controls: Geographies & Time Horizon */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
-          
-          {/* Target Geographies */}
-          <div>
-            <label className="text-xs font-semibold uppercase text-slate-400 block mb-2 tracking-wider flex items-center gap-1.5">
-              <Globe className="w-3.5 h-3.5 text-cyan-400" /> Target Geographies
-            </label>
-            <div className="flex flex-wrap gap-1.5">
-              {availableGeos.map((g) => {
-                const isSelected = selectedGeos.includes(g.code);
-                return (
-                  <button
-                    key={g.code}
-                    type="button"
-                    onClick={() => handleToggleGeo(g.code)}
-                    disabled={loading}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-medium transition ${
-                      isSelected
-                        ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/30'
-                        : 'bg-sentinel-800 text-slate-400 hover:text-white border border-sentinel-700/60'
-                    }`}
-                  >
-                    {g.label} ({g.code})
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+          {/* Bottom Action Bar inside Card matching Image 1 */}
+          <div className="flex items-center justify-between pt-2 border-t border-slate-100 gap-2">
+            {/* Left controls */}
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+              {/* Plus button */}
+              <button
+                type="button"
+                onClick={() => alert('Additional context or attachment uploads enabled for Enterprise.')}
+                className="w-8 h-8 rounded-full border border-slate-200 text-slate-500 hover:text-slate-800 hover:bg-slate-50 flex items-center justify-center transition"
+                title="Add attachment or prompt modifier"
+              >
+                <Plus className="w-4 h-4" />
+              </button>
 
-          {/* Time Horizon */}
-          <div>
-            <label className="text-xs font-semibold uppercase text-slate-400 block mb-2 tracking-wider flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-indigo-400" /> Projection Horizon
-            </label>
-            <div className="grid grid-cols-4 gap-2">
-              {[
-                { value: '15d', label: '15 Days' },
-                { value: '30d', label: '30 Days' },
-                { value: '90d', label: '90 Days' },
-                { value: '180d', label: '180 Days' }
-              ].map((h) => (
+              {/* Mode dropdown */}
+              <div className="relative">
                 <button
-                  key={h.value}
                   type="button"
-                  onClick={() => setTimeHorizon(h.value)}
-                  disabled={loading}
-                  className={`py-2 px-1 rounded-lg text-xs font-medium text-center transition ${
-                    timeHorizon === h.value
-                      ? 'bg-blue-600 text-white border border-blue-400/40 shadow-sm'
-                      : 'bg-sentinel-800 text-slate-400 hover:text-white border border-sentinel-700/60'
-                  }`}
+                  onClick={() => setShowModeDropdown(!showModeDropdown)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200 text-xs font-medium text-slate-700 hover:bg-slate-50 transition"
                 >
-                  {h.label}
+                  <Globe className="w-3.5 h-3.5 text-slate-500" />
+                  <span>{analysisMode}</span>
+                  <ChevronDown className="w-3 h-3 text-slate-400" />
                 </button>
-              ))}
+
+                {showModeDropdown && (
+                  <div className="absolute left-0 bottom-full mb-2 w-52 bg-white rounded-2xl shadow-xl border border-slate-200 py-1 z-50 animate-fadeIn">
+                    {analysisModes.map((mode) => (
+                      <button
+                        key={mode}
+                        type="button"
+                        onClick={() => {
+                          setAnalysisMode(mode);
+                          setShowModeDropdown(false);
+                        }}
+                        className={`w-full px-3 py-2 text-left text-xs transition-colors flex items-center justify-between ${
+                          analysisMode === mode
+                            ? 'text-blue-600 bg-blue-50 font-semibold'
+                            : 'text-slate-700 hover:bg-slate-50'
+                        }`}
+                      >
+                        <span>{mode}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Live Data Sources switch */}
+              <div className="flex items-center gap-2 pl-1">
+                <span className="text-xs font-medium text-slate-600 hidden sm:inline-block">
+                  Use Live Data Sources
+                </span>
+                <span className="text-xs font-medium text-slate-600 sm:hidden">
+                  Live Sources
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setUseLiveData(!useLiveData)}
+                  className={`theme-switch ${
+                    useLiveData ? 'theme-switch-checked' : 'theme-switch-unchecked'
+                  }`}
+                  role="switch"
+                  aria-checked={useLiveData}
+                >
+                  <span
+                    className={`theme-switch-thumb ${
+                      useLiveData ? 'theme-switch-thumb-checked' : ''
+                    }`}
+                  />
+                </button>
+              </div>
+            </div>
+
+            {/* Right actions: Mic & Send button */}
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => alert('Voice input is ready and waiting for audio permissions.')}
+                className="w-9 h-9 rounded-full text-slate-500 hover:text-slate-800 hover:bg-slate-100 flex items-center justify-center transition"
+                title="Voice Input"
+              >
+                <Mic className="w-4 h-4" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleRunAnalysis()}
+                disabled={loading || !question.trim()}
+                className="w-9 h-9 rounded-full bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:hover:bg-blue-600 text-white flex items-center justify-center shadow-sm transition transform active:scale-95"
+                title="Send Question"
+              >
+                {loading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4 -translate-x-0.5 translate-y-0.5" />
+                )}
+              </button>
             </div>
           </div>
-
         </div>
 
-        {/* Action Button & Live Progress */}
-        <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-sentinel-700/50">
-          <div className="text-xs text-slate-400">
-            {loading ? (
-              <span className="flex items-center gap-2 text-cyan-400 animate-pulse">
+        {/* Pipeline Execution Animation */}
+        {loading && (
+          <div className="mt-4 p-4 rounded-2xl bg-white border border-blue-100 shadow-sm animate-fadeIn space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2 text-blue-600 font-semibold">
                 <Loader2 className="w-4 h-4 animate-spin" />
                 <span>{currentStage}</span>
-              </span>
-            ) : (
-              <span>Zero-Paid-API verified • 12-stage sequential validation</span>
-            )}
-          </div>
-
-          <button
-            type="button"
-            onClick={() => handleRunAnalysis()}
-            disabled={loading || !question.trim()}
-            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-sm font-semibold shadow-lg shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all transform active:scale-95"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Processing Pipeline...</span>
-              </>
-            ) : (
-              <>
-                <span>Run Analysis Pipeline</span>
-                <ArrowRight className="w-4 h-4" />
-              </>
-            )}
-          </button>
-        </div>
-
-      </div>
-
-      {/* Preset Research Scenarios */}
-      <div className="max-w-4xl mx-auto space-y-3">
-        <h3 className="text-xs font-semibold uppercase text-slate-400 tracking-wider">
-          Preset Curated Research Scenarios
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {sampleQuestions.map((s, idx) => (
-            <div
-              key={idx}
-              onClick={() => {
-                setQuestion(s.q);
-                setSelectedGeos(s.geos);
-                setTimeHorizon(s.horizon);
-                handleRunAnalysis(s.q, s.geos, s.horizon);
-              }}
-              className="glass-panel glass-panel-hover p-4 rounded-xl cursor-pointer border-sentinel-700/60 text-left space-y-2"
-            >
-              <span className="text-[10px] font-bold uppercase text-blue-400 tracking-wider">{s.horizon} Horizon</span>
-              <h4 className="text-xs font-semibold text-white line-clamp-1">{s.title}</h4>
-              <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">{s.q}</p>
+              </div>
+              <span className="text-slate-400 font-medium">Stage {stageIndex} of 7</span>
             </div>
-          ))}
-        </div>
+            {/* Progress bar */}
+            <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+              <div
+                className="bg-blue-600 h-1.5 rounded-full transition-all duration-500"
+                style={{ width: `${(stageIndex / 7) * 100}%` }}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
     </div>

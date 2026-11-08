@@ -73,6 +73,10 @@ async def execute_analysis_pipeline(request: QuestionIntakeRequest) -> PipelineE
     Executes the canonical 12-stage AI analysis pipeline.
     Internal endpoint called by Spring Boot backend.
     """
+    print(f"\n=======================================================")
+    print(f">> [RECEIVED QUESTION]: {request.question}")
+    print(f"   Session: {request.session_id} | Geographies: {request.geographies} | Horizon: {request.time_horizon}")
+    print(f"=======================================================\n")
     try:
         return await geosentinel_pipeline.execute(request)
     except Exception as e:

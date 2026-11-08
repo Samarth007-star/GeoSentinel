@@ -46,6 +46,23 @@ public class JwtTokenProvider {
         return claims.getSubject();
     }
 
+    @SuppressWarnings("unchecked")
+    public List<String> getRolesFromToken(String token) {
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+            Object rolesObj = claims.get("roles");
+            if (rolesObj instanceof List<?>) {
+                return (List<String>) rolesObj;
+            }
+        } catch (JwtException | IllegalArgumentException ignored) {
+        }
+        return java.util.Collections.emptyList();
+    }
+
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);

@@ -25,7 +25,7 @@ class OoniConnector(BaseConnector):
             provider_name="Open Observatory of Network Interference (OONI)",
             terms_url="https://ooni.org/about/data-policy/",
             license_type="CC0 1.0 Public Domain",
-            timeout=15.0
+            timeout=settings.CONNECTOR_TIMEOUT_SECONDS
         )
         self.base_url = settings.OONI_BASE_URL.rstrip('/')
         self.auth_type = "None (Open Data API)"

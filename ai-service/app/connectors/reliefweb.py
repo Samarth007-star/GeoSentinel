@@ -81,10 +81,11 @@ class ReliefWebConnector(BaseConnector):
         self.last_checked = now_iso
 
         # Build search query from entities and geographies
-        terms = [g for g in target_geographies if g] + [e for e in target_entities if e]
+        meaningful_entities = [e for e in target_entities if e and e.upper() not in ["IND", "USA", "WLD"]]
+        terms = meaningful_entities if meaningful_entities else ([g for g in target_geographies if g] + [e for e in target_entities if e])
         query_str = " OR ".join(terms[:4]) if terms else "humanitarian crisis"
 
-        url = f"{self.base_url}/reports?appname={self.appname}&query[value]={query_str}&limit=5&profile=full"
+        url = f"{self.base_url}/reports?appname={self.appname}&query[value]={query_str}&limit=5&profile=full&sort[]=date:desc"
 
         try:
             async with httpx.AsyncClient(timeout=self.timeout) as client:

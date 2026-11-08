@@ -266,6 +266,10 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 
 -- Initial Roles Seed
 INSERT IGNORE INTO roles (id, role_key, description) VALUES
-('role_admin', 'ROLE_ADMIN', 'Administrator with full system & connector management'),
+('role_admin', 'ROLE_ADMIN', 'Administrator with full system & user management'),
 ('role_analyst', 'ROLE_ANALYST', 'Geopolitical Analyst with query & scenario authority'),
+('role_researcher', 'ROLE_RESEARCHER', 'Empirical Researcher with ForecastLab & historical replay access'),
+('role_decision_maker', 'ROLE_DECISION_MAKER', 'Strategic Executive with intervention decision authority'),
+('role_risk_auditor', 'ROLE_RISK_AUDITOR', 'Independent Red Team Auditor with Stage 11 Risk Review authority'),
+('role_data_engineer', 'ROLE_DATA_ENGINEER', 'Data Ingestion Engineer with Dataset Builder & connector authority'),
 ('role_viewer', 'ROLE_VIEWER', 'Read-only observer access to reports and evidence');

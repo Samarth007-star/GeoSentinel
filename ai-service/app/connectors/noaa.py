@@ -52,7 +52,7 @@ class NoaaConnector(BaseConnector):
             }
             async with httpx.AsyncClient(timeout=self.timeout) as client:
                 res = await client.get(
-                    f"{self.alerts_base_url}?status=actual&limit=1",
+                    f"{self.alerts_base_url}?status=actual",
                     headers=headers
                 )
                 if res.status_code == 200:
@@ -79,11 +79,9 @@ class NoaaConnector(BaseConnector):
                 "User-Agent": self.user_agent,
                 "Accept": "application/geo+json"
             }
-            # Fetch active alerts — free, no key required
+            # Fetch active alerts — free, no key required (weather.gov does not accept 'limit' query parameter)
             params = {
-                "status": "actual",
-                "message_type": "alert",
-                "limit": 10
+                "status": "actual"
             }
             # Add area filter for US state codes if geographies provided
             # NOAA alerts API uses US state abbreviations
