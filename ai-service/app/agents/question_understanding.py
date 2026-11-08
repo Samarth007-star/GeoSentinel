@@ -123,13 +123,21 @@ class QuestionUnderstandingAgent:
 
         return intent_out, entity_out
 
+    def _fallback_combined(self, request: QuestionIntakeRequest) -> QUCombinedOutput:
+        intent_out, entity_out = self._fallback_process(request)
+        return QUCombinedOutput(intent=intent_out, entities=entity_out)
+
     async def process(self, request: QuestionIntakeRequest) -> Tuple[IntentOutput, EntityExtractionOutput]:
         if settings.MODEL_PROVIDER == "local_fallback":
             return self._fallback_process(request)
 
         try:
             prompt = f"Analyze this geopolitical question: '{request.question}'. Extract the intent and any entities (countries, sectors, organizations)."
-            result = await llm_adapter.generate_structured(prompt, QUCombinedOutput)
+            result, meta = await llm_adapter.generate_structured(
+                prompt,
+                QUCombinedOutput,
+                fallback_factory=lambda: self._fallback_combined(request)
+            )
             return result.intent, result.entities
         except Exception:
             return self._fallback_process(request)

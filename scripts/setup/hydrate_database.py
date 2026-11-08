@@ -10,10 +10,11 @@ BCRYPT_PASSWORD_HASH = "$2a$10$wT0vV2wzG5kL8n4y7jYkseXz.6F5jG7xQ4Z1m8P3m.x6uV5w8
 
 def get_connection():
     return pymysql.connect(
-        host="localhost",
-        user="root",
-        password="Outlook@123",
-        database="geosentinel",
+        host=os.getenv("SPRING_DATASOURCE_HOST", "localhost"),
+        user=os.getenv("SPRING_DATASOURCE_USERNAME", "root"),
+        password=os.getenv("SPRING_DATASOURCE_PASSWORD", ""),
+        database=os.getenv("SPRING_DATASOURCE_DATABASE", "geosentinel"),
+        port=int(os.getenv("SPRING_DATASOURCE_PORT", "3306")),
         charset="utf8mb4",
         cursorclass=pymysql.cursors.DictCursor
     )
