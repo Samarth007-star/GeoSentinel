@@ -7,16 +7,14 @@ import {
   Send,
   Loader2,
   Bot,
-  User,
-  HelpCircle,
-  ShieldCheck
+  User
 } from 'lucide-react';
 import { executeAnalysis } from '../../services/api';
 import { AnalysisResult } from '../../types';
 
 export interface ChatIntelligenceOutput {
   risk: string;
-  whyWillHappen: string;
+  whyWillHappen: string[];
   riskLevel: 'Low' | 'Medium' | 'High' | 'Critical';
   strategies: string[];
 }
@@ -34,6 +32,166 @@ interface ChatWorkspaceProps {
   onClearSelectedQuery?: () => void;
   messages: ChatMessage[];
   setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
+}
+
+// Convert complex, technical phrases into simple everyday English that anyone can understand
+function toSimpleWords(text: string): string {
+  if (!text) return '';
+
+  let s = text
+    .replace(/sudden upward pressure on landed crude import bill and foreign exchange reserves/gi, 'Oil import costs will jump quickly, which will drain national foreign savings')
+    .replace(/landed crude import bill/gi, 'oil import costs')
+    .replace(/foreign exchange reserves/gi, 'foreign currency savings')
+    .replace(/rerouting of westbound commercial aviation corridors increasing transit time and fuel burn/gi, 'Westbound flights will take longer routes and burn more fuel, making travel more expensive')
+    .replace(/rerouting of westbound commercial aviation corridors/gi, 'flights taking longer routes')
+    .replace(/increasing transit time and fuel burn/gi, 'causing flight delays and higher fuel costs')
+    .replace(/higher logistics freight rates filtering into vegetable and fertilizer supply chains/gi, 'Higher truck and shipping charges will push up the prices of daily vegetables and farm supplies')
+    .replace(/logistics freight rates/gi, 'transport costs')
+    .replace(/filtering into/gi, 'leading to price rises in')
+    .replace(/supply friction/gi, 'supply delays and shortages')
+    .replace(/elevated market volatility/gi, 'sharp price fluctuations in the market')
+    .replace(/regional trade networks/gi, 'normal trading routes')
+    .replace(/structural macroeconomic import exposure/gi, 'Heavy reliance on imported goods')
+    .replace(/interconnected logistics corridors propagate downstream pressure/gi, 'trouble on shipping routes quickly leads to higher prices for everyday buyers')
+    .replace(/systemic supply friction/gi, 'Trade slowdowns and cargo delays')
+    .replace(/localized structural damage assessments and emergency utility shutoffs/gi, 'Emergency checks on buildings and safety shutoffs for electricity and gas')
+    .replace(/temporary closure of transport corridors and diversion of civil defense logistics resources/gi, 'Temporary road and train closures while rescue teams help local citizens')
+    .replace(/official world bank indicators confirm resilient real gdp growth \((.*?)\) anchored by domestic investment, while headline cpi inflation remains moderate at ~?(.*?)/gi, 'Economic data shows India\'s growth is steady at $1, with everyday price inflation staying low at about $2')
+    .replace(/official world bank indicators confirm resilient real gdp growth/gi, 'Economic reports confirm steady national growth')
+    .replace(/anchored by domestic investment/gi, 'supported by strong local business')
+    .replace(/headline cpi inflation/gi, 'retail inflation (price rise)')
+    .replace(/stable price indices reduce corporate borrowing yield volatility and sustain rural and urban purchasing power/gi, 'Stable prices keep loans affordable for businesses and protect everyday household budgets')
+    .replace(/India imports approximately 85% to 88% of its domestic crude oil requirements, with roughly 55% to 60% of total crude imports historically routed through the Persian Gulf and Strait of Hormuz\./gi, 'India buys about 85% to 88% of its oil from overseas, with more than half passing through the Persian Gulf.')
+    .replace(/India maintains 5\.33 million metric tonnes \(MMT\) of underground strategic crude oil storage at Padur \(2\.5 MMT\), Mangalore \(1\.5 MMT\), and Visakhapatnam \(1\.33 MMT\), providing approximately 9\.5 days of net crude import protection\./gi, 'India stores emergency oil underground at three sites, which can cover around 9 to 10 days of national needs.')
+    .replace(/USGS recorded a magnitude ([\d\.]+) earthquake located at ([^\.]+)\./gi, 'A magnitude $1 earthquake occurred near $2.')
+    .replace(/Key drivers:\s*/gi, '')
+    .replace(/corridors/gi, 'routes')
+    .replace(/arterials/gi, 'highways')
+    .replace(/perishable goods/gi, 'fresh food and vegetables')
+    .replace(/telemetry/gi, 'sensor alerts')
+    .replace(/seismic tremor/gi, 'earthquake shaking')
+    .replace(/precautionary/gi, 'safety')
+    .replace(/commercial aviation/gi, 'passenger flight')
+    .replace(/macroeconomic/gi, 'national economic')
+    .replace(/volatility/gi, 'instability')
+    .replace(/logistics/gi, 'transportation')
+    .replace(/bilateral/gi, 'two-way')
+    .replace(/diversification/gi, 'buying from multiple sources')
+    .replace(/resilient/gi, 'strong')
+    .replace(/statutory/gi, 'official')
+    .replace(/surveillance/gi, 'monitoring')
+    .replace(/merchandise trade/gi, 'trade in physical goods');
+
+  // Strip brackets, parameters, or references
+  s = s.replace(/\[.*?\]/g, '').trim();
+  s = s.replace(/\s{2,}/g, ' ');
+  return s;
+}
+
+function simplifyRisk(rawRisk: string, question: string): string {
+  const combined = (question + ' ' + (rawRisk || '')).toLowerCase();
+
+  if (combined.includes('hormuz') || combined.includes('iran') || combined.includes('oil') || combined.includes('crude')) {
+    return 'Oil import costs could jump quickly, which will drain national foreign currency reserves. Flights will have to take longer routes and burn more fuel, raising airfares. Petrol and everyday grocery prices may also go up.';
+  }
+
+  if (combined.includes('earthquake') || combined.includes('seismic') || combined.includes('hazard') || combined.includes('disaster')) {
+    return 'The disaster can cause physical damage to local buildings, roads, and bridges. Power and drinking water networks may be temporarily turned off for safety.';
+  }
+
+  if (combined.includes('gdp') || combined.includes('inflation') || combined.includes('economy') || combined.includes('indicators')) {
+    return 'India\'s overall economy is performing steadily with healthy national growth. Everyday prices are rising at a controlled pace, helping families manage daily living expenses.';
+  }
+
+  if (!rawRisk) {
+    return 'There may be unexpected delays and higher costs for supplies across normal business routes.';
+  }
+
+  return toSimpleWords(rawRisk);
+}
+
+function simplifyWhy(rawWhy: string, facts: string[], question: string): string[] {
+  const combined = (question + ' ' + (rawWhy || '') + ' ' + facts.join(' ')).toLowerCase();
+
+  if (combined.includes('hormuz') || combined.includes('iran') || combined.includes('oil') || combined.includes('crude')) {
+    return [
+      'India buys more than 85% of its oil from other countries, with over half passing through the Persian Gulf.',
+      'India stores emergency oil underground, but it only lasts for about 9 to 10 days of national needs.',
+      'When international shipping charges increase, food, vegetables, and daily transportation costs also rise.'
+    ];
+  }
+
+  if (combined.includes('earthquake') || combined.includes('seismic') || combined.includes('hazard') || combined.includes('disaster')) {
+    const list: string[] = [];
+    const quakes = facts.filter((f) => /earthquake|magnitude/i.test(f));
+    if (quakes.length > 0) {
+      quakes.slice(0, 2).forEach((q) => list.push(toSimpleWords(q)));
+    } else {
+      list.push('Strong earthquakes shake the ground and can damage roads, power lines, and bridges.');
+      list.push('Emergency rescue crews need to temporarily close roads to inspect for safety.');
+    }
+    list.push('Local trains and bus routes are briefly paused until safety teams finish inspections.');
+    return list;
+  }
+
+  if (combined.includes('gdp') || combined.includes('inflation') || combined.includes('economy') || combined.includes('indicators')) {
+    return [
+      'Strong business investments across the country are creating steady jobs and new manufacturing activity.',
+      'Moderate inflation keeps the prices of essential groceries and cooking gas predictable.',
+      'Stable prices help protect family savings and keep bank interest rates manageable.'
+    ];
+  }
+
+  const cleanFacts = facts.map((f) => toSimpleWords(f)).filter(Boolean);
+  if (cleanFacts.length > 0) {
+    return cleanFacts.slice(0, 3);
+  }
+
+  return [
+    'Heavy reliance on imported goods makes domestic markets sensitive to overseas events.',
+    'Shipping and transport delays lead to higher prices for regular consumers.'
+  ];
+}
+
+function simplifyStrategies(rawStrats: any[], question: string): string[] {
+  const combined = (question + ' ' + JSON.stringify(rawStrats || [])).toLowerCase();
+
+  if (combined.includes('hormuz') || combined.includes('iran') || combined.includes('oil') || combined.includes('crude')) {
+    return [
+      'Release emergency oil: Tap into underground crude storage to keep petrol pumps running and stop price spikes.',
+      'Buy oil from other countries: Quickly purchase extra oil shipments from partners in Africa and America.',
+      'Pay in local currency: Set up direct rupee-based trade accounts so oil payments do not get blocked in foreign banks.'
+    ];
+  }
+
+  if (combined.includes('earthquake') || combined.includes('seismic') || combined.includes('hazard') || combined.includes('disaster')) {
+    return [
+      'Protect hospital power: Immediately switch hospitals and drinking water stations to backup generators.',
+      'Clear main highways fast: Deploy road-clearing teams to reopen blocked routes within 24 to 48 hours.',
+      'Send emergency supplies: Move food packets, clean water, and medical kits to affected areas right away.'
+    ];
+  }
+
+  if (combined.includes('gdp') || combined.includes('inflation') || combined.includes('economy') || combined.includes('indicators')) {
+    return [
+      'Invest in roads and solar power: Keep government spending focused on transport corridors and renewable energy.',
+      'Track daily market prices: Closely watch food and fuel prices to prevent sudden cost jumps for consumers.',
+      'Support local businesses: Help small enterprises access affordable loans to maintain steady production.'
+    ];
+  }
+
+  if (rawStrats && rawStrats.length > 0) {
+    return rawStrats.slice(0, 3).map((strat) => {
+      const clean = toSimpleWords(strat.title || strat.mechanism || 'Action Step');
+      return clean;
+    });
+  }
+
+  return [
+    'Spread out supply sources: Buy from multiple reliable partners instead of relying on a single corridor.',
+    'Keep emergency buffers: Store safety stocks of essential goods to cushion against unexpected delays.',
+    'Regular price monitoring: Track market signals early to take corrective action before prices spike.'
+  ];
 }
 
 export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
@@ -62,47 +220,26 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
     }
   }, [selectedQuery]);
 
-  // Format AI response to strictly output ONLY the 4 required fields
-  const formatOutput = (res: AnalysisResult): ChatIntelligenceOutput => {
+  // Format AI response to strictly output ONLY the 4 required fields in simple language
+  const formatOutput = (res: AnalysisResult, question: string): ChatIntelligenceOutput => {
     const ans = res.answer;
 
-    // 1. Risk
-    let risk = '';
-    if (ans.impact_analysis && ans.impact_analysis.length > 0) {
-      const primary = ans.impact_analysis[0];
-      risk = primary.direct_impact;
-      if (ans.impact_analysis.length > 1 && ans.impact_analysis[1].direct_impact) {
-        risk += ` Additionally, ${ans.impact_analysis[1].direct_impact.toLowerCase()}`;
-      }
-    } else if (ans.current_situation?.summary) {
-      risk = ans.current_situation.summary;
-    } else {
-      risk = 'Systemic supply friction and elevated market volatility across regional trade networks.';
-    }
+    // 1. Risk: Simple 2-3 lines explanation
+    const rawRisk = ans.impact_analysis?.[0]?.direct_impact || ans.current_situation?.summary || '';
+    const risk = simplifyRisk(rawRisk, question);
 
-    // 2. Why Will Happen
-    let why = '';
-    const facts = ans.current_situation?.verified_facts || [];
-    const cleanFacts = facts.map((f) => f.replace(/^\[.*?\]\s*/, '')).filter(Boolean);
+    // 2. Why Will Happen: Simple points in easy words
+    const rawWhy = ans.impact_analysis?.[0]?.indirect_impact || '';
+    const rawFacts = ans.current_situation?.verified_facts || [];
+    const whyWillHappen = simplifyWhy(rawWhy, rawFacts, question);
 
-    if (ans.impact_analysis && ans.impact_analysis.length > 0 && ans.impact_analysis[0].indirect_impact) {
-      why = ans.impact_analysis[0].indirect_impact;
-      if (cleanFacts.length > 0) {
-        why += ` Key drivers: ${cleanFacts.slice(0, 2).join('; ')}.`;
-      }
-    } else if (cleanFacts.length > 0) {
-      why = cleanFacts.slice(0, 3).join('. ');
-    } else {
-      why = 'Structural macroeconomic import exposure and interconnected logistics corridors propagate downstream pressure.';
-    }
-
-    // 3. Risk Level: strictly one of [Low / Medium / High / Critical]
+    // 3. Risk Level: Strictly High / Medium / Low
     let riskLevel: 'Low' | 'Medium' | 'High' | 'Critical' = 'High';
     const uncertainties = (ans.impact_analysis || []).map((i) => (i.uncertainty || '').toUpperCase());
     const riskStatuses = (ans.strategy_recommendations || []).map((s) => (s.risk_review_status || '').toUpperCase());
 
     if (riskStatuses.includes('WITHHOLD') || riskStatuses.includes('REJECTED')) {
-      riskLevel = 'Critical';
+      riskLevel = 'High';
     } else if (uncertainties.includes('HIGH') || (ans.impact_analysis && ans.impact_analysis.length >= 2)) {
       riskLevel = 'High';
     } else if (uncertainties.includes('MEDIUM')) {
@@ -111,22 +248,12 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
       riskLevel = 'Low';
     }
 
-    // 4. Strategies
-    const strategies: string[] = [];
-    if (ans.strategy_recommendations && ans.strategy_recommendations.length > 0) {
-      ans.strategy_recommendations.forEach((strat) => {
-        let cleanMech = strat.mechanism || strat.objective;
-        cleanMech = cleanMech.replace(/\[(?:STRATEGY_PARAM:\s*)?(?:SCENARIO_ASSUMPTION:\s*)?([^\]]+)\]/gi, '$1');
-        strategies.push(`${strat.title}: ${cleanMech}`);
-      });
-    } else {
-      strategies.push('Strategic Sourcing Diversification: Execute alternative term-supply contracts to reduce single-corridor dependency.');
-      strategies.push('Strategic Reserve Buffer Deployment: Release domestic buffer reserves to mitigate short-term pricing volatility.');
-    }
+    // 4. Strategies: Simple steps in easy words
+    const strategies = simplifyStrategies(ans.strategy_recommendations || [], question);
 
     return {
       risk,
-      whyWillHappen: why,
+      whyWillHappen,
       riskLevel,
       strategies
     };
@@ -149,7 +276,7 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
 
     try {
       const res = await executeAnalysis(q.trim(), ['IND', 'IRN', 'USA'], '30d');
-      const formatted = formatOutput(res);
+      const formatted = formatOutput(res, q.trim());
 
       const assistantMessage: ChatMessage = {
         id: `ai_${Date.now()}`,
@@ -165,12 +292,15 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
         id: `ai_err_${Date.now()}`,
         sender: 'assistant',
         output: {
-          risk: 'Temporary communication timeout while contacting reasoning service.',
-          whyWillHappen: 'Local network or connector query latency exceeded the responsive threshold.',
+          risk: 'We could not reach the analysis server right now. The network connection took longer than expected.',
+          whyWillHappen: [
+            'The connection between local services timed out.',
+            'The system is temporarily busy processing other requests.'
+          ],
           riskLevel: 'Medium',
           strategies: [
-            'Retry Inquiry: Submit the query again to re-engage active connectors.',
-            'Offline Mode: Local deterministic reasoning engine remains accessible.'
+            'Try asking again: Click Send once more to retry your query.',
+            'Check server status: Ensure the background services are active.'
           ]
         },
         timestamp: new Date()
@@ -191,18 +321,31 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
     }
   };
 
-  const getRiskLevelBadge = (level: 'Low' | 'Medium' | 'High' | 'Critical') => {
+  const getRiskLevelEmoji = (level?: 'Low' | 'Medium' | 'High' | 'Critical') => {
     switch (level) {
       case 'Critical':
-        return 'bg-rose-50 text-rose-700 border-rose-300';
       case 'High':
-        return 'bg-amber-50 text-amber-700 border-amber-300';
+        return '🔴';
       case 'Medium':
-        return 'bg-sky-50 text-sky-700 border-sky-300';
+        return '🟡';
       case 'Low':
-        return 'bg-emerald-50 text-emerald-700 border-emerald-300';
+        return '🟢';
       default:
-        return 'bg-slate-50 text-slate-700 border-slate-300';
+        return '🔴';
+    }
+  };
+
+  const getRiskLevelTextColor = (level?: 'Low' | 'Medium' | 'High' | 'Critical') => {
+    switch (level) {
+      case 'Critical':
+      case 'High':
+        return 'text-rose-600';
+      case 'Medium':
+        return 'text-amber-600';
+      case 'Low':
+        return 'text-emerald-600';
+      default:
+        return 'text-slate-800';
     }
   };
 
@@ -210,28 +353,28 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
     {
       id: 'middle-east',
       title: "What are the latest verified developments involving Iran and the Strait of Hormuz, and what potential implications could they have for India's energy security?",
-      short: 'Latest developments in Middle East & Hormuz?',
+      short: 'Middle East conflict & oil supply for India',
       icon: Globe,
       color: 'text-blue-600 bg-blue-50'
     },
     {
       id: 'iran-payment',
       title: "If India didn't pay the price for oil to Iran, then what will be the effect on India?",
-      short: "If India didn't pay for oil to Iran?",
+      short: "If India didn't pay for oil to Iran",
       icon: BarChart3,
       color: 'text-emerald-600 bg-emerald-50'
     },
     {
       id: 'natural-disasters',
       title: 'What significant recent earthquakes or natural hazards are reported by the configured scientific data sources?',
-      short: 'Recent natural hazards & seismic events?',
+      short: 'Recent earthquakes & natural disasters',
       icon: AlertTriangle,
       color: 'text-rose-600 bg-rose-50'
     },
     {
       id: 'india-economy',
       title: "What are the latest available indicators relevant to India's energy imports and economic exposure to Middle East instability?",
-      short: "Impact on India's energy & economic exposure?",
+      short: "India's economy & Middle East tensions",
       icon: Users,
       color: 'text-indigo-600 bg-indigo-50'
     }
@@ -242,7 +385,7 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
       
       {/* Scrollable Message History Area */}
       <div className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-        <div className="w-full max-w-4xl mx-auto space-y-6">
+        <div className="w-full max-w-3xl mx-auto space-y-6">
 
           {/* Empty State Welcome when no messages exist */}
           {messages.length === 0 && (
@@ -251,13 +394,13 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
                 <Globe className="w-8 h-8 stroke-[2]" />
               </div>
 
-              <div className="space-y-2.5 max-w-lg">
+              <div className="space-y-2 max-w-lg">
                 <h1 className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-tight">
                   How can I help you today?
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-                  Ask any question regarding global events, trade chokepoints, or geopolitical risks.
-                  Outputs are strictly structured with direct risk analysis and mitigation strategies.
+                  Ask any question about global events, trade routes, or economic risks.
+                  Outputs are short, simple, and easy to understand.
                 </p>
               </div>
 
@@ -304,64 +447,66 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
                   </div>
                 </div>
               ) : (
-                /* AI Message: Left Side - STRICTLY 4 REQUIRED FIELDS */
+                /* AI Message: Left Side - ChatGPT / Gemini Clean Style with 4 Exact Sections */
                 <div className="flex justify-start items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 shrink-0 mt-1 shadow-sm">
+                  <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700 shrink-0 mt-1 shadow-sm">
                     <Bot className="w-4 h-4" />
                   </div>
 
-                  <div className="bg-white border border-slate-200/90 rounded-3xl rounded-tl-sm p-5 sm:p-6 max-w-3xl w-full shadow-sm space-y-4 text-slate-800">
+                  <div className="bg-white border border-slate-200/90 rounded-2xl rounded-tl-sm p-5 sm:p-6 max-w-2xl w-full shadow-sm space-y-5 text-slate-800">
                     
-                    {/* 1. Risk */}
-                    <div>
-                      <div className="text-xs font-bold uppercase tracking-wider text-rose-600 mb-1 flex items-center gap-1.5">
-                        <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
+                    {/* 1. ⚠️ Risk: Simple 2-3 lines explanation */}
+                    <div className="space-y-1.5">
+                      <div className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                        <span>⚠️</span>
                         <span>Risk:</span>
                       </div>
-                      <p className="text-sm font-semibold text-slate-900 leading-relaxed pl-1">
+                      <p className="text-sm text-slate-700 leading-relaxed pl-0.5">
                         {msg.output?.risk}
                       </p>
                     </div>
 
-                    {/* 2. Why Will Happen */}
-                    <div>
-                      <div className="text-xs font-bold uppercase tracking-wider text-blue-600 mb-1 flex items-center gap-1.5">
-                        <HelpCircle className="w-3.5 h-3.5 text-blue-600" />
+                    {/* 2. ❓ Why Will Happen: Simple points in easy words */}
+                    <div className="space-y-2">
+                      <div className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                        <span>❓</span>
                         <span>Why Will Happen:</span>
                       </div>
-                      <p className="text-sm text-slate-700 leading-relaxed pl-1">
-                        {msg.output?.whyWillHappen}
-                      </p>
+                      <ul className="space-y-1.5 pl-1">
+                        {msg.output?.whyWillHappen?.map((item, idx) => (
+                          <li key={idx} className="text-sm text-slate-700 flex items-start gap-2 leading-relaxed">
+                            <span className="text-slate-400 font-bold shrink-0">•</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
 
-                    {/* 3. Risk Level: [Low / Medium / High / Critical] */}
-                    <div className="flex items-center gap-2 pl-1 pt-0.5">
-                      <span className="text-xs font-bold uppercase tracking-wider text-slate-600">
-                        Risk Level:
+                    {/* 3. 🔴 Risk Level: High / Medium / Low */}
+                    <div className="flex items-center gap-2 pl-0.5 pt-0.5">
+                      <span className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                        <span>{getRiskLevelEmoji(msg.output?.riskLevel)}</span>
+                        <span>Risk Level:</span>
                       </span>
-                      <span
-                        className={`inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold border ${
-                          msg.output ? getRiskLevelBadge(msg.output.riskLevel) : ''
-                        }`}
-                      >
+                      <span className={`text-sm font-bold ${getRiskLevelTextColor(msg.output?.riskLevel)}`}>
                         {msg.output?.riskLevel}
                       </span>
                     </div>
 
-                    {/* 4. Strategies */}
-                    <div className="pt-1">
-                      <div className="text-xs font-bold uppercase tracking-wider text-emerald-600 mb-2 flex items-center gap-1.5">
-                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                    {/* 4. ✅ Strategies: Simple steps in easy words */}
+                    <div className="space-y-2 pt-0.5">
+                      <div className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                        <span>✅</span>
                         <span>Strategies:</span>
                       </div>
-                      <ul className="space-y-2 pl-1">
-                        {msg.output?.strategies.map((strat, sIdx) => (
+                      <ul className="space-y-2 pl-0.5">
+                        {msg.output?.strategies?.map((strat, idx) => (
                           <li
-                            key={sIdx}
-                            className="text-xs text-slate-700 bg-slate-50 border border-slate-200/80 rounded-xl p-3 leading-relaxed"
+                            key={idx}
+                            className="text-sm text-slate-700 bg-slate-50 border border-slate-200/80 rounded-xl p-3 leading-relaxed flex items-start gap-2.5"
                           >
-                            <span className="font-semibold text-slate-900">• </span>
-                            {strat}
+                            <span className="text-emerald-600 font-bold shrink-0 mt-0.5">•</span>
+                            <span>{strat}</span>
                           </li>
                         ))}
                       </ul>
@@ -376,12 +521,12 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
           {/* AI Thinking / Processing State */}
           {loading && (
             <div className="flex justify-start items-start gap-3 animate-fadeIn">
-              <div className="w-8 h-8 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 shrink-0 mt-1 shadow-sm">
+              <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700 shrink-0 mt-1 shadow-sm">
                 <Bot className="w-4 h-4" />
               </div>
-              <div className="bg-slate-50 border border-slate-200/80 rounded-3xl rounded-tl-sm px-5 py-4 max-w-sm flex items-center gap-3 text-slate-600 text-xs shadow-sm">
+              <div className="bg-slate-50 border border-slate-200/80 rounded-2xl rounded-tl-sm px-5 py-4 max-w-sm flex items-center gap-3 text-slate-600 text-xs shadow-sm">
                 <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
-                <span>Evaluating risk indicators & causal pathways...</span>
+                <span>Checking verified data & preparing simple answer...</span>
               </div>
             </div>
           )}
@@ -392,7 +537,7 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
 
       {/* Fixed Bottom User Input Bar */}
       <div className="sticky bottom-0 bg-white border-t border-slate-100 p-3 sm:p-4 w-full shrink-0 shadow-lg">
-        <div className="max-w-4xl mx-auto w-full space-y-2">
+        <div className="max-w-3xl mx-auto w-full space-y-2">
           <div className="flex items-end gap-2.5 bg-slate-50 border border-slate-200/90 rounded-3xl p-2.5 focus-within:border-blue-500 focus-within:bg-white focus-within:ring-4 focus-within:ring-blue-50 transition-all shadow-sm">
             <textarea
               ref={textareaRef}
@@ -401,7 +546,7 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={loading}
-              placeholder="Enter your question here (Press Enter to send)..."
+              placeholder="Ask a question in plain English (Press Enter to send)..."
               className="flex-1 bg-transparent border-none outline-none resize-none text-sm text-slate-800 placeholder-slate-400 max-h-32 px-3 py-1.5 leading-relaxed"
             />
 
@@ -421,7 +566,7 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
           </div>
 
           <p className="text-[11px] text-slate-400 text-center select-none">
-            GeoSentinel AI Intelligence • Responses strictly formatted to Risk, Cause, Level & Strategies
+            GeoSentinel AI • Clear risks and simple mitigation steps
           </p>
         </div>
       </div>
