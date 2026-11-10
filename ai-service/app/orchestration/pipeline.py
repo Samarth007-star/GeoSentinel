@@ -13,6 +13,7 @@ from ..agents.prediction_scenario import prediction_scenario_agent
 from ..agents.strategy_generation import strategy_generation_agent
 from ..agents.strategy_risk_review import strategy_risk_review_agent
 from ..agents.response_composition import response_composition_agent
+from ..services.llm_service import live_llm_service
 
 class GeoSentinelPipeline:
     """
@@ -56,6 +57,14 @@ class GeoSentinelPipeline:
             scenarios=scenarios,
             strategies=reviewed_strategies
         )
+
+        # Stage 13: Live LLM Real-Time Analysis (No hardcoded answers, live data)
+        try:
+            live_analysis = live_llm_service.analyze(request.question)
+            answer.chat_output = live_analysis
+        except Exception as e:
+            import logging
+            logging.getLogger("geosentinel.pipeline").error(f"Live LLM execution error: {e}")
 
         completed_at = datetime.now(timezone.utc).isoformat()
 

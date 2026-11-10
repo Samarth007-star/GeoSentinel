@@ -88,144 +88,42 @@ function toSimpleWords(text: string): string {
   return s;
 }
 
-function simplifyRisk(rawRisk: string, question: string): string {
-  const qLower = question.toLowerCase();
-  const rLower = (rawRisk || '').toLowerCase();
+// Format AI response dynamically using the fresh LLM & live data output
+const formatOutput = (res: AnalysisResult): ChatIntelligenceOutput => {
+  const ans = res.answer;
 
-  // AI & Tech Hardware check
-  if (qLower.includes('nvidia') || qLower.includes('chip') || qLower.includes('gpu') || qLower.includes('semiconductor') || qLower.includes('hardware') || rLower.includes('ai compute') || rLower.includes('hardware architecture')) {
-    return 'Cheap AI chips will help Indian tech startups and universities grow fast, but could make India heavily dependent on a single foreign company. It also increases electricity and water cooling demands for running large computer data centers.';
+  // 1. If backend returned fresh live LLM chat output, use it directly!
+  if (ans.chat_output) {
+    const co = ans.chat_output;
+    return {
+      risk: toSimpleWords(co.risk || ''),
+      whyWillHappen: (co.why_will_happen || []).map((w: string) => toSimpleWords(w)),
+      riskLevel: co.risk_level || 'Medium',
+      strategies: (co.strategies || []).map((s: string) => toSimpleWords(s))
+    };
   }
 
-  // Geopolitical Oil & Hormuz check
-  if (qLower.includes('hormuz') || qLower.includes('iran') || qLower.includes('oil') || qLower.includes('crude') || qLower.includes('petroleum')) {
-    return 'Oil import costs could jump quickly, which will drain national foreign currency reserves. Flights will have to take longer routes and burn more fuel, raising airfares. Petrol and everyday grocery prices may also go up.';
-  }
+  // 2. Dynamic fallback from impact analysis & verified facts
+  const rawRisk = ans.impact_analysis?.[0]?.direct_impact || ans.current_situation?.summary || '';
+  const rawWhy = ans.impact_analysis?.[0]?.indirect_impact || '';
+  const facts = ans.current_situation?.verified_facts || [];
 
-  // Earthquake / Natural Disasters check
-  if (qLower.includes('earthquake') || qLower.includes('seismic') || qLower.includes('hazard') || qLower.includes('disaster')) {
-    return 'The disaster can cause physical damage to local buildings, roads, and bridges. Power and drinking water networks may be temporarily turned off for safety.';
-  }
+  const whyPoints: string[] = [];
+  if (rawWhy) whyPoints.push(toSimpleWords(rawWhy));
+  facts.slice(0, 2).forEach((f) => whyPoints.push(toSimpleWords(f)));
 
-  // GDP / Economy check
-  if (qLower.includes('gdp') || qLower.includes('inflation') || qLower.includes('economy') || qLower.includes('indicators')) {
-    return 'India\'s overall economy is performing steadily with healthy national growth. Everyday prices are rising at a controlled pace, helping families manage daily living expenses.';
-  }
+  const strategies: string[] = [];
+  (ans.strategy_recommendations || []).slice(0, 3).forEach((s) => {
+    strategies.push(toSimpleWords(`${s.title}: ${s.mechanism || s.objective}`));
+  });
 
-  if (!rawRisk) {
-    return 'There may be unexpected delays and higher costs for supplies across normal business routes.';
-  }
-
-  return toSimpleWords(rawRisk);
-}
-
-function simplifyWhy(_rawWhy: string, facts: string[], question: string): string[] {
-  const qLower = question.toLowerCase();
-
-  // AI & Tech Hardware check
-  if (qLower.includes('nvidia') || qLower.includes('chip') || qLower.includes('gpu') || qLower.includes('semiconductor') || qLower.includes('hardware')) {
-    return [
-      'High-end AI chips are currently very expensive, so cheap chips will instantly attract thousands of students, researchers, and startups.',
-      'Relying entirely on one foreign company\'s chips could slow down India\'s own domestic chip-making plans.',
-      'Running large AI server buildings consumes massive amounts of electricity and cooling water.'
-    ];
-  }
-
-  // Geopolitical Oil & Hormuz check
-  if (qLower.includes('hormuz') || qLower.includes('iran') || qLower.includes('oil') || qLower.includes('crude') || qLower.includes('petroleum')) {
-    return [
-      'India buys more than 85% of its oil from other countries, with over half passing through the Persian Gulf.',
-      'India stores emergency oil underground, but it only lasts for about 9 to 10 days of national needs.',
-      'When international shipping charges increase, food, vegetables, and daily transportation costs also rise.'
-    ];
-  }
-
-  // Earthquake / Natural Disasters check
-  if (qLower.includes('earthquake') || qLower.includes('seismic') || qLower.includes('hazard') || qLower.includes('disaster')) {
-    const list: string[] = [];
-    const quakes = facts.filter((f) => /earthquake|magnitude/i.test(f));
-    if (quakes.length > 0) {
-      quakes.slice(0, 2).forEach((q) => list.push(toSimpleWords(q)));
-    } else {
-      list.push('Strong earthquakes shake the ground and can damage roads, power lines, and bridges.');
-      list.push('Emergency rescue crews need to temporarily close roads to inspect for safety.');
-    }
-    list.push('Local trains and bus routes are briefly paused until safety teams finish inspections.');
-    return list;
-  }
-
-  // GDP / Economy check
-  if (qLower.includes('gdp') || qLower.includes('inflation') || qLower.includes('economy') || qLower.includes('indicators')) {
-    return [
-      'Strong business investments across the country are creating steady jobs and new manufacturing activity.',
-      'Moderate inflation keeps the prices of essential groceries and cooking gas predictable.',
-      'Stable prices help protect family savings and keep bank interest rates manageable.'
-    ];
-  }
-
-  const cleanFacts = facts.map((f) => toSimpleWords(f)).filter(Boolean);
-  if (cleanFacts.length > 0) {
-    return cleanFacts.slice(0, 3);
-  }
-
-  return [
-    'Heavy reliance on imported goods makes domestic markets sensitive to overseas events.',
-    'Shipping and transport delays lead to higher prices for regular consumers.'
-  ];
-}
-
-function simplifyStrategies(rawStrats: any[], question: string): string[] {
-  const qLower = question.toLowerCase();
-
-  // AI & Tech Hardware check
-  if (qLower.includes('nvidia') || qLower.includes('chip') || qLower.includes('gpu') || qLower.includes('semiconductor') || qLower.includes('hardware')) {
-    return [
-      'Support Indian chip designers: Continue government funding for local chip companies so India builds its own technology.',
-      'Promote open-source AI software: Teach students and developers to use open-source tools so they are not locked into one vendor.',
-      'Build green data centers: Connect large AI computer centers to solar power and water-recycling systems to save electricity.'
-    ];
-  }
-
-  // Geopolitical Oil & Hormuz check
-  if (qLower.includes('hormuz') || qLower.includes('iran') || qLower.includes('oil') || qLower.includes('crude') || qLower.includes('petroleum')) {
-    return [
-      'Release emergency oil: Tap into underground crude storage to keep petrol pumps running and stop price spikes.',
-      'Buy oil from other countries: Quickly purchase extra oil shipments from partners in Africa and America.',
-      'Pay in local currency: Set up direct rupee-based trade accounts so oil payments do not get blocked in foreign banks.'
-    ];
-  }
-
-  // Earthquake / Natural Disasters check
-  if (qLower.includes('earthquake') || qLower.includes('seismic') || qLower.includes('hazard') || qLower.includes('disaster')) {
-    return [
-      'Protect hospital power: Immediately switch hospitals and drinking water stations to backup generators.',
-      'Clear main highways fast: Deploy road-clearing teams to reopen blocked routes within 24 to 48 hours.',
-      'Send emergency supplies: Move food packets, clean water, and medical kits to affected areas right away.'
-    ];
-  }
-
-  // GDP / Economy check
-  if (qLower.includes('gdp') || qLower.includes('inflation') || qLower.includes('economy') || qLower.includes('indicators')) {
-    return [
-      'Invest in roads and solar power: Keep government spending focused on transport corridors and renewable energy.',
-      'Track daily market prices: Closely watch food and fuel prices to prevent sudden cost jumps for consumers.',
-      'Support local businesses: Help small enterprises access affordable loans to maintain steady production.'
-    ];
-  }
-
-  if (rawStrats && rawStrats.length > 0) {
-    return rawStrats.slice(0, 3).map((strat) => {
-      const clean = toSimpleWords(strat.title || strat.mechanism || 'Action Step');
-      return clean;
-    });
-  }
-
-  return [
-    'Spread out supply sources: Buy from multiple reliable partners instead of relying on a single corridor.',
-    'Keep emergency buffers: Store safety stocks of essential goods to cushion against unexpected delays.',
-    'Regular price monitoring: Track market signals early to take corrective action before prices spike.'
-  ];
-}
+  return {
+    risk: toSimpleWords(rawRisk) || 'Active economic and supply chain shifts require close monitoring.',
+    whyWillHappen: whyPoints.length > 0 ? whyPoints : ['Global and regional market conditions are shifting rapidly.'],
+    riskLevel: 'Medium',
+    strategies: strategies.length > 0 ? strategies : ['Track official indicators and maintain flexible supplier terms.']
+  };
+};
 
 export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
   selectedQuery,
@@ -253,45 +151,6 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
     }
   }, [selectedQuery]);
 
-  // Format AI response to strictly output ONLY the 4 required fields in simple language
-  const formatOutput = (res: AnalysisResult, question: string): ChatIntelligenceOutput => {
-    const ans = res.answer;
-
-    // 1. Risk: Simple 2-3 lines explanation
-    const rawRisk = ans.impact_analysis?.[0]?.direct_impact || ans.current_situation?.summary || '';
-    const risk = simplifyRisk(rawRisk, question);
-
-    // 2. Why Will Happen: Simple points in easy words
-    const rawWhy = ans.impact_analysis?.[0]?.indirect_impact || '';
-    const rawFacts = ans.current_situation?.verified_facts || [];
-    const whyWillHappen = simplifyWhy(rawWhy, rawFacts, question);
-
-    // 3. Risk Level: Strictly High / Medium / Low
-    let riskLevel: 'Low' | 'Medium' | 'High' | 'Critical' = 'High';
-    const uncertainties = (ans.impact_analysis || []).map((i) => (i.uncertainty || '').toUpperCase());
-    const riskStatuses = (ans.strategy_recommendations || []).map((s) => (s.risk_review_status || '').toUpperCase());
-
-    if (riskStatuses.includes('WITHHOLD') || riskStatuses.includes('REJECTED')) {
-      riskLevel = 'High';
-    } else if (uncertainties.includes('HIGH') || (ans.impact_analysis && ans.impact_analysis.length >= 2)) {
-      riskLevel = 'High';
-    } else if (uncertainties.includes('MEDIUM')) {
-      riskLevel = 'Medium';
-    } else {
-      riskLevel = 'Low';
-    }
-
-    // 4. Strategies: Simple steps in easy words
-    const strategies = simplifyStrategies(ans.strategy_recommendations || [], question);
-
-    return {
-      risk,
-      whyWillHappen,
-      riskLevel,
-      strategies
-    };
-  };
-
   const handleSend = async (customQuery?: string) => {
     const q = customQuery || input;
     if (!q.trim() || loading) return;
@@ -309,7 +168,7 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
 
     try {
       const res = await executeAnalysis(q.trim(), ['IND', 'IRN', 'USA'], '30d');
-      const formatted = formatOutput(res, q.trim());
+      const formatted = formatOutput(res);
 
       const assistantMessage: ChatMessage = {
         id: `ai_${Date.now()}`,
@@ -559,7 +418,7 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
               </div>
               <div className="bg-slate-50 border border-slate-200/80 rounded-2xl rounded-tl-sm px-5 py-4 max-w-sm flex items-center gap-3 text-slate-600 text-xs shadow-sm">
                 <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
-                <span>Checking verified data & preparing simple answer...</span>
+                <span>Analyzing... Fetching live data...</span>
               </div>
             </div>
           )}

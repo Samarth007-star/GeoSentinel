@@ -238,6 +238,7 @@ class GeoSentinelAnswer(BaseModel):
     scenarios: List[GeoForkScenario] = Field(default_factory=list)
     confidence_rationale: str
     limitations: List[str]
+    chat_output: Optional[Dict[str, Any]] = None
 
 class PipelineExecutionResult(BaseModel):
     question_id: str

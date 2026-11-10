@@ -73,6 +73,12 @@ export interface GeoSentinelAnswer {
   scenarios?: GeoForkScenario[];
   confidence_rationale: string;
   limitations: string[];
+  chat_output?: {
+    risk: string;
+    why_will_happen: string[];
+    risk_level: 'Low' | 'Medium' | 'High';
+    strategies: string[];
+  };
 }
 
 export interface AnalysisResult {

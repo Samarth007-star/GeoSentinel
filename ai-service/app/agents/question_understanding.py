@@ -128,7 +128,7 @@ class QuestionUnderstandingAgent:
         return QUCombinedOutput(intent=intent_out, entities=entity_out)
 
     async def process(self, request: QuestionIntakeRequest) -> Tuple[IntentOutput, EntityExtractionOutput]:
-        if settings.MODEL_PROVIDER == "local_fallback":
+        if settings.MODEL_PROVIDER in ["local_fallback", "live_llm"]:
             return self._fallback_process(request)
 
         try:
