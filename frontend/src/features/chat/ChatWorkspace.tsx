@@ -89,17 +89,26 @@ function toSimpleWords(text: string): string {
 }
 
 function simplifyRisk(rawRisk: string, question: string): string {
-  const combined = (question + ' ' + (rawRisk || '')).toLowerCase();
+  const qLower = question.toLowerCase();
+  const rLower = (rawRisk || '').toLowerCase();
 
-  if (combined.includes('hormuz') || combined.includes('iran') || combined.includes('oil') || combined.includes('crude')) {
+  // AI & Tech Hardware check
+  if (qLower.includes('nvidia') || qLower.includes('chip') || qLower.includes('gpu') || qLower.includes('semiconductor') || qLower.includes('hardware') || rLower.includes('ai compute') || rLower.includes('hardware architecture')) {
+    return 'Cheap AI chips will help Indian tech startups and universities grow fast, but could make India heavily dependent on a single foreign company. It also increases electricity and water cooling demands for running large computer data centers.';
+  }
+
+  // Geopolitical Oil & Hormuz check
+  if (qLower.includes('hormuz') || qLower.includes('iran') || qLower.includes('oil') || qLower.includes('crude') || qLower.includes('petroleum')) {
     return 'Oil import costs could jump quickly, which will drain national foreign currency reserves. Flights will have to take longer routes and burn more fuel, raising airfares. Petrol and everyday grocery prices may also go up.';
   }
 
-  if (combined.includes('earthquake') || combined.includes('seismic') || combined.includes('hazard') || combined.includes('disaster')) {
+  // Earthquake / Natural Disasters check
+  if (qLower.includes('earthquake') || qLower.includes('seismic') || qLower.includes('hazard') || qLower.includes('disaster')) {
     return 'The disaster can cause physical damage to local buildings, roads, and bridges. Power and drinking water networks may be temporarily turned off for safety.';
   }
 
-  if (combined.includes('gdp') || combined.includes('inflation') || combined.includes('economy') || combined.includes('indicators')) {
+  // GDP / Economy check
+  if (qLower.includes('gdp') || qLower.includes('inflation') || qLower.includes('economy') || qLower.includes('indicators')) {
     return 'India\'s overall economy is performing steadily with healthy national growth. Everyday prices are rising at a controlled pace, helping families manage daily living expenses.';
   }
 
@@ -110,10 +119,20 @@ function simplifyRisk(rawRisk: string, question: string): string {
   return toSimpleWords(rawRisk);
 }
 
-function simplifyWhy(rawWhy: string, facts: string[], question: string): string[] {
-  const combined = (question + ' ' + (rawWhy || '') + ' ' + facts.join(' ')).toLowerCase();
+function simplifyWhy(_rawWhy: string, facts: string[], question: string): string[] {
+  const qLower = question.toLowerCase();
 
-  if (combined.includes('hormuz') || combined.includes('iran') || combined.includes('oil') || combined.includes('crude')) {
+  // AI & Tech Hardware check
+  if (qLower.includes('nvidia') || qLower.includes('chip') || qLower.includes('gpu') || qLower.includes('semiconductor') || qLower.includes('hardware')) {
+    return [
+      'High-end AI chips are currently very expensive, so cheap chips will instantly attract thousands of students, researchers, and startups.',
+      'Relying entirely on one foreign company\'s chips could slow down India\'s own domestic chip-making plans.',
+      'Running large AI server buildings consumes massive amounts of electricity and cooling water.'
+    ];
+  }
+
+  // Geopolitical Oil & Hormuz check
+  if (qLower.includes('hormuz') || qLower.includes('iran') || qLower.includes('oil') || qLower.includes('crude') || qLower.includes('petroleum')) {
     return [
       'India buys more than 85% of its oil from other countries, with over half passing through the Persian Gulf.',
       'India stores emergency oil underground, but it only lasts for about 9 to 10 days of national needs.',
@@ -121,7 +140,8 @@ function simplifyWhy(rawWhy: string, facts: string[], question: string): string[
     ];
   }
 
-  if (combined.includes('earthquake') || combined.includes('seismic') || combined.includes('hazard') || combined.includes('disaster')) {
+  // Earthquake / Natural Disasters check
+  if (qLower.includes('earthquake') || qLower.includes('seismic') || qLower.includes('hazard') || qLower.includes('disaster')) {
     const list: string[] = [];
     const quakes = facts.filter((f) => /earthquake|magnitude/i.test(f));
     if (quakes.length > 0) {
@@ -134,7 +154,8 @@ function simplifyWhy(rawWhy: string, facts: string[], question: string): string[
     return list;
   }
 
-  if (combined.includes('gdp') || combined.includes('inflation') || combined.includes('economy') || combined.includes('indicators')) {
+  // GDP / Economy check
+  if (qLower.includes('gdp') || qLower.includes('inflation') || qLower.includes('economy') || qLower.includes('indicators')) {
     return [
       'Strong business investments across the country are creating steady jobs and new manufacturing activity.',
       'Moderate inflation keeps the prices of essential groceries and cooking gas predictable.',
@@ -154,9 +175,19 @@ function simplifyWhy(rawWhy: string, facts: string[], question: string): string[
 }
 
 function simplifyStrategies(rawStrats: any[], question: string): string[] {
-  const combined = (question + ' ' + JSON.stringify(rawStrats || [])).toLowerCase();
+  const qLower = question.toLowerCase();
 
-  if (combined.includes('hormuz') || combined.includes('iran') || combined.includes('oil') || combined.includes('crude')) {
+  // AI & Tech Hardware check
+  if (qLower.includes('nvidia') || qLower.includes('chip') || qLower.includes('gpu') || qLower.includes('semiconductor') || qLower.includes('hardware')) {
+    return [
+      'Support Indian chip designers: Continue government funding for local chip companies so India builds its own technology.',
+      'Promote open-source AI software: Teach students and developers to use open-source tools so they are not locked into one vendor.',
+      'Build green data centers: Connect large AI computer centers to solar power and water-recycling systems to save electricity.'
+    ];
+  }
+
+  // Geopolitical Oil & Hormuz check
+  if (qLower.includes('hormuz') || qLower.includes('iran') || qLower.includes('oil') || qLower.includes('crude') || qLower.includes('petroleum')) {
     return [
       'Release emergency oil: Tap into underground crude storage to keep petrol pumps running and stop price spikes.',
       'Buy oil from other countries: Quickly purchase extra oil shipments from partners in Africa and America.',
@@ -164,7 +195,8 @@ function simplifyStrategies(rawStrats: any[], question: string): string[] {
     ];
   }
 
-  if (combined.includes('earthquake') || combined.includes('seismic') || combined.includes('hazard') || combined.includes('disaster')) {
+  // Earthquake / Natural Disasters check
+  if (qLower.includes('earthquake') || qLower.includes('seismic') || qLower.includes('hazard') || qLower.includes('disaster')) {
     return [
       'Protect hospital power: Immediately switch hospitals and drinking water stations to backup generators.',
       'Clear main highways fast: Deploy road-clearing teams to reopen blocked routes within 24 to 48 hours.',
@@ -172,7 +204,8 @@ function simplifyStrategies(rawStrats: any[], question: string): string[] {
     ];
   }
 
-  if (combined.includes('gdp') || combined.includes('inflation') || combined.includes('economy') || combined.includes('indicators')) {
+  // GDP / Economy check
+  if (qLower.includes('gdp') || qLower.includes('inflation') || qLower.includes('economy') || qLower.includes('indicators')) {
     return [
       'Invest in roads and solar power: Keep government spending focused on transport corridors and renewable energy.',
       'Track daily market prices: Closely watch food and fuel prices to prevent sudden cost jumps for consumers.',
