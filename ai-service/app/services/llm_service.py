@@ -172,10 +172,32 @@ class LiveLLMService:
                 "Strengthen employee transition support: Provide temporary career guidance and skill certifications for workers displaced by workplace automation."
             ]
 
-        elif "chip" in q_clean or "nvidia" in q_clean or "semiconductor" in q_clean or "gpu" in q_clean:
+        # 1. AI & Tech Hardware - BAN / SANCTIONS / RESTRICTIONS
+        is_ban = any(w in q_clean for w in ["ban", "bans", "banned", "banning", "sanction", "sanctions", "restrict", "restriction", "curb", "block", "embargo", "stop"])
+        is_tech = any(w in q_clean for w in ["chip", "chips", "nvidia", "gpu", "gpus", "semiconductor", "semiconductors", "hardware"])
+
+        if is_tech and is_ban:
             risk = (
-                f"Affordable AI chips will spark a massive boom for Indian tech startups and research universities, but could create heavy reliance on a single foreign hardware ecosystem. "
-                f"In addition, building massive computer clusters will put heavy electrical and water cooling demands on local utility grids."
+                "A US ban on Nvidia chips would abruptly choke India's supply of advanced AI hardware. "
+                "This would stall model development for domestic tech startups and force companies to pay steep premiums for overseas cloud computing."
+            )
+            risk_level = "High"
+            why_points = [
+                "Indian tech startups and research universities currently depend almost completely on imported Nvidia GPUs to train state-of-the-art AI systems.",
+                "An export restriction would trigger an immediate domestic computing shortage and drive up AI development costs for local companies.",
+                "Firms would be pushed to rent compute from overseas servers, increasing national foreign exchange outlays and raising data privacy concerns."
+            ]
+            strategies = [
+                "Fast-track domestic chip design: Double financial incentives and research grants for homegrown chipmakers under the India Semiconductor Mission.",
+                "Adopt open-source chip architectures: Invest heavily in RISC-V and multi-vendor computing platforms to break dependence on single-country hardware.",
+                "Build sovereign national compute clouds: Establish government-subsidized GPU reserves for universities and priority domestic tech ventures."
+            ]
+
+        # 2. AI & Tech Hardware - INFLOW / AFFORDABLE COMPUTING
+        elif is_tech:
+            risk = (
+                "Affordable AI chips will spark a massive boom for Indian tech startups and research universities, but could create heavy reliance on a single foreign hardware ecosystem. "
+                "In addition, building massive computer clusters will put heavy electrical and water cooling demands on local utility grids."
             )
             risk_level = "Medium"
             why_points = [
@@ -291,3 +313,4 @@ class LiveLLMService:
         return self._dynamic_live_synthesis(question, live_data)
 
 live_llm_service = LiveLLMService()
+
