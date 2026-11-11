@@ -7,16 +7,15 @@ import {
   Send,
   Loader2,
   Bot,
-  User
+  User,
+  Crown
 } from 'lucide-react';
 import { executeAnalysis } from '../../services/api';
-import { AnalysisResult } from '../../types';
+import { AnalysisResult, ChatDynamicSection, ChatStrategyItem } from '../../types';
 
 export interface ChatIntelligenceOutput {
-  risk: string;
-  whyWillHappen: string[];
-  riskLevel: 'Low' | 'Medium' | 'High' | 'Critical';
-  strategies: string[];
+  intent?: string;
+  sections: ChatDynamicSection[];
 }
 
 export interface ChatMessage {
@@ -88,22 +87,65 @@ function toSimpleWords(text: string): string {
   return s;
 }
 
-// Format AI response dynamically using the fresh LLM & live data output
+// Format AI response dynamically using the intent-aware LLM sections output
 const formatOutput = (res: AnalysisResult): ChatIntelligenceOutput => {
   const ans = res.answer;
 
-  // 1. If backend returned fresh live LLM chat output, use it directly!
-  if (ans.chat_output) {
-    const co = ans.chat_output;
+  // 1. Dynamic intent-aware sections returned by Smart LLM Engine
+  if (ans.chat_output?.sections && ans.chat_output.sections.length > 0) {
+    const cleanSections: ChatDynamicSection[] = ans.chat_output.sections.map((sec) => ({
+      ...sec,
+      content: sec.content ? toSimpleWords(sec.content) : undefined,
+      strategy_name: sec.strategy_name ? toSimpleWords(sec.strategy_name) : undefined,
+      items: sec.items ? sec.items.map((item) => toSimpleWords(item)) : undefined,
+      strategies: sec.strategies
+        ? sec.strategies.map((st: ChatStrategyItem) => ({
+            name: toSimpleWords(st.name),
+            what_to_do: st.what_to_do ? toSimpleWords(st.what_to_do) : undefined,
+            why_will_work: st.why_will_work ? toSimpleWords(st.why_will_work) : undefined,
+            good_effect: toSimpleWords(st.good_effect),
+            bad_effect: toSimpleWords(st.bad_effect),
+            when_to_do: st.when_to_do ? toSimpleWords(st.when_to_do) : undefined,
+            cost_effort: st.cost_effort ? toSimpleWords(st.cost_effort) : undefined,
+            success_chance: st.success_chance ? toSimpleWords(st.success_chance) : undefined
+          }))
+        : undefined
+    }));
     return {
-      risk: toSimpleWords(co.risk || ''),
-      whyWillHappen: (co.why_will_happen || []).map((w: string) => toSimpleWords(w)),
-      riskLevel: co.risk_level || 'Medium',
-      strategies: (co.strategies || []).map((s: string) => toSimpleWords(s))
+      intent: ans.chat_output.intent,
+      sections: cleanSections
     };
   }
 
-  // 2. Dynamic fallback from impact analysis & verified facts
+  // 2. Legacy flat chat_output compatibility
+  if (ans.chat_output?.risk) {
+    const co = ans.chat_output;
+    return {
+      intent: 'RISK',
+      sections: [
+        { emoji: '⚠️', title: 'Risk', type: 'text', content: toSimpleWords(co.risk || '') },
+        {
+          emoji: '❓',
+          title: 'Why Will Happen',
+          type: 'bullets',
+          items: (co.why_will_happen || []).map((w: string) => toSimpleWords(w))
+        },
+        { emoji: '🔴', title: 'Risk Level', type: 'badge', level: co.risk_level || 'Medium' },
+        {
+          emoji: '✅',
+          title: 'Strategies',
+          type: 'strategies',
+          strategies: (co.strategies || []).map((s: string) => ({
+            name: toSimpleWords(s),
+            good_effect: 'Reduces uncertainty and protects key assets.',
+            bad_effect: 'Takes time and resources to execute properly.'
+          }))
+        }
+      ]
+    };
+  }
+
+  // 3. Dynamic fallback from pipeline impact analysis & verified facts
   const rawRisk = ans.impact_analysis?.[0]?.direct_impact || ans.current_situation?.summary || '';
   const rawWhy = ans.impact_analysis?.[0]?.indirect_impact || '';
   const facts = ans.current_situation?.verified_facts || [];
@@ -112,16 +154,44 @@ const formatOutput = (res: AnalysisResult): ChatIntelligenceOutput => {
   if (rawWhy) whyPoints.push(toSimpleWords(rawWhy));
   facts.slice(0, 2).forEach((f) => whyPoints.push(toSimpleWords(f)));
 
-  const strategies: string[] = [];
-  (ans.strategy_recommendations || []).slice(0, 3).forEach((s) => {
-    strategies.push(toSimpleWords(`${s.title}: ${s.mechanism || s.objective}`));
-  });
+  const strategies: ChatStrategyItem[] = (ans.strategy_recommendations || []).slice(0, 3).map((s) => ({
+    name: toSimpleWords(`${s.title}: ${s.mechanism || s.objective}`),
+    good_effect: toSimpleWords(s.benefits?.[0] || 'Helps protect stability and operations.'),
+    bad_effect: toSimpleWords(s.tradeoffs?.[0] || 'Needs upfront planning and cost.')
+  }));
 
   return {
-    risk: toSimpleWords(rawRisk) || 'Active economic and supply chain shifts require close monitoring.',
-    whyWillHappen: whyPoints.length > 0 ? whyPoints : ['Global and regional market conditions are shifting rapidly.'],
-    riskLevel: 'Medium',
-    strategies: strategies.length > 0 ? strategies : ['Track official indicators and maintain flexible supplier terms.']
+    intent: 'RISK',
+    sections: [
+      {
+        emoji: '⚠️',
+        title: 'Risk',
+        type: 'text',
+        content: toSimpleWords(rawRisk) || 'Active economic and supply chain shifts require close monitoring.'
+      },
+      {
+        emoji: '❓',
+        title: 'Why Will Happen',
+        type: 'bullets',
+        items: whyPoints.length > 0 ? whyPoints : ['Global and regional market conditions are shifting rapidly.']
+      },
+      { emoji: '🟡', title: 'Risk Level', type: 'badge', level: 'Medium' },
+      {
+        emoji: '✅',
+        title: 'Strategies',
+        type: 'strategies',
+        strategies:
+          strategies.length > 0
+            ? strategies
+            : [
+                {
+                  name: 'Track official updates and keep backup plans ready.',
+                  good_effect: 'Lets you react quickly if prices or rules change.',
+                  bad_effect: 'Takes regular monitoring effort.'
+                }
+              ]
+      }
+    ]
   };
 };
 
@@ -184,15 +254,36 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
         id: `ai_err_${Date.now()}`,
         sender: 'assistant',
         output: {
-          risk: 'We could not reach the analysis server right now. The network connection took longer than expected.',
-          whyWillHappen: [
-            'The connection between local services timed out.',
-            'The system is temporarily busy processing other requests.'
-          ],
-          riskLevel: 'Medium',
-          strategies: [
-            'Try asking again: Click Send once more to retry your query.',
-            'Check server status: Ensure the background services are active.'
+          intent: 'RISK',
+          sections: [
+            {
+              emoji: '⚠️',
+              title: 'Risk',
+              type: 'text',
+              content: 'We could not reach the analysis server right now. The network connection took longer than expected.'
+            },
+            {
+              emoji: '❓',
+              title: 'Why Will Happen',
+              type: 'bullets',
+              items: [
+                'The connection between local services timed out.',
+                'The system is temporarily busy processing other requests.'
+              ]
+            },
+            { emoji: '🟡', title: 'Risk Level', type: 'badge', level: 'Medium' },
+            {
+              emoji: '✅',
+              title: 'Strategies',
+              type: 'strategies',
+              strategies: [
+                {
+                  name: 'Try asking again: Click Send once more to retry your query.',
+                  good_effect: 'Refreshes the connection and runs a clean analysis.',
+                  bad_effect: 'Takes a few extra seconds.'
+                }
+              ]
+            }
           ]
         },
         timestamp: new Date()
@@ -231,13 +322,13 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
     switch (level) {
       case 'Critical':
       case 'High':
-        return 'text-rose-600';
+        return 'text-rose-700 bg-rose-50 border border-rose-200 px-2.5 py-0.5 rounded-full';
       case 'Medium':
-        return 'text-amber-600';
+        return 'text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-full';
       case 'Low':
-        return 'text-emerald-600';
+        return 'text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full';
       default:
-        return 'text-slate-800';
+        return 'text-purple-800 bg-purple-50 border border-purple-200 px-2.5 py-0.5 rounded-full';
     }
   };
 
@@ -247,57 +338,71 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
       title: "What are the latest verified developments involving Iran and the Strait of Hormuz, and what potential implications could they have for India's energy security?",
       short: 'Middle East conflict & oil supply for India',
       icon: Globe,
-      color: 'text-blue-600 bg-blue-50'
+      color: 'text-[#6D28D9] bg-purple-50 border border-purple-200'
     },
     {
       id: 'iran-payment',
       title: "If India didn't pay the price for oil to Iran, then what will be the effect on India?",
       short: "If India didn't pay for oil to Iran",
       icon: BarChart3,
-      color: 'text-emerald-600 bg-emerald-50'
+      color: 'text-emerald-600 bg-emerald-50 border border-emerald-200'
     },
     {
       id: 'natural-disasters',
       title: 'What significant recent earthquakes or natural hazards are reported by the configured scientific data sources?',
       short: 'Recent earthquakes & natural disasters',
       icon: AlertTriangle,
-      color: 'text-rose-600 bg-rose-50'
+      color: 'text-rose-600 bg-rose-50 border border-rose-200'
     },
     {
       id: 'india-economy',
       title: "What are the latest available indicators relevant to India's energy imports and economic exposure to Middle East instability?",
       short: "India's economy & Middle East tensions",
       icon: Users,
-      color: 'text-indigo-600 bg-indigo-50'
+      color: 'text-violet-700 bg-violet-50 border border-violet-200'
     }
   ];
 
   return (
-    <div className="flex-1 w-full flex flex-col h-[calc(100vh-4rem)] bg-white overflow-hidden">
-      
-      {/* Scrollable Message History Area */}
-      <div className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-        <div className="w-full max-w-3xl mx-auto space-y-6">
+    <div className="flex-1 w-full flex flex-col h-[calc(100vh-4rem)] bg-[#FAF8FF] relative overflow-hidden">
+      {/* Subtle Royal Lavender Ambient Glow */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(ellipse 80% 45% at 50% 0%, rgba(124, 58, 237, 0.11), transparent 70%)'
+        }}
+      />
 
-          {/* Empty State Welcome when no messages exist */}
+      {/* Scrollable Message History Area */}
+      <div className="relative z-10 flex-1 overflow-y-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-6 space-y-5 sm:space-y-6">
+        <div className="w-full max-w-3xl mx-auto space-y-5 sm:space-y-6">
+
+          {/* Empty State Welcome - Royal Purple & White Prime Showcase */}
           {messages.length === 0 && (
-            <div className="flex flex-col items-center text-center space-y-8 pt-8 sm:pt-14 pb-4 animate-fadeIn">
-              <div className="w-16 h-16 rounded-3xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shadow-sm">
-                <Globe className="w-8 h-8 stroke-[2]" />
+            <div className="flex flex-col items-center text-center space-y-6 sm:space-y-7 pt-4 sm:pt-12 pb-4 animate-fadeIn">
+              <div className="relative">
+                <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-3xl bg-gradient-to-br from-[#5B21B6] via-[#6D28D9] to-[#7C3AED] flex items-center justify-center text-white shadow-[0_12px_36px_rgba(109,40,217,0.28)]">
+                  <Globe className="w-7 h-7 sm:w-8 sm:h-8 stroke-[1.9]" />
+                </div>
+                <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white border border-purple-200 text-[#5B21B6] text-[9px] font-extrabold uppercase tracking-widest shadow-sm whitespace-nowrap">
+                  <Crown className="w-2.5 h-2.5 stroke-[2.5]" />
+                  Prime AI
+                </span>
               </div>
 
-              <div className="space-y-2 max-w-lg">
-                <h1 className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-tight">
+              <div className="space-y-2 max-w-lg px-2 pt-1">
+                <h1 className="text-2xl sm:text-4xl font-display font-bold bg-gradient-to-r from-[#2E1065] via-[#5B21B6] to-[#7C3AED] bg-clip-text text-transparent tracking-tight">
                   How can I help you today?
                 </h1>
-                <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-                  Ask any question about global events, trade routes, or economic risks.
-                  Outputs are short, simple, and easy to understand.
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  Ask any question about global events, markets, or strategic risks.
+                  Clear insights backed by live news and real-time intelligence.
                 </p>
               </div>
 
-              {/* Suggestion cards for quick launch */}
-              <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4 text-left">
+              {/* Luxury Crisp White Suggestion Cards with Royal Purple Borders */}
+              <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5 pt-2 text-left">
                 {suggestionCards.map((card) => {
                   const Icon = card.icon;
                   return (
@@ -305,17 +410,17 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
                       key={card.id}
                       onClick={() => handleSend(card.title)}
                       disabled={loading}
-                      className="p-4 rounded-2xl bg-white border border-slate-200/90 hover:border-blue-300 hover:shadow-md transition-all text-left group flex items-start justify-between gap-3"
+                      className="p-3.5 sm:p-4 rounded-2xl bg-white border border-purple-100 hover:border-purple-400 hover:shadow-[0_12px_30px_rgba(109,40,217,0.12)] transition-all text-left group flex items-start justify-between gap-3"
                     >
                       <div className="space-y-1">
-                        <span className="text-xs font-semibold text-slate-800 group-hover:text-blue-600 transition-colors block">
+                        <span className="text-xs font-semibold text-[#2E1065] group-hover:text-[#6D28D9] transition-colors block">
                           {card.short}
                         </span>
-                        <p className="text-[11px] text-slate-400 line-clamp-2">
+                        <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
                           {card.title}
                         </p>
                       </div>
-                      <div className={`w-8 h-8 rounded-xl ${card.color} flex items-center justify-center shrink-0 mt-0.5`}>
+                      <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${card.color} flex items-center justify-center shrink-0 mt-0.5`}>
                         <Icon className="w-4 h-4 text-current" />
                       </div>
                     </button>
@@ -329,81 +434,179 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
           {messages.map((msg) => (
             <div key={msg.id} className="w-full animate-fadeIn">
               {msg.sender === 'user' ? (
-                /* User Message: Right Side */
-                <div className="flex justify-end items-end gap-2.5">
-                  <div className="bg-blue-600 text-white rounded-3xl rounded-br-sm px-5 py-3.5 max-w-2xl text-sm leading-relaxed shadow-sm">
+                /* User Message: Right Side Royal Purple Gradient */
+                <div className="flex justify-end items-end gap-2 sm:gap-2.5">
+                  <div className="bg-gradient-to-br from-[#5B21B6] via-[#6D28D9] to-[#7C3AED] text-white rounded-3xl rounded-br-sm px-4 sm:px-5 py-3 sm:py-3.5 max-w-[85%] sm:max-w-2xl text-xs sm:text-sm leading-relaxed shadow-[0_8px_24px_rgba(109,40,217,0.22)]">
                     <p className="whitespace-pre-wrap">{msg.text}</p>
                   </div>
-                  <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600 shrink-0 mb-0.5 shadow-sm">
-                    <User className="w-4 h-4" />
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-purple-100 border border-purple-200 flex items-center justify-center text-[#5B21B6] shrink-0 mb-0.5 shadow-xs">
+                    <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.2]" />
                   </div>
                 </div>
               ) : (
-                /* AI Message: Left Side - ChatGPT / Gemini Clean Style with 4 Exact Sections */
-                <div className="flex justify-start items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700 shrink-0 mt-1 shadow-sm">
-                    <Bot className="w-4 h-4" />
+                /* AI Message: Left Side - Luxury White & Lavender Card */
+                <div className="flex justify-start items-start gap-2.5 sm:gap-3">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-[#5B21B6] to-[#7C3AED] flex items-center justify-center text-white shrink-0 mt-1 shadow-sm">
+                    <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </div>
 
-                  <div className="bg-white border border-slate-200/90 rounded-2xl rounded-tl-sm p-5 sm:p-6 max-w-2xl w-full shadow-sm space-y-5 text-slate-800">
-                    
-                    {/* 1. ⚠️ Risk: Simple 2-3 lines explanation */}
-                    <div className="space-y-1.5">
-                      <div className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                        <span>⚠️</span>
-                        <span>Risk:</span>
-                      </div>
-                      <p className="text-sm text-slate-700 leading-relaxed pl-0.5">
-                        {msg.output?.risk}
-                      </p>
-                    </div>
+                  <div className="bg-white border border-purple-200/80 rounded-2xl rounded-tl-sm p-4 sm:p-6 max-w-full sm:max-w-2xl w-full shadow-[0_10px_35px_rgba(91,33,182,0.06)] space-y-4 sm:space-y-5 text-slate-800">
+                    {msg.output?.sections?.map((sec, sIdx) => {
+                      if (sec.type === 'badge') {
+                        return (
+                          <div key={sIdx} className="flex flex-wrap items-center gap-2 pl-0.5 pt-0.5">
+                            <span className="text-xs sm:text-sm font-bold text-[#2E1065] flex items-center gap-1.5">
+                              <span>{sec.emoji || getRiskLevelEmoji(sec.level)}</span>
+                              <span>{sec.title}:</span>
+                            </span>
+                            <span className={`text-xs font-bold ${getRiskLevelTextColor(sec.level)}`}>
+                              {sec.level || 'Medium'}
+                            </span>
+                          </div>
+                        );
+                      }
 
-                    {/* 2. ❓ Why Will Happen: Simple points in easy words */}
-                    <div className="space-y-2">
-                      <div className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                        <span>❓</span>
-                        <span>Why Will Happen:</span>
-                      </div>
-                      <ul className="space-y-1.5 pl-1">
-                        {msg.output?.whyWillHappen?.map((item, idx) => (
-                          <li key={idx} className="text-sm text-slate-700 flex items-start gap-2 leading-relaxed">
-                            <span className="text-slate-400 font-bold shrink-0">•</span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                      if (sec.type === 'bullets' && sec.items && sec.items.length > 0) {
+                        const isGood = sec.title.toLowerCase().includes('good');
+                        const isBad = sec.title.toLowerCase().includes('bad');
+                        const bulletColor = isGood
+                          ? 'text-emerald-600'
+                          : isBad
+                            ? 'text-rose-500'
+                            : 'text-[#6D28D9]';
 
-                    {/* 3. 🔴 Risk Level: High / Medium / Low */}
-                    <div className="flex items-center gap-2 pl-0.5 pt-0.5">
-                      <span className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                        <span>{getRiskLevelEmoji(msg.output?.riskLevel)}</span>
-                        <span>Risk Level:</span>
-                      </span>
-                      <span className={`text-sm font-bold ${getRiskLevelTextColor(msg.output?.riskLevel)}`}>
-                        {msg.output?.riskLevel}
-                      </span>
-                    </div>
+                        return (
+                          <div key={sIdx} className="space-y-2">
+                            <div className="text-xs sm:text-sm font-bold text-[#2E1065] flex items-center gap-1.5">
+                              <span>{sec.emoji}</span>
+                              <span>{sec.title}:</span>
+                            </div>
+                            <ul className="space-y-1.5 pl-1">
+                              {sec.items.map((item, iIdx) => (
+                                <li key={iIdx} className="text-xs sm:text-sm text-slate-700 flex items-start gap-2 leading-relaxed">
+                                  <span className={`${bulletColor} font-bold shrink-0`}>•</span>
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        );
+                      }
 
-                    {/* 4. ✅ Strategies: Simple steps in easy words */}
-                    <div className="space-y-2 pt-0.5">
-                      <div className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                        <span>✅</span>
-                        <span>Strategies:</span>
-                      </div>
-                      <ul className="space-y-2 pl-0.5">
-                        {msg.output?.strategies?.map((strat, idx) => (
-                          <li
-                            key={idx}
-                            className="text-sm text-slate-700 bg-slate-50 border border-slate-200/80 rounded-xl p-3 leading-relaxed flex items-start gap-2.5"
+                      if (sec.type === 'strategies' && sec.strategies && sec.strategies.length > 0) {
+                        return (
+                          <div key={sIdx} className="space-y-3 pt-0.5">
+                            <div className="text-xs sm:text-sm font-bold text-[#2E1065] flex items-center gap-1.5">
+                              <span>{sec.emoji}</span>
+                              <span>{sec.title}:</span>
+                            </div>
+                            <div className="space-y-3 pl-0.5">
+                              {sec.strategies.map((strat, stIdx) => (
+                                <div
+                                  key={stIdx}
+                                  className="text-sm text-slate-700 bg-[#FAF8FF] border border-purple-100 hover:border-purple-300 rounded-xl p-3.5 sm:p-4 space-y-2 transition-colors shadow-xs"
+                                >
+                                  <div className="font-bold text-[#4C1D95] text-xs sm:text-sm flex items-center gap-1.5">
+                                    <span>🎯</span>
+                                    <span>{strat.name}</span>
+                                  </div>
+
+                                  {strat.what_to_do && (
+                                    <div className="text-xs sm:text-sm text-slate-800 leading-relaxed">
+                                      <span className="font-bold text-[#2E1065]">What To Do: </span>
+                                      <span>{strat.what_to_do}</span>
+                                    </div>
+                                  )}
+
+                                  {strat.why_will_work && (
+                                    <div className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                                      <span className="font-bold text-slate-800">Why This Will Work: </span>
+                                      <span>{strat.why_will_work}</span>
+                                    </div>
+                                  )}
+
+                                  <div className="text-xs sm:text-sm text-emerald-700 leading-relaxed">
+                                    <span className="font-bold">Good Effect: </span>
+                                    <span>{strat.good_effect}</span>
+                                  </div>
+
+                                  <div className="text-xs sm:text-sm text-rose-700 leading-relaxed">
+                                    <span className="font-bold">Bad Effect / Risk: </span>
+                                    <span>{strat.bad_effect}</span>
+                                  </div>
+
+                                  {(strat.when_to_do || strat.cost_effort || strat.success_chance) && (
+                                    <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1.5 text-[11px] sm:text-xs">
+                                      {strat.when_to_do && (
+                                        <span className="px-2.5 py-0.5 rounded-full bg-purple-100/70 text-[#5B21B6] border border-purple-200 font-medium">
+                                          When: {strat.when_to_do}
+                                        </span>
+                                      )}
+                                      {strat.cost_effort && (
+                                        <span className="px-2.5 py-0.5 rounded-full bg-white text-slate-700 border border-slate-200 font-medium">
+                                          Cost / Effort: {strat.cost_effort}
+                                        </span>
+                                      )}
+                                      {strat.success_chance && (
+                                        <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium">
+                                          Success Chance: {strat.success_chance}
+                                        </span>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      }
+
+                      if (sec.type === 'best_strategy') {
+                        return (
+                          <div
+                            key={sIdx}
+                            className="bg-gradient-to-br from-purple-50 via-violet-50/60 to-white border border-purple-300 rounded-xl p-4 space-y-1.5 shadow-[0_6px_22px_rgba(109,40,217,0.08)]"
                           >
-                            <span className="text-emerald-600 font-bold shrink-0 mt-0.5">•</span>
-                            <span>{strat}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                            <div className="text-xs sm:text-sm font-bold text-[#5B21B6] flex items-center gap-1.5">
+                              <span>{sec.emoji || '🏆'}</span>
+                              <span>{sec.title}:</span>
+                            </div>
+                            {sec.strategy_name && (
+                              <div className="text-xs sm:text-sm font-bold text-[#2E1065]">
+                                {sec.strategy_name}
+                              </div>
+                            )}
+                            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                              {sec.content}
+                            </p>
+                          </div>
+                        );
+                      }
 
+                      const isPlainConversationalText =
+                        !sec.title || sec.title.toLowerCase() === 'message';
+
+                      if (isPlainConversationalText) {
+                        return (
+                          <div key={sIdx} className="text-xs sm:text-sm text-slate-700 leading-relaxed flex items-start gap-2">
+                            {sec.emoji && <span className="shrink-0">{sec.emoji}</span>}
+                            <span>{sec.content}</span>
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <div key={sIdx} className="space-y-1.5">
+                          <div className="text-xs sm:text-sm font-bold text-[#2E1065] flex items-center gap-1.5">
+                            <span>{sec.emoji}</span>
+                            <span>{sec.title}{/[!?:]$/.test(sec.title) ? '' : ':'}</span>
+                          </div>
+                          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed pl-0.5">
+                            {sec.content}
+                          </p>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -412,12 +615,12 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
 
           {/* AI Thinking / Processing State */}
           {loading && (
-            <div className="flex justify-start items-start gap-3 animate-fadeIn">
-              <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700 shrink-0 mt-1 shadow-sm">
-                <Bot className="w-4 h-4" />
+            <div className="flex justify-start items-start gap-2.5 sm:gap-3 animate-fadeIn">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-[#5B21B6] to-[#7C3AED] flex items-center justify-center text-white shrink-0 mt-1 shadow-sm">
+                <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
-              <div className="bg-slate-50 border border-slate-200/80 rounded-2xl rounded-tl-sm px-5 py-4 max-w-sm flex items-center gap-3 text-slate-600 text-xs shadow-sm">
-                <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
+              <div className="bg-white border border-purple-200 rounded-2xl rounded-tl-sm px-4 sm:px-5 py-3.5 max-w-sm flex items-center gap-3 text-[#4C1D95] text-xs shadow-sm font-medium">
+                <Loader2 className="w-4 h-4 animate-spin text-[#6D28D9]" />
                 <span>Analyzing... Fetching live data...</span>
               </div>
             </div>
@@ -427,10 +630,10 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
         </div>
       </div>
 
-      {/* Fixed Bottom User Input Bar */}
-      <div className="sticky bottom-0 bg-white border-t border-slate-100 p-3 sm:p-4 w-full shrink-0 shadow-lg">
-        <div className="max-w-3xl mx-auto w-full space-y-2">
-          <div className="flex items-end gap-2.5 bg-slate-50 border border-slate-200/90 rounded-3xl p-2.5 focus-within:border-blue-500 focus-within:bg-white focus-within:ring-4 focus-within:ring-blue-50 transition-all shadow-sm">
+      {/* Fixed Bottom User Input Bar - Crisp White & Royal Purple */}
+      <div className="relative z-10 sticky bottom-0 bg-white/90 backdrop-blur-xl border-t border-purple-100 p-3 sm:p-4 w-full shrink-0 shadow-[0_-8px_30px_rgba(109,40,217,0.06)]">
+        <div className="max-w-3xl mx-auto w-full space-y-1.5 sm:space-y-2">
+          <div className="flex items-end gap-2 sm:gap-2.5 bg-white border border-purple-200 rounded-3xl p-2 sm:p-2.5 focus-within:border-[#6D28D9] focus-within:ring-4 focus-within:ring-purple-500/10 transition-all shadow-[0_6px_25px_rgba(109,40,217,0.08)]">
             <textarea
               ref={textareaRef}
               rows={1}
@@ -438,27 +641,27 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={loading}
-              placeholder="Ask a question in plain English (Press Enter to send)..."
-              className="flex-1 bg-transparent border-none outline-none resize-none text-sm text-slate-800 placeholder-slate-400 max-h-32 px-3 py-1.5 leading-relaxed"
+              placeholder="Ask your Query"
+              className="flex-1 bg-transparent border-none outline-none resize-none text-xs sm:text-sm text-slate-900 placeholder-slate-400 max-h-32 px-3 py-1.5 leading-relaxed"
             />
 
             <button
               type="button"
               onClick={() => handleSend()}
               disabled={loading || !input.trim()}
-              className="w-9 h-9 rounded-full bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:hover:bg-blue-600 text-white flex items-center justify-center shrink-0 transition shadow-sm active:scale-95"
+              className="w-9 h-9 rounded-full bg-gradient-to-br from-[#5B21B6] via-[#6D28D9] to-[#7C3AED] hover:from-[#4C1D95] hover:to-[#6D28D9] disabled:opacity-35 text-white flex items-center justify-center shrink-0 transition shadow-[0_4px_14px_rgba(109,40,217,0.3)] active:scale-95"
               title="Send Message"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
-                <Send className="w-4 h-4 -translate-x-0.5 translate-y-0.5" />
+                <Send className="w-4 h-4 -translate-x-0.5 translate-y-0.5 stroke-[2.2]" />
               )}
             </button>
           </div>
 
-          <p className="text-[11px] text-slate-400 text-center select-none">
-            GeoSentinel AI • Clear risks and simple mitigation steps
+          <p className="text-[10px] sm:text-[11px] text-slate-400 text-center select-none tracking-wide">
+            GeoSentinel <span className="text-[#6D28D9] font-semibold">Prime</span> • Live Global Intelligence &amp; Actionable Strategy
           </p>
         </div>
       </div>

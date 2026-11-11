@@ -1,65 +1,254 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Header } from './components/Header';
-import { LeftSidebar } from './components/LeftSidebar';
+import { LeftSidebar, RecentChatSummary } from './components/LeftSidebar';
 import { AuthModal } from './components/AuthModal';
 import { ChatWorkspace, ChatMessage } from './features/chat/ChatWorkspace';
 import { ConnectorStatusView } from './features/connectors/ConnectorStatusView';
 import { ScenarioLaboratoryView } from './features/scenarios/ScenarioLaboratoryView';
-import { Globe, ArrowLeft } from 'lucide-react';
+import { HomePage3D } from './features/home/HomePage3D';
+import { WelcomeSplash3D } from './components/WelcomeSplash3D';
+
+interface ChatSession {
+  id: string;
+  title: string;
+  messages: ChatMessage[];
+  updatedAt: string;
+}
+
+const STORAGE_KEY = 'geosentinel_recent_chats_v1';
+const MAX_RECENT_CHATS = 25;
+
+function loadStoredSessions(): ChatSession[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map((s) => ({
+      id: String(s.id),
+      title: String(s.title || 'Untitled Chat'),
+      updatedAt: String(s.updatedAt || new Date().toISOString()),
+      messages: Array.isArray(s.messages)
+        ? s.messages.map((m: ChatMessage) => ({
+            ...m,
+            timestamp: m.timestamp ? new Date(m.timestamp) : new Date()
+          }))
+        : []
+    }));
+  } catch {
+    return [];
+  }
+}
+
+function buildChatTitle(msgs: ChatMessage[]): string {
+  const firstUserMsg = msgs.find((m) => m.sender === 'user' && m.text?.trim());
+  const raw = firstUserMsg?.text?.trim() || 'New Chat';
+  return raw.length > 36 ? `${raw.slice(0, 36).trim()}...` : raw;
+}
 
 export const App: React.FC = () => {
+  const [showWelcome, setShowWelcome] = useState<boolean>(true);
+  const [currentPage, setCurrentPage] = useState<'home' | 'workspace'>('home');
   const [activeNav, setActiveNav] = useState<string>('dashboard');
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [sessions, setSessions] = useState<ChatSession[]>(() => loadStoredSessions());
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+  const activeSessionIdRef = useRef<string | null>(null);
   const [selectedQuery, setSelectedQuery] = useState<string>('');
   const [isAuthOpen, setIsAuthOpen] = useState<boolean>(false);
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [userName, setUserName] = useState<string>(() => {
+    try {
+      return localStorage.getItem('geosentinel_user_name') || 'Admin';
+    } catch {
+      return 'Admin';
+    }
+  });
+
+  // Persist dynamic recent chats to localStorage whenever sessions update
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions.slice(0, MAX_RECENT_CHATS)));
+    } catch (err) {
+      console.warn('Could not save chat history to localStorage:', err);
+    }
+  }, [sessions]);
+
+  const activeMessages: ChatMessage[] = activeSessionId
+    ? sessions.find((s) => s.id === activeSessionId)?.messages || []
+    : [];
+
+  const handleSetMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>> = useCallback(
+    (updater) => {
+      let targetId = activeSessionIdRef.current;
+
+      if (!targetId) {
+        const previewNext = typeof updater === 'function' ? updater([]) : updater;
+        if (previewNext.length === 0) {
+          return;
+        }
+        targetId = `chat_${Date.now()}`;
+        activeSessionIdRef.current = targetId;
+        setActiveSessionId(targetId);
+      }
+
+      const nowIso = new Date().toISOString();
+
+      setSessions((prevSessions) => {
+        const existingIndex = prevSessions.findIndex((s) => s.id === targetId);
+        const prevMsgs = existingIndex >= 0 ? prevSessions[existingIndex].messages : [];
+        const nextMsgs = typeof updater === 'function' ? updater(prevMsgs) : updater;
+
+        if (nextMsgs.length === 0 && existingIndex < 0) {
+          return prevSessions;
+        }
+
+        const updatedSession: ChatSession = {
+          id: targetId as string,
+          title:
+            existingIndex >= 0 && prevSessions[existingIndex].title !== 'New Chat'
+              ? prevSessions[existingIndex].title
+              : buildChatTitle(nextMsgs),
+          messages: nextMsgs,
+          updatedAt: nowIso
+        };
+
+        const remaining = prevSessions.filter((s) => s.id !== targetId);
+        return [updatedSession, ...remaining].slice(0, MAX_RECENT_CHATS);
+      });
+    },
+    []
+  );
 
   const handleNewChat = () => {
-    setMessages([]);
+    activeSessionIdRef.current = null;
+    setActiveSessionId(null);
     setSelectedQuery('');
     setActiveNav('dashboard');
   };
 
-  const handleSelectQuestion = (q: string) => {
-    setSelectedQuery(q);
+  const handleSelectSession = (sessionId: string) => {
+    activeSessionIdRef.current = sessionId;
+    setActiveSessionId(sessionId);
+    setSelectedQuery('');
     setActiveNav('dashboard');
   };
 
+  const handleDeleteSession = (sessionId: string) => {
+    setSessions((prev) => prev.filter((s) => s.id !== sessionId));
+    if (activeSessionIdRef.current === sessionId) {
+      activeSessionIdRef.current = null;
+      setActiveSessionId(null);
+    }
+  };
+
+  const recentChatSummaries: RecentChatSummary[] = sessions.map((s) => ({
+    id: s.id,
+    title: s.title,
+    updatedAt: s.updatedAt
+  }));
+
+  const openAuthModal = (mode: 'login' | 'register' = 'login') => {
+    setAuthMode(mode);
+    setIsAuthOpen(true);
+  };
+
+  const enterWorkspace = (prefillQuery?: string) => {
+    if (prefillQuery) {
+      activeSessionIdRef.current = null;
+      setActiveSessionId(null);
+      setSelectedQuery(prefillQuery);
+    }
+    setActiveNav('dashboard');
+    setCurrentPage('workspace');
+  };
+
+  const authModalElement = (
+    <AuthModal
+      isOpen={isAuthOpen}
+      initialMode={authMode}
+      onClose={() => setIsAuthOpen(false)}
+      onSuccess={(signedInName) => {
+        if (signedInName) {
+          setUserName(signedInName);
+          try {
+            localStorage.setItem('geosentinel_user_name', signedInName);
+          } catch {
+            // ignore storage failures
+          }
+        }
+        setIsAuthOpen(false);
+        setActiveNav('dashboard');
+        setCurrentPage('workspace');
+      }}
+    />
+  );
+
+  if (currentPage === 'home') {
+    return (
+      <>
+        {showWelcome && <WelcomeSplash3D onComplete={() => setShowWelcome(false)} />}
+        <div
+          className={`transition-all duration-700 ease-out ${
+            showWelcome ? 'opacity-0 scale-[0.985]' : 'opacity-100 scale-100'
+          }`}
+        >
+          <HomePage3D
+            onOpenAuth={(mode) => openAuthModal(mode)}
+            onLaunchWorkspace={(prefillQuery) => enterWorkspace(prefillQuery)}
+            onReplayWelcome={() => setShowWelcome(true)}
+          />
+        </div>
+        {authModalElement}
+      </>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex flex-col bg-white text-slate-800 antialiased font-sans">
+    <div className="min-h-screen flex flex-col bg-[#FAF8FF] text-slate-900 antialiased font-sans">
       {/* Top Header */}
       <Header
         activeNav={activeNav}
         setActiveNav={setActiveNav}
-        onOpenAuth={() => setIsAuthOpen(true)}
+        onOpenAuth={() => openAuthModal('login')}
+        onGoHome={() => setCurrentPage('home')}
+        isSidebarOpen={isSidebarOpen}
+        onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
+        userName={userName}
       />
 
-      {/* Main Full-Width Layout (Right Sidebar Completely Removed) */}
-      <div className="flex-1 flex overflow-hidden">
+      {/* Main Workspace Layout */}
+      <div className="flex-1 flex overflow-hidden relative">
         
-        {/* Left Navigation Sidebar */}
+        {/* Left Navigation Sidebar with Dynamic Recent Chats & Mobile Drawer */}
         <LeftSidebar
           activeNav={activeNav}
           setActiveNav={setActiveNav}
           onNewChat={handleNewChat}
-          onSelectRecentChat={handleSelectQuestion}
+          recentChats={recentChatSummaries}
+          activeSessionId={activeSessionId}
+          onSelectSession={handleSelectSession}
+          onDeleteSession={handleDeleteSession}
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
         />
 
-        {/* Center Main Intelligence Workspace - Full Width For Chat */}
-        <main className="flex-1 flex flex-col h-[calc(100vh-4rem)] bg-white overflow-hidden">
+        {/* Center Main Intelligence Workspace - Full Width */}
+        <main className="flex-1 flex flex-col h-[calc(100vh-4rem)] bg-[#FAF8FF] overflow-hidden min-w-0">
           
-          {/* ChatGPT / Gemini Full Screen Chat Interface */}
+          {/* Prime ChatGPT / Gemini Full Screen Chat Interface */}
           {activeNav === 'dashboard' && (
             <ChatWorkspace
-              messages={messages}
-              setMessages={setMessages}
+              messages={activeMessages}
+              setMessages={handleSetMessages}
               selectedQuery={selectedQuery}
               onClearSelectedQuery={() => setSelectedQuery('')}
             />
           )}
 
-          {/* Secondary Views (Accessible via Left Navigation) */}
+          {/* Secondary Functional Views (Royal Purple & White Theme) */}
           {activeNav !== 'dashboard' && (
-            <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+            <div className="flex-1 overflow-y-auto p-3 sm:p-6 lg:p-8 bg-[#FAF8FF] text-slate-900">
               <div className="w-full max-w-5xl mx-auto space-y-6">
                 
                 {/* Data Sources View */}
@@ -70,44 +259,9 @@ export const App: React.FC = () => {
                   <ScenarioLaboratoryView initialSubTab="forecastlab" />
                 )}
 
-                {/* GeoMemory View */}
-                {activeNav === 'geomemory' && (
-                  <ScenarioLaboratoryView initialSubTab="geofork" />
-                )}
-
                 {/* GeoLens View */}
                 {activeNav === 'geolens' && (
                   <ScenarioLaboratoryView initialSubTab="geolens" />
-                )}
-
-                {/* Other Modules */}
-                {['events', 'countries', 'news', 'organizations', 'evidence', 'reports', 'settings'].includes(activeNav) && (
-                  <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm space-y-5">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
-                        <Globe className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h2 className="text-xl font-bold text-slate-900 capitalize">
-                          {activeNav} Intelligence Module
-                        </h2>
-                        <p className="text-xs text-slate-500">
-                          Live multilateral data integrated with GeoSentinel reasoning pipeline
-                        </p>
-                      </div>
-                    </div>
-                    <p className="text-xs text-slate-600 leading-relaxed">
-                      Continuous telemetry monitoring for <strong>{activeNav}</strong> across all registered public data connectors.
-                    </p>
-                    <div className="pt-2">
-                      <button
-                        onClick={() => setActiveNav('dashboard')}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition"
-                      >
-                        <ArrowLeft className="w-3.5 h-3.5" /> Back to Chat
-                      </button>
-                    </div>
-                  </div>
                 )}
 
               </div>
@@ -118,12 +272,7 @@ export const App: React.FC = () => {
 
       </div>
 
-      {/* Auth / Login Modal */}
-      <AuthModal
-        isOpen={isAuthOpen}
-        onClose={() => setIsAuthOpen(false)}
-        onSuccess={() => setIsAuthOpen(false)}
-      />
+      {authModalElement}
     </div>
   );
 };
