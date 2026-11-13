@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Header } from './components/Header';
 import { LeftSidebar, RecentChatSummary } from './components/LeftSidebar';
 import { AuthModal } from './components/AuthModal';
+import { ProfileModal } from './components/ProfileModal';
 import { ChatWorkspace, ChatMessage } from './features/chat/ChatWorkspace';
 import { ConnectorStatusView } from './features/connectors/ConnectorStatusView';
 import { ScenarioLaboratoryView } from './features/scenarios/ScenarioLaboratoryView';
 import { HomePage3D } from './features/home/HomePage3D';
 import { WelcomeSplash3D } from './components/WelcomeSplash3D';
+import { WorkspaceTransition3D } from './components/WorkspaceTransition3D';
 
 interface ChatSession {
   id: string;
@@ -48,6 +50,7 @@ function buildChatTitle(msgs: ChatMessage[]): string {
 
 export const App: React.FC = () => {
   const [showWelcome, setShowWelcome] = useState<boolean>(true);
+  const [showAuthTransition, setShowAuthTransition] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<'home' | 'workspace'>('home');
   const [activeNav, setActiveNav] = useState<string>('dashboard');
   const [sessions, setSessions] = useState<ChatSession[]>(() => loadStoredSessions());
@@ -55,6 +58,7 @@ export const App: React.FC = () => {
   const activeSessionIdRef = useRef<string | null>(null);
   const [selectedQuery, setSelectedQuery] = useState<string>('');
   const [isAuthOpen, setIsAuthOpen] = useState<boolean>(false);
+  const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>(() => {
@@ -163,6 +167,32 @@ export const App: React.FC = () => {
     setCurrentPage('workspace');
   };
 
+  const handleAuthTransitionComplete = useCallback(() => {
+    setShowAuthTransition(false);
+  }, []);
+
+  const handleSaveProfileName = (newName: string) => {
+    setUserName(newName);
+    try {
+      localStorage.setItem('geosentinel_user_name', newName);
+    } catch {
+      // ignore storage failures
+    }
+  };
+
+  const handleLogout = () => {
+    setUserName('Admin');
+    try {
+      localStorage.removeItem('geosentinel_user_name');
+    } catch {
+      // ignore storage failures
+    }
+    setIsProfileOpen(false);
+    setIsAuthOpen(false);
+    setShowAuthTransition(false);
+    setCurrentPage('home');
+  };
+
   const authModalElement = (
     <AuthModal
       isOpen={isAuthOpen}
@@ -180,6 +210,7 @@ export const App: React.FC = () => {
         setIsAuthOpen(false);
         setActiveNav('dashboard');
         setCurrentPage('workspace');
+        setShowAuthTransition(true);
       }}
     />
   );
@@ -189,14 +220,14 @@ export const App: React.FC = () => {
       <>
         {showWelcome && <WelcomeSplash3D onComplete={() => setShowWelcome(false)} />}
         <div
-          className={`transition-all duration-700 ease-out ${
+          className={`w-full min-h-screen transition-all duration-700 ease-out ${
             showWelcome ? 'opacity-0 scale-[0.985]' : 'opacity-100 scale-100'
           }`}
         >
           <HomePage3D
             onOpenAuth={(mode) => openAuthModal(mode)}
             onLaunchWorkspace={(prefillQuery) => enterWorkspace(prefillQuery)}
-            onReplayWelcome={() => setShowWelcome(true)}
+            isAuthOpen={isAuthOpen}
           />
         </div>
         {authModalElement}
@@ -205,12 +236,20 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF8FF] text-slate-900 antialiased font-sans">
+    <div className="min-h-screen flex flex-col bg-[#FAFAFA] text-zinc-950 antialiased font-sans">
+      {showAuthTransition && (
+        <WorkspaceTransition3D
+          userName={userName}
+          onComplete={handleAuthTransitionComplete}
+        />
+      )}
       {/* Top Header */}
       <Header
         activeNav={activeNav}
         setActiveNav={setActiveNav}
         onOpenAuth={() => openAuthModal('login')}
+        onOpenProfile={() => setIsProfileOpen(true)}
+        onLogout={handleLogout}
         onGoHome={() => setCurrentPage('home')}
         isSidebarOpen={isSidebarOpen}
         onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
@@ -234,9 +273,9 @@ export const App: React.FC = () => {
         />
 
         {/* Center Main Intelligence Workspace - Full Width */}
-        <main className="flex-1 flex flex-col h-[calc(100vh-4rem)] bg-[#FAF8FF] overflow-hidden min-w-0">
+        <main className="flex-1 flex flex-col h-[calc(100vh-4rem)] bg-[#FAFAFA] overflow-hidden min-w-0">
           
-          {/* Prime ChatGPT / Gemini Full Screen Chat Interface */}
+          {/* ChatGPT / Gemini Full Screen Chat Interface */}
           {activeNav === 'dashboard' && (
             <ChatWorkspace
               messages={activeMessages}
@@ -246,9 +285,9 @@ export const App: React.FC = () => {
             />
           )}
 
-          {/* Secondary Functional Views (Royal Purple & White Theme) */}
+          {/* Secondary Functional Views (Black, Red & White Theme) */}
           {activeNav !== 'dashboard' && (
-            <div className="flex-1 overflow-y-auto p-3 sm:p-6 lg:p-8 bg-[#FAF8FF] text-slate-900">
+            <div className="flex-1 overflow-y-auto p-3 sm:p-6 lg:p-8 bg-[#FAFAFA] text-zinc-950">
               <div className="w-full max-w-5xl mx-auto space-y-6">
                 
                 {/* Data Sources View */}
@@ -273,6 +312,12 @@ export const App: React.FC = () => {
       </div>
 
       {authModalElement}
+      <ProfileModal
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+        userName={userName}
+        onSaveName={handleSaveProfileName}
+      />
     </div>
   );
 };

@@ -8,12 +8,12 @@ interface GlobeNode {
 }
 
 const GLOBE_NODES: GlobeNode[] = [
-  { label: 'India Hub', lat: 21, lon: 78, accent: '#6D28D9' },
-  { label: 'Strait of Hormuz', lat: 26, lon: 56, accent: '#9333EA' },
-  { label: 'US Markets', lat: 39, lon: -77, accent: '#5B21B6' },
-  { label: 'Europe Hub', lat: 50, lon: 10, accent: '#7C3AED' },
-  { label: 'East Asia', lat: 35, lon: 139, accent: '#6D28D9' },
-  { label: 'Singapore Trade', lat: 1, lon: 104, accent: '#8B5CF6' }
+  { label: 'India Hub', lat: 21, lon: 78, accent: '#EF4444' },
+  { label: 'Strait of Hormuz', lat: 26, lon: 56, accent: '#FFFFFF' },
+  { label: 'US Markets', lat: 39, lon: -77, accent: '#DC2626' },
+  { label: 'Europe Hub', lat: 50, lon: 10, accent: '#F87171' },
+  { label: 'East Asia', lat: 35, lon: 139, accent: '#FFFFFF' },
+  { label: 'Singapore Trade', lat: 1, lon: 104, accent: '#EF4444' }
 ];
 
 const ARC_PAIRS: [number, number][] = [
@@ -170,17 +170,17 @@ export const GeoGlobe3D: React.FC = () => {
       const cy = height / 2;
       const radius = Math.min(width, height) * 0.34;
 
-      // Ambient royal purple radial glow behind 3D sphere
+      // Ambient crimson & white radial glow behind 3D sphere
       const aura = ctx.createRadialGradient(cx, cy, radius * 0.15, cx, cy, radius * 1.48);
-      aura.addColorStop(0, 'rgba(139, 92, 246, 0.24)');
-      aura.addColorStop(0.55, 'rgba(109, 40, 217, 0.10)');
-      aura.addColorStop(1, 'rgba(250, 248, 255, 0)');
+      aura.addColorStop(0, 'rgba(220, 38, 38, 0.28)');
+      aura.addColorStop(0.55, 'rgba(185, 28, 28, 0.12)');
+      aura.addColorStop(1, 'rgba(9, 9, 11, 0)');
       ctx.fillStyle = aura;
       ctx.beginPath();
       ctx.arc(cx, cy, radius * 1.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // Translucent crisp white-lavender glass sphere core
+      // Deep pitch-black & crimson glass sphere core
       const sphereGrad = ctx.createRadialGradient(
         cx - radius * 0.32,
         cy - radius * 0.32,
@@ -189,15 +189,15 @@ export const GeoGlobe3D: React.FC = () => {
         cy,
         radius
       );
-      sphereGrad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
-      sphereGrad.addColorStop(0.65, 'rgba(243, 232, 255, 0.72)');
-      sphereGrad.addColorStop(1, 'rgba(196, 181, 253, 0.38)');
+      sphereGrad.addColorStop(0, 'rgba(39, 39, 42, 0.92)');
+      sphereGrad.addColorStop(0.62, 'rgba(9, 9, 11, 0.96)');
+      sphereGrad.addColorStop(1, 'rgba(220, 38, 38, 0.25)');
       ctx.fillStyle = sphereGrad;
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.strokeStyle = 'rgba(109, 40, 217, 0.22)';
+      ctx.strokeStyle = 'rgba(239, 68, 68, 0.45)';
       ctx.lineWidth = 1.25;
       ctx.stroke();
 
@@ -211,7 +211,7 @@ export const GeoGlobe3D: React.FC = () => {
           if (step === 0) ctx.moveTo(p.x, p.y);
           else ctx.lineTo(p.x, p.y);
         }
-        ctx.strokeStyle = latDeg === 0 ? 'rgba(109, 40, 217, 0.28)' : 'rgba(139, 92, 246, 0.14)';
+        ctx.strokeStyle = latDeg === 0 ? 'rgba(239, 68, 68, 0.42)' : 'rgba(255, 255, 255, 0.12)';
         ctx.lineWidth = latDeg === 0 ? 1.2 : 0.85;
         ctx.stroke();
       }
@@ -226,7 +226,7 @@ export const GeoGlobe3D: React.FC = () => {
           if (step === 0) ctx.moveTo(p.x, p.y);
           else ctx.lineTo(p.x, p.y);
         }
-        ctx.strokeStyle = 'rgba(124, 58, 237, 0.13)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
         ctx.lineWidth = 0.85;
         ctx.stroke();
       }
@@ -238,9 +238,9 @@ export const GeoGlobe3D: React.FC = () => {
 
       for (const d of projectedDots) {
         const depth = (d.z + 1) * 0.5;
-        const alpha = 0.12 + depth * 0.62;
+        const alpha = 0.16 + depth * 0.72;
         const dotSize = 1.0 + depth * 1.45;
-        ctx.fillStyle = d.z > 0.25 ? `rgba(91, 33, 182, ${alpha})` : `rgba(167, 139, 250, ${alpha * 0.65})`;
+        ctx.fillStyle = d.z > 0.25 ? `rgba(255, 255, 255, ${alpha})` : `rgba(239, 68, 68, ${alpha * 0.55})`;
         ctx.beginPath();
         ctx.arc(d.x, d.y, dotSize, 0, Math.PI * 2);
         ctx.fill();
@@ -248,8 +248,8 @@ export const GeoGlobe3D: React.FC = () => {
 
       // Tilted 3D Orbital Satellite Rings
       const orbits = [
-        { tiltX: 0.48, tiltZ: -0.35, mult: 1.26, speed: 0.95, color: 'rgba(109, 40, 217, 0.36)' },
-        { tiltX: -0.58, tiltZ: 0.42, mult: 1.38, speed: -0.7, color: 'rgba(147, 51, 234, 0.26)' }
+        { tiltX: 0.48, tiltZ: -0.35, mult: 1.26, speed: 0.95, color: 'rgba(239, 68, 68, 0.52)' },
+        { tiltX: -0.58, tiltZ: 0.42, mult: 1.38, speed: -0.7, color: 'rgba(255, 255, 255, 0.34)' }
       ];
 
       orbits.forEach((orb, idx) => {
@@ -281,8 +281,8 @@ export const GeoGlobe3D: React.FC = () => {
         const ry = ox * Math.sin(orb.tiltZ) + oy * Math.cos(orb.tiltZ);
         const sp = project([rx, ry, oz], cx, cy, radius);
 
-        ctx.fillStyle = '#FFFFFF';
-        ctx.strokeStyle = '#6D28D9';
+        ctx.fillStyle = '#09090B';
+        ctx.strokeStyle = '#EF4444';
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.arc(sp.x, sp.y, 4.2 * sp.scale, 0, Math.PI * 2);
@@ -312,7 +312,7 @@ export const GeoGlobe3D: React.FC = () => {
           if (s === 0) ctx.moveTo(p.x, p.y);
           else ctx.lineTo(p.x, p.y);
         }
-        ctx.strokeStyle = 'rgba(109, 40, 217, 0.42)';
+        ctx.strokeStyle = 'rgba(239, 68, 68, 0.55)';
         ctx.lineWidth = 1.5;
         ctx.stroke();
 
@@ -330,7 +330,7 @@ export const GeoGlobe3D: React.FC = () => {
           radius
         );
         if (pp.z > -0.2) {
-          ctx.fillStyle = '#9333EA';
+          ctx.fillStyle = '#FFFFFF';
           ctx.beginPath();
           ctx.arc(pp.x, pp.y, 2.8, 0, Math.PI * 2);
           ctx.fill();
@@ -346,7 +346,7 @@ export const GeoGlobe3D: React.FC = () => {
         const visAlpha = Math.min(1, (p.z + 0.2) * 1.15);
         const pulseR = 6 + Math.sin(tick * 2 + idx) * 3;
 
-        ctx.strokeStyle = `rgba(124, 58, 237, ${0.42 * visAlpha})`;
+        ctx.strokeStyle = `rgba(239, 68, 68, ${0.55 * visAlpha})`;
         ctx.lineWidth = 1.3;
         ctx.beginPath();
         ctx.arc(p.x, p.y, pulseR, 0, Math.PI * 2);
@@ -358,20 +358,20 @@ export const GeoGlobe3D: React.FC = () => {
         ctx.fill();
 
         if (p.z > 0.22) {
-          ctx.font = '600 10px Inter, system-ui, sans-serif';
+          ctx.font = '600 10px "Times New Roman", Times, Georgia, serif';
           const textW = ctx.measureText(node.label).width;
           const bx = p.x + 8;
           const by = p.y - 10;
 
-          ctx.fillStyle = `rgba(255, 255, 255, ${0.92 * visAlpha})`;
-          ctx.strokeStyle = `rgba(196, 181, 253, ${0.9 * visAlpha})`;
+          ctx.fillStyle = `rgba(9, 9, 11, ${0.9 * visAlpha})`;
+          ctx.strokeStyle = `rgba(239, 68, 68, ${0.7 * visAlpha})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.roundRect(bx, by, textW + 12, 18, 9);
           ctx.fill();
           ctx.stroke();
 
-          ctx.fillStyle = `rgba(46, 16, 101, ${visAlpha})`;
+          ctx.fillStyle = `rgba(255, 255, 255, ${visAlpha})`;
           ctx.fillText(node.label, bx + 6, by + 12.5);
         }
       });
@@ -401,7 +401,7 @@ export const GeoGlobe3D: React.FC = () => {
         className="w-full h-full cursor-grab active:cursor-grabbing touch-none"
         aria-label="Interactive 3D GeoSentinel Global Intelligence Globe"
       />
-      <div className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white/90 border border-purple-200 text-[10px] font-semibold text-purple-700 shadow-xs whitespace-nowrap">
+      <div className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-zinc-950/90 border border-red-500/40 text-[10px] font-semibold text-white shadow-xs whitespace-nowrap">
         Drag to rotate 3D Globe • Live Intelligence Topology
       </div>
     </div>

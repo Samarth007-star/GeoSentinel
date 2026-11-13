@@ -328,7 +328,7 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
       case 'Low':
         return 'text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full';
       default:
-        return 'text-purple-800 bg-purple-50 border border-purple-200 px-2.5 py-0.5 rounded-full';
+        return 'text-[#DC2626] bg-red-50 border border-red-200 px-2.5 py-0.5 rounded-full';
     }
   };
 
@@ -338,39 +338,39 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
       title: "What are the latest verified developments involving Iran and the Strait of Hormuz, and what potential implications could they have for India's energy security?",
       short: 'Middle East conflict & oil supply for India',
       icon: Globe,
-      color: 'text-[#6D28D9] bg-purple-50 border border-purple-200'
+      color: 'text-[#DC2626] bg-red-50 border border-red-200'
     },
     {
       id: 'iran-payment',
       title: "If India didn't pay the price for oil to Iran, then what will be the effect on India?",
       short: "If India didn't pay for oil to Iran",
       icon: BarChart3,
-      color: 'text-emerald-600 bg-emerald-50 border border-emerald-200'
+      color: 'text-[#09090B] bg-zinc-100 border border-zinc-200'
     },
     {
       id: 'natural-disasters',
       title: 'What significant recent earthquakes or natural hazards are reported by the configured scientific data sources?',
       short: 'Recent earthquakes & natural disasters',
       icon: AlertTriangle,
-      color: 'text-rose-600 bg-rose-50 border border-rose-200'
+      color: 'text-[#DC2626] bg-red-50 border border-red-200'
     },
     {
       id: 'india-economy',
       title: "What are the latest available indicators relevant to India's energy imports and economic exposure to Middle East instability?",
       short: "India's economy & Middle East tensions",
       icon: Users,
-      color: 'text-violet-700 bg-violet-50 border border-violet-200'
+      color: 'text-[#09090B] bg-zinc-100 border border-zinc-200'
     }
   ];
 
   return (
-    <div className="flex-1 w-full flex flex-col h-[calc(100vh-4rem)] bg-[#FAF8FF] relative overflow-hidden">
-      {/* Subtle Royal Lavender Ambient Glow */}
+    <div className="flex-1 w-full flex flex-col h-[calc(100vh-4rem)] bg-[#FAFAFA] relative overflow-hidden">
+      {/* Subtle Crimson Ambient Glow */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            'radial-gradient(ellipse 80% 45% at 50% 0%, rgba(124, 58, 237, 0.11), transparent 70%)'
+            'radial-gradient(ellipse 80% 45% at 50% 0%, rgba(220, 38, 38, 0.08), transparent 70%)'
         }}
       />
 
@@ -378,30 +378,30 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
       <div className="relative z-10 flex-1 overflow-y-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-6 space-y-5 sm:space-y-6">
         <div className="w-full max-w-3xl mx-auto space-y-5 sm:space-y-6">
 
-          {/* Empty State Welcome - Royal Purple & White Prime Showcase */}
+          {/* Empty State Welcome - Black, Red & White Showcase */}
           {messages.length === 0 && (
             <div className="flex flex-col items-center text-center space-y-6 sm:space-y-7 pt-4 sm:pt-12 pb-4 animate-fadeIn">
               <div className="relative">
-                <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-3xl bg-gradient-to-br from-[#5B21B6] via-[#6D28D9] to-[#7C3AED] flex items-center justify-center text-white shadow-[0_12px_36px_rgba(109,40,217,0.28)]">
+                <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-3xl bg-gradient-to-br from-[#09090B] via-[#991B1B] to-[#DC2626] flex items-center justify-center text-white shadow-[0_12px_36px_rgba(220,38,38,0.28)]">
                   <Globe className="w-7 h-7 sm:w-8 sm:h-8 stroke-[1.9]" />
                 </div>
-                <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white border border-purple-200 text-[#5B21B6] text-[9px] font-extrabold uppercase tracking-widest shadow-sm whitespace-nowrap">
-                  <Crown className="w-2.5 h-2.5 stroke-[2.5]" />
-                  Prime AI
+                <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white border border-red-200 text-[#09090B] text-[9px] font-extrabold uppercase tracking-widest shadow-sm whitespace-nowrap">
+                  <Crown className="w-2.5 h-2.5 stroke-[2.5] text-[#DC2626]" />
+                  Live AI
                 </span>
               </div>
 
               <div className="space-y-2 max-w-lg px-2 pt-1">
-                <h1 className="text-2xl sm:text-4xl font-display font-bold bg-gradient-to-r from-[#2E1065] via-[#5B21B6] to-[#7C3AED] bg-clip-text text-transparent tracking-tight">
+                <h1 className="text-2xl sm:text-4xl font-display font-bold bg-gradient-to-r from-[#09090B] via-[#DC2626] to-[#991B1B] bg-clip-text text-transparent tracking-tight">
                   How can I help you today?
                 </h1>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
                   Ask any question about global events, markets, or strategic risks.
                   Clear insights backed by live news and real-time intelligence.
                 </p>
               </div>
 
-              {/* Luxury Crisp White Suggestion Cards with Royal Purple Borders */}
+              {/* Crisp White Suggestion Cards with Black/Red Borders */}
               <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5 pt-2 text-left">
                 {suggestionCards.map((card) => {
                   const Icon = card.icon;
@@ -410,13 +410,13 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
                       key={card.id}
                       onClick={() => handleSend(card.title)}
                       disabled={loading}
-                      className="p-3.5 sm:p-4 rounded-2xl bg-white border border-purple-100 hover:border-purple-400 hover:shadow-[0_12px_30px_rgba(109,40,217,0.12)] transition-all text-left group flex items-start justify-between gap-3"
+                      className="p-3.5 sm:p-4 rounded-2xl bg-white border border-zinc-200 hover:border-red-400 hover:shadow-[0_12px_30px_rgba(220,38,38,0.12)] transition-all text-left group flex items-start justify-between gap-3"
                     >
                       <div className="space-y-1">
-                        <span className="text-xs font-semibold text-[#2E1065] group-hover:text-[#6D28D9] transition-colors block">
+                        <span className="text-xs font-semibold text-[#09090B] group-hover:text-[#DC2626] transition-colors block">
                           {card.short}
                         </span>
-                        <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
+                        <p className="text-[11px] text-zinc-500 line-clamp-2 leading-relaxed">
                           {card.title}
                         </p>
                       </div>
@@ -434,28 +434,28 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
           {messages.map((msg) => (
             <div key={msg.id} className="w-full animate-fadeIn">
               {msg.sender === 'user' ? (
-                /* User Message: Right Side Royal Purple Gradient */
+                /* User Message: Right Side Black-Red Gradient */
                 <div className="flex justify-end items-end gap-2 sm:gap-2.5">
-                  <div className="bg-gradient-to-br from-[#5B21B6] via-[#6D28D9] to-[#7C3AED] text-white rounded-3xl rounded-br-sm px-4 sm:px-5 py-3 sm:py-3.5 max-w-[85%] sm:max-w-2xl text-xs sm:text-sm leading-relaxed shadow-[0_8px_24px_rgba(109,40,217,0.22)]">
+                  <div className="bg-gradient-to-br from-[#09090B] via-[#B91C1C] to-[#DC2626] text-white rounded-3xl rounded-br-sm px-4 sm:px-5 py-3 sm:py-3.5 max-w-[85%] sm:max-w-2xl text-xs sm:text-sm leading-relaxed shadow-[0_8px_24px_rgba(220,38,38,0.22)]">
                     <p className="whitespace-pre-wrap">{msg.text}</p>
                   </div>
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-purple-100 border border-purple-200 flex items-center justify-center text-[#5B21B6] shrink-0 mb-0.5 shadow-xs">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-red-50 border border-red-200 flex items-center justify-center text-[#DC2626] shrink-0 mb-0.5 shadow-xs">
                     <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.2]" />
                   </div>
                 </div>
               ) : (
-                /* AI Message: Left Side - Luxury White & Lavender Card */
+                /* AI Message: Left Side - Crisp White Card */
                 <div className="flex justify-start items-start gap-2.5 sm:gap-3">
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-[#5B21B6] to-[#7C3AED] flex items-center justify-center text-white shrink-0 mt-1 shadow-sm">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-[#09090B] via-[#B91C1C] to-[#DC2626] flex items-center justify-center text-white shrink-0 mt-1 shadow-sm">
                     <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </div>
 
-                  <div className="bg-white border border-purple-200/80 rounded-2xl rounded-tl-sm p-4 sm:p-6 max-w-full sm:max-w-2xl w-full shadow-[0_10px_35px_rgba(91,33,182,0.06)] space-y-4 sm:space-y-5 text-slate-800">
+                  <div className="bg-white border border-zinc-200 rounded-2xl rounded-tl-sm p-4 sm:p-6 max-w-full sm:max-w-2xl w-full shadow-[0_10px_35px_rgba(9,9,11,0.06)] space-y-4 sm:space-y-5 text-zinc-800">
                     {msg.output?.sections?.map((sec, sIdx) => {
                       if (sec.type === 'badge') {
                         return (
                           <div key={sIdx} className="flex flex-wrap items-center gap-2 pl-0.5 pt-0.5">
-                            <span className="text-xs sm:text-sm font-bold text-[#2E1065] flex items-center gap-1.5">
+                            <span className="text-xs sm:text-sm font-bold text-[#09090B] flex items-center gap-1.5">
                               <span>{sec.emoji || getRiskLevelEmoji(sec.level)}</span>
                               <span>{sec.title}:</span>
                             </span>
@@ -472,18 +472,18 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
                         const bulletColor = isGood
                           ? 'text-emerald-600'
                           : isBad
-                            ? 'text-rose-500'
-                            : 'text-[#6D28D9]';
+                            ? 'text-[#DC2626]'
+                            : 'text-[#DC2626]';
 
                         return (
                           <div key={sIdx} className="space-y-2">
-                            <div className="text-xs sm:text-sm font-bold text-[#2E1065] flex items-center gap-1.5">
+                            <div className="text-xs sm:text-sm font-bold text-[#09090B] flex items-center gap-1.5">
                               <span>{sec.emoji}</span>
                               <span>{sec.title}:</span>
                             </div>
                             <ul className="space-y-1.5 pl-1">
                               {sec.items.map((item, iIdx) => (
-                                <li key={iIdx} className="text-xs sm:text-sm text-slate-700 flex items-start gap-2 leading-relaxed">
+                                <li key={iIdx} className="text-xs sm:text-sm text-zinc-700 flex items-start gap-2 leading-relaxed">
                                   <span className={`${bulletColor} font-bold shrink-0`}>•</span>
                                   <span>{item}</span>
                                 </li>
@@ -496,7 +496,7 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
                       if (sec.type === 'strategies' && sec.strategies && sec.strategies.length > 0) {
                         return (
                           <div key={sIdx} className="space-y-3 pt-0.5">
-                            <div className="text-xs sm:text-sm font-bold text-[#2E1065] flex items-center gap-1.5">
+                            <div className="text-xs sm:text-sm font-bold text-[#09090B] flex items-center gap-1.5">
                               <span>{sec.emoji}</span>
                               <span>{sec.title}:</span>
                             </div>
@@ -504,23 +504,23 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
                               {sec.strategies.map((strat, stIdx) => (
                                 <div
                                   key={stIdx}
-                                  className="text-sm text-slate-700 bg-[#FAF8FF] border border-purple-100 hover:border-purple-300 rounded-xl p-3.5 sm:p-4 space-y-2 transition-colors shadow-xs"
+                                  className="text-sm text-zinc-700 bg-[#FAFAFA] border border-zinc-200 hover:border-red-300 rounded-xl p-3.5 sm:p-4 space-y-2 transition-colors shadow-xs"
                                 >
-                                  <div className="font-bold text-[#4C1D95] text-xs sm:text-sm flex items-center gap-1.5">
+                                  <div className="font-bold text-[#DC2626] text-xs sm:text-sm flex items-center gap-1.5">
                                     <span>🎯</span>
                                     <span>{strat.name}</span>
                                   </div>
 
                                   {strat.what_to_do && (
-                                    <div className="text-xs sm:text-sm text-slate-800 leading-relaxed">
-                                      <span className="font-bold text-[#2E1065]">What To Do: </span>
+                                    <div className="text-xs sm:text-sm text-zinc-800 leading-relaxed">
+                                      <span className="font-bold text-[#09090B]">What To Do: </span>
                                       <span>{strat.what_to_do}</span>
                                     </div>
                                   )}
 
                                   {strat.why_will_work && (
-                                    <div className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                                      <span className="font-bold text-slate-800">Why This Will Work: </span>
+                                    <div className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+                                      <span className="font-bold text-zinc-800">Why This Will Work: </span>
                                       <span>{strat.why_will_work}</span>
                                     </div>
                                   )}
@@ -530,7 +530,7 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
                                     <span>{strat.good_effect}</span>
                                   </div>
 
-                                  <div className="text-xs sm:text-sm text-rose-700 leading-relaxed">
+                                  <div className="text-xs sm:text-sm text-[#DC2626] leading-relaxed">
                                     <span className="font-bold">Bad Effect / Risk: </span>
                                     <span>{strat.bad_effect}</span>
                                   </div>
@@ -538,12 +538,12 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
                                   {(strat.when_to_do || strat.cost_effort || strat.success_chance) && (
                                     <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1.5 text-[11px] sm:text-xs">
                                       {strat.when_to_do && (
-                                        <span className="px-2.5 py-0.5 rounded-full bg-purple-100/70 text-[#5B21B6] border border-purple-200 font-medium">
+                                        <span className="px-2.5 py-0.5 rounded-full bg-red-50 text-[#DC2626] border border-red-200 font-medium">
                                           When: {strat.when_to_do}
                                         </span>
                                       )}
                                       {strat.cost_effort && (
-                                        <span className="px-2.5 py-0.5 rounded-full bg-white text-slate-700 border border-slate-200 font-medium">
+                                        <span className="px-2.5 py-0.5 rounded-full bg-white text-zinc-700 border border-zinc-200 font-medium">
                                           Cost / Effort: {strat.cost_effort}
                                         </span>
                                       )}
@@ -565,18 +565,18 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
                         return (
                           <div
                             key={sIdx}
-                            className="bg-gradient-to-br from-purple-50 via-violet-50/60 to-white border border-purple-300 rounded-xl p-4 space-y-1.5 shadow-[0_6px_22px_rgba(109,40,217,0.08)]"
+                            className="bg-gradient-to-br from-red-50 via-white to-zinc-50 border border-red-300 rounded-xl p-4 space-y-1.5 shadow-[0_6px_22px_rgba(220,38,38,0.08)]"
                           >
-                            <div className="text-xs sm:text-sm font-bold text-[#5B21B6] flex items-center gap-1.5">
+                            <div className="text-xs sm:text-sm font-bold text-[#DC2626] flex items-center gap-1.5">
                               <span>{sec.emoji || '🏆'}</span>
                               <span>{sec.title}:</span>
                             </div>
                             {sec.strategy_name && (
-                              <div className="text-xs sm:text-sm font-bold text-[#2E1065]">
+                              <div className="text-xs sm:text-sm font-bold text-[#09090B]">
                                 {sec.strategy_name}
                               </div>
                             )}
-                            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                            <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed">
                               {sec.content}
                             </p>
                           </div>
@@ -588,7 +588,7 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
 
                       if (isPlainConversationalText) {
                         return (
-                          <div key={sIdx} className="text-xs sm:text-sm text-slate-700 leading-relaxed flex items-start gap-2">
+                          <div key={sIdx} className="text-xs sm:text-sm text-zinc-700 leading-relaxed flex items-start gap-2">
                             {sec.emoji && <span className="shrink-0">{sec.emoji}</span>}
                             <span>{sec.content}</span>
                           </div>
@@ -597,11 +597,11 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
 
                       return (
                         <div key={sIdx} className="space-y-1.5">
-                          <div className="text-xs sm:text-sm font-bold text-[#2E1065] flex items-center gap-1.5">
+                          <div className="text-xs sm:text-sm font-bold text-[#09090B] flex items-center gap-1.5">
                             <span>{sec.emoji}</span>
                             <span>{sec.title}{/[!?:]$/.test(sec.title) ? '' : ':'}</span>
                           </div>
-                          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed pl-0.5">
+                          <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed pl-0.5">
                             {sec.content}
                           </p>
                         </div>
@@ -616,11 +616,11 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
           {/* AI Thinking / Processing State */}
           {loading && (
             <div className="flex justify-start items-start gap-2.5 sm:gap-3 animate-fadeIn">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-[#5B21B6] to-[#7C3AED] flex items-center justify-center text-white shrink-0 mt-1 shadow-sm">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-[#09090B] via-[#B91C1C] to-[#DC2626] flex items-center justify-center text-white shrink-0 mt-1 shadow-sm">
                 <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
-              <div className="bg-white border border-purple-200 rounded-2xl rounded-tl-sm px-4 sm:px-5 py-3.5 max-w-sm flex items-center gap-3 text-[#4C1D95] text-xs shadow-sm font-medium">
-                <Loader2 className="w-4 h-4 animate-spin text-[#6D28D9]" />
+              <div className="bg-white border border-zinc-200 rounded-2xl rounded-tl-sm px-4 sm:px-5 py-3.5 max-w-sm flex items-center gap-3 text-[#09090B] text-xs shadow-sm font-medium">
+                <Loader2 className="w-4 h-4 animate-spin text-[#DC2626]" />
                 <span>Analyzing... Fetching live data...</span>
               </div>
             </div>
@@ -630,10 +630,10 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
         </div>
       </div>
 
-      {/* Fixed Bottom User Input Bar - Crisp White & Royal Purple */}
-      <div className="relative z-10 sticky bottom-0 bg-white/90 backdrop-blur-xl border-t border-purple-100 p-3 sm:p-4 w-full shrink-0 shadow-[0_-8px_30px_rgba(109,40,217,0.06)]">
+      {/* Fixed Bottom User Input Bar - Black, Red & White */}
+      <div className="relative z-10 sticky bottom-0 bg-white/95 backdrop-blur-xl border-t border-zinc-200 p-3 sm:p-4 w-full shrink-0 shadow-[0_-8px_30px_rgba(9,9,11,0.05)]">
         <div className="max-w-3xl mx-auto w-full space-y-1.5 sm:space-y-2">
-          <div className="flex items-end gap-2 sm:gap-2.5 bg-white border border-purple-200 rounded-3xl p-2 sm:p-2.5 focus-within:border-[#6D28D9] focus-within:ring-4 focus-within:ring-purple-500/10 transition-all shadow-[0_6px_25px_rgba(109,40,217,0.08)]">
+          <div className="flex items-end gap-2 sm:gap-2.5 bg-white border border-zinc-300 rounded-3xl p-2 sm:p-2.5 focus-within:border-[#DC2626] focus-within:ring-4 focus-within:ring-red-500/10 transition-all shadow-[0_6px_25px_rgba(9,9,11,0.06)]">
             <textarea
               ref={textareaRef}
               rows={1}
@@ -642,14 +642,14 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
               onKeyDown={handleKeyDown}
               disabled={loading}
               placeholder="Ask your Query"
-              className="flex-1 bg-transparent border-none outline-none resize-none text-xs sm:text-sm text-slate-900 placeholder-slate-400 max-h-32 px-3 py-1.5 leading-relaxed"
+              className="flex-1 bg-transparent border-none outline-none resize-none text-xs sm:text-sm text-zinc-900 placeholder-zinc-400 max-h-32 px-3 py-1.5 leading-relaxed"
             />
 
             <button
               type="button"
               onClick={() => handleSend()}
               disabled={loading || !input.trim()}
-              className="w-9 h-9 rounded-full bg-gradient-to-br from-[#5B21B6] via-[#6D28D9] to-[#7C3AED] hover:from-[#4C1D95] hover:to-[#6D28D9] disabled:opacity-35 text-white flex items-center justify-center shrink-0 transition shadow-[0_4px_14px_rgba(109,40,217,0.3)] active:scale-95"
+              className="w-9 h-9 rounded-full bg-gradient-to-br from-[#09090B] via-[#B91C1C] to-[#DC2626] hover:from-[#18181B] hover:to-[#B91C1C] disabled:opacity-35 text-white flex items-center justify-center shrink-0 transition shadow-[0_4px_14px_rgba(220,38,38,0.3)] active:scale-95"
               title="Send Message"
             >
               {loading ? (
@@ -660,8 +660,8 @@ export const ChatWorkspace: React.FC<ChatWorkspaceProps> = ({
             </button>
           </div>
 
-          <p className="text-[10px] sm:text-[11px] text-slate-400 text-center select-none tracking-wide">
-            GeoSentinel <span className="text-[#6D28D9] font-semibold">Prime</span> • Live Global Intelligence &amp; Actionable Strategy
+          <p className="text-[10px] sm:text-[11px] text-zinc-400 text-center select-none tracking-wide">
+            <span className="text-[#DC2626] font-semibold">GeoSentinel</span> • Live Global Intelligence &amp; Actionable Strategy
           </p>
         </div>
       </div>

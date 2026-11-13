@@ -57,37 +57,37 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
       {isOpen && (
         <div
           onClick={onClose}
-          className="fixed inset-0 z-40 bg-[#2E1065]/30 backdrop-blur-xs md:hidden animate-fadeIn"
+          className="fixed inset-0 z-40 bg-black/45 backdrop-blur-xs md:hidden animate-fadeIn"
         />
       )}
 
       <aside
-        className={`fixed md:static inset-y-0 left-0 z-50 md:z-auto w-64 md:w-56 xl:w-64 bg-white border-r border-purple-100 flex flex-col h-full md:h-[calc(100vh-4rem)] md:sticky md:top-16 select-none shrink-0 overflow-y-auto shadow-2xl md:shadow-none transform transition-transform duration-300 ease-out ${
+        className={`fixed md:static inset-y-0 left-0 z-50 md:z-auto w-64 md:w-56 xl:w-64 bg-white border-r border-zinc-200 flex flex-col h-full md:h-[calc(100vh-4rem)] md:sticky md:top-16 select-none shrink-0 overflow-y-auto shadow-2xl md:shadow-none transform transition-transform duration-300 ease-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
         <div className="p-3.5 space-y-5">
           {/* Mobile Header inside Drawer */}
-          <div className="flex items-center justify-between md:hidden pb-2 border-b border-purple-100">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#5B21B6]">
+          <div className="flex items-center justify-between md:hidden pb-2 border-b border-zinc-200">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#09090B]">
               GeoSentinel Menu
             </span>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-slate-500 hover:bg-purple-50 hover:text-purple-700"
+              className="p-1.5 rounded-lg text-zinc-500 hover:bg-red-50 hover:text-[#DC2626]"
               aria-label="Close menu"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
-          {/* New Chat Royal Purple Gradient CTA */}
+          {/* New Chat Black & Red Gradient CTA */}
           <button
             onClick={() => {
               onNewChat();
               onClose();
             }}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#5B21B6] via-[#6D28D9] to-[#7C3AED] hover:from-[#4C1D95] hover:to-[#6D28D9] text-white transition-all font-bold text-xs shadow-[0_6px_20px_rgba(109,40,217,0.28)] active:scale-[0.98]"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#09090B] via-[#B91C1C] to-[#DC2626] hover:from-[#18181B] hover:to-[#B91C1C] text-white transition-all font-bold text-xs shadow-[0_6px_20px_rgba(220,38,38,0.25)] active:scale-[0.98]"
           >
             <MessageSquarePlus className="w-4 h-4 stroke-[2.2]" />
             <span>New Chat</span>
@@ -95,7 +95,7 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
 
           {/* Streamlined Primary Navigation */}
           <div className="space-y-1">
-            <p className="px-2.5 pb-1 text-[10px] font-bold uppercase tracking-widest text-purple-400">
+            <p className="px-2.5 pb-1 text-[10px] font-bold uppercase tracking-widest text-zinc-400">
               Workspace
             </p>
             <nav className="space-y-1">
@@ -108,11 +108,11 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
                     onClick={() => handleNavClick(item.id)}
                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
                       isActive
-                        ? 'bg-gradient-to-r from-purple-50 to-violet-50 text-[#5B21B6] border border-purple-200 shadow-xs font-semibold'
-                        : 'text-slate-600 hover:text-[#5B21B6] hover:bg-purple-50/50 border border-transparent'
+                        ? 'bg-red-50 text-[#DC2626] border border-red-200 shadow-xs font-semibold'
+                        : 'text-zinc-600 hover:text-[#09090B] hover:bg-zinc-100/80 border border-transparent'
                     }`}
                   >
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-[#6D28D9]' : 'text-slate-400'}`} />
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-[#DC2626]' : 'text-zinc-400'}`} />
                     <span>{item.label}</span>
                   </button>
                 );
@@ -122,20 +122,20 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
         </div>
 
         {/* Dynamic Recent Chats Section */}
-        <div className="mt-auto p-3.5 border-t border-purple-100 bg-[#FAF8FF]/80">
+        <div className="mt-auto p-3.5 border-t border-zinc-200 bg-[#FAFAFA]">
           <div className="flex items-center justify-between mb-2.5 px-1">
-            <h4 className="text-[10px] font-bold uppercase tracking-widest text-purple-900/60">
+            <h4 className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">
               Recent Chats
             </h4>
             {recentChats.length > 0 && (
-              <span className="text-[10px] font-bold text-[#6D28D9] bg-purple-100/80 border border-purple-200 px-1.5 py-0.5 rounded-full">
+              <span className="text-[10px] font-bold text-[#DC2626] bg-red-50 border border-red-200 px-1.5 py-0.5 rounded-full">
                 {recentChats.length}
               </span>
             )}
           </div>
 
           {recentChats.length === 0 ? (
-            <p className="text-[11px] text-slate-400 px-2 py-2 leading-relaxed">
+            <p className="text-[11px] text-zinc-400 px-2 py-2 leading-relaxed">
               No recent chats yet. Ask your query to begin.
             </p>
           ) : (
@@ -147,8 +147,8 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
                     key={chat.id}
                     className={`group flex items-center justify-between gap-1 rounded-xl transition-all border ${
                       isSelected
-                        ? 'bg-white border-purple-200 text-[#5B21B6] font-semibold shadow-xs'
-                        : 'border-transparent text-slate-600 hover:text-[#5B21B6] hover:bg-white/80'
+                        ? 'bg-white border-red-200 text-[#DC2626] font-semibold shadow-xs'
+                        : 'border-transparent text-zinc-600 hover:text-[#09090B] hover:bg-white'
                     }`}
                   >
                     <button
@@ -161,7 +161,7 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
                     >
                       <MessageSquare
                         className={`w-3.5 h-3.5 shrink-0 ${
-                          isSelected ? 'text-[#6D28D9]' : 'text-purple-300 group-hover:text-[#6D28D9]'
+                          isSelected ? 'text-[#DC2626]' : 'text-zinc-400 group-hover:text-[#DC2626]'
                         }`}
                       />
                       <span className="truncate">{chat.title}</span>

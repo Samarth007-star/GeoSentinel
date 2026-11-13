@@ -98,11 +98,11 @@ class LiveLLMService:
                         "emoji": "👋",
                         "title": greeting_word,
                         "type": "text",
-                        "content": f"Welcome to GeoSentinel Prime, {display_name}! I'm your AI Query Analyzer and Real-Time Decision Assistant, glad to help you today.",
+                        "content": f"Welcome to GeoSentinel, {display_name}! I'm your AI Query Analyzer and Real-Time Decision Assistant, glad to help you today.",
                     },
                     {
                         "emoji": "✨",
-                        "title": "Speciality of GeoSentinel Prime",
+                        "title": "Speciality of GeoSentinel",
                         "type": "bullets",
                         "items": [
                             "Smart Intent & Query Analyzer: Automatically understands whether you want a risk check, market effect, good vs. bad comparison, or action plan.",
@@ -132,7 +132,7 @@ class LiveLLMService:
                 msg = f"I'm doing great, {display_name}, and ready to help! Ask me about any global event, market trend, risk, or strategy you'd like analyzed today."
                 emoji = "😊"
             elif any(w in q_lower for w in ("are you real", "are you human")):
-                msg = f"I'm GeoSentinel Prime, {display_name} — an AI assistant built to analyze live news, risks, impacts, and actionable strategies. What would you like to check?"
+                msg = f"I'm GeoSentinel, {display_name} — an AI assistant built to analyze live news, risks, impacts, and actionable strategies. What would you like to check?"
                 emoji = "🤖"
             else:
                 msg = f"I'm right here and ready, {display_name}! Ask me anything about global events, markets, risks, or strategies."
@@ -165,13 +165,13 @@ class LiveLLMService:
                 "sections": [
                     {
                         "emoji": "🛡️",
-                        "title": f"Hello, {display_name}! Meet GeoSentinel Prime",
+                        "title": f"Hello, {display_name}! Meet GeoSentinel",
                         "type": "text",
                         "content": "I'm your intelligent Query Analyzer and real-time decision assistant.",
                     },
                     {
                         "emoji": "✨",
-                        "title": "Speciality of GeoSentinel Prime",
+                        "title": "Speciality of GeoSentinel",
                         "type": "bullets",
                         "items": [
                             "Intent-Aware Analysis: Adapts output cleanly to Risk, Effect, Good vs. Bad, Strategy, or Simple Fact questions.",
