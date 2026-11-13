@@ -33,7 +33,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [mode, setMode] = useState<'login' | 'register'>(initialMode);
   const [fullName, setFullName] = useState('Abhi');
   const [email, setEmail] = useState('analyst@geosentinel.ai');
-  const [password, setPassword] = useState('••••••••••••');
+  const [password, setPassword] = useState('Sentinel@2026');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
@@ -354,10 +354,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     />
                     <button
                       type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-3 text-zinc-400 hover:text-[#DC2626] cursor-pointer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setShowPassword((prev) => !prev);
+                      }}
+                      className="absolute right-3.5 top-3 text-zinc-400 hover:text-[#DC2626] transition-colors cursor-pointer z-10 p-0.5"
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
                     >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      {showPassword ? <EyeOff className="w-4 h-4 text-[#DC2626]" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
                 </div>
