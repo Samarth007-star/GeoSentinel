@@ -1,7 +1,7 @@
 import asyncio
 import os
 import re
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from ..schemas.models import RetrievalPlan, EvidenceRecord
 from ..connectors.registry import connector_registry
 from ..verification.engine import EvidenceVerificationEngine
