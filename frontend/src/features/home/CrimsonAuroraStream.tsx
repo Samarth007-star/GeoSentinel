@@ -14,7 +14,8 @@ export const CrimsonAuroraStream: React.FC<CrimsonAuroraStreamProps> = ({ classN
     if (!ctx) return;
 
     let animId = 0;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let isMobile = window.innerWidth < 768;
+    const dpr = isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.35);
     let width = 0;
     let height = 0;
 
@@ -22,8 +23,9 @@ export const CrimsonAuroraStream: React.FC<CrimsonAuroraStreamProps> = ({ classN
       const parent = canvas.parentElement;
       width = parent ? parent.clientWidth : window.innerWidth;
       height = parent ? parent.clientHeight : window.innerHeight;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+      isMobile = width < 768;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
@@ -109,8 +111,16 @@ export const CrimsonAuroraStream: React.FC<CrimsonAuroraStreamProps> = ({ classN
     ];
 
     const startTime = performance.now();
+    let lastFrameTime = 0;
 
     const draw = (now: number) => {
+      // On mobile, cap framerate to ~40fps to prevent GPU thermal throttling and eliminate stutter
+      if (isMobile && now - lastFrameTime < 24) {
+        animId = window.requestAnimationFrame(draw);
+        return;
+      }
+      lastFrameTime = now;
+
       // Smooth, natural medium time progression
       const t = (now - startTime) * 0.00028;
 
@@ -128,7 +138,7 @@ export const CrimsonAuroraStream: React.FC<CrimsonAuroraStreamProps> = ({ classN
       }
 
       // Responsive screen scaling factors
-      const isMobile = width < 768;
+      isMobile = width < 768;
       const scaleFactor = Math.min(1.3, Math.max(0.65, width / 1280));
 
       // Accurate document scroll progress: 0.0 (top) -> 1.0 (bottom)
@@ -183,13 +193,15 @@ export const CrimsonAuroraStream: React.FC<CrimsonAuroraStreamProps> = ({ classN
 
       ctx.globalCompositeOperation = 'lighter';
 
-      // 1. RENDER SERPENTINE SNAKE BODY RIBBONS
-      const STEPS = 58;
+      // 1. RENDER SERPENTINE SNAKE BODY RIBBONS (Adaptive complexity for mobile vs desktop)
+      const STEPS = isMobile ? 22 : 52;
       const stepY = (height * 1.35) / (STEPS - 1);
       const startY = -height * 0.18;
 
-      for (let rIdx = 0; rIdx < SNAKE_RIBBONS.length; rIdx++) {
-        const ribbon = SNAKE_RIBBONS[rIdx];
+      const ribbonsToDraw = isMobile ? SNAKE_RIBBONS.slice(0, 2) : SNAKE_RIBBONS;
+
+      for (let rIdx = 0; rIdx < ribbonsToDraw.length; rIdx++) {
+        const ribbon = ribbonsToDraw[rIdx];
         const halfW = ribbon.baseWidth * 0.5 * scaleFactor;
 
         // Compute left and right serpentine contours
@@ -243,8 +255,9 @@ export const CrimsonAuroraStream: React.FC<CrimsonAuroraStreamProps> = ({ classN
       }
 
       // 2. RENDER DORSAL SPINE & CAUSTIC FILAMENTS
-      for (let fIdx = 0; fIdx < FILAMENTS.length; fIdx++) {
-        const filament = FILAMENTS[fIdx];
+      const filamentsToDraw = isMobile ? FILAMENTS.slice(0, 2) : FILAMENTS;
+      for (let fIdx = 0; fIdx < filamentsToDraw.length; fIdx++) {
+        const filament = filamentsToDraw[fIdx];
         ctx.beginPath();
 
         for (let i = 0; i < STEPS; i++) {
@@ -266,7 +279,8 @@ export const CrimsonAuroraStream: React.FC<CrimsonAuroraStreamProps> = ({ classN
       }
 
       // 3. RENDER GLOWING PARTICLES ALONG THE SNAKE SPINE
-      for (let i = 0; i < droplets.length; i++) {
+      const activeDropletsCount = isMobile ? 16 : droplets.length;
+      for (let i = 0; i < activeDropletsCount; i++) {
         const drop = droplets[i];
 
         // Downward slither motion

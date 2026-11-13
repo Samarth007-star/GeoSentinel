@@ -508,7 +508,8 @@ export const ParticlePresenceCanvas: React.FC<ParticlePresenceCanvasProps> = ({
     if (!ctx) return;
 
     let animId = 0;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let isMobile = (canvas.clientWidth || window.innerWidth) < 768;
+    const dpr = isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.35);
     let width = canvas.clientWidth || window.innerWidth;
     let height = canvas.clientHeight || window.innerHeight;
 
@@ -516,11 +517,27 @@ export const ParticlePresenceCanvas: React.FC<ParticlePresenceCanvasProps> = ({
       const parent = canvas.parentElement;
       width = parent ? parent.clientWidth : window.innerWidth;
       height = parent ? parent.clientHeight : window.innerHeight;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+      isMobile = width < 768;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
+
+    let isVisible = true;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible = entry.isIntersecting;
+          if (isVisible && !animId) {
+            lastTimestamp = performance.now();
+            animId = window.requestAnimationFrame(draw);
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(canvas);
 
     const pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
     const handlePointerMove = (e: MouseEvent) => {
@@ -583,6 +600,10 @@ export const ParticlePresenceCanvas: React.FC<ParticlePresenceCanvasProps> = ({
     };
 
     const draw = (now: number) => {
+      if (!isVisible) {
+        animId = 0;
+        return;
+      }
       const dt = Math.min(0.05, (now - lastTimestamp) / 1000);
       lastTimestamp = now;
       const t = (now - startTime) * 0.001;
@@ -903,6 +924,7 @@ export const ParticlePresenceCanvas: React.FC<ParticlePresenceCanvasProps> = ({
     animId = window.requestAnimationFrame(draw);
 
     return () => {
+      observer.disconnect();
       window.cancelAnimationFrame(animId);
       window.removeEventListener('mousemove', handlePointerMove);
       window.removeEventListener('mouseleave', handlePointerLeave);

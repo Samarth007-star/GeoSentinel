@@ -100,9 +100,10 @@ export const GeoGlobe3D: React.FC = () => {
       const rect = container.getBoundingClientRect();
       width = Math.max(260, rect.width);
       height = Math.max(260, rect.height);
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+      const isMobile = width < 768;
+      const dpr = isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.35);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -111,6 +112,20 @@ export const GeoGlobe3D: React.FC = () => {
     resize();
     const ro = new ResizeObserver(resize);
     ro.observe(container);
+
+    let isVisible = true;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible = entry.isIntersecting;
+          if (isVisible && !animId) {
+            animId = requestAnimationFrame(drawFrame);
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(container);
 
     const onPointerDown = (e: PointerEvent) => {
       isDragging = true;
@@ -157,6 +172,10 @@ export const GeoGlobe3D: React.FC = () => {
     };
 
     const drawFrame = () => {
+      if (!isVisible) {
+        animId = 0;
+        return;
+      }
       tick += 0.02;
       if (!isDragging) {
         rotY += velY;
@@ -382,6 +401,7 @@ export const GeoGlobe3D: React.FC = () => {
     animId = requestAnimationFrame(drawFrame);
 
     return () => {
+      observer.disconnect();
       cancelAnimationFrame(animId);
       ro.disconnect();
       canvas.removeEventListener('pointerdown', onPointerDown);

@@ -342,7 +342,7 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
       }`}
     >
       {/* Full-Screen Continuous Flowing Crimson Aurora Waterflow Stream edge-to-edge */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden transform-gpu will-change-transform">
         <CrimsonAuroraStream className="w-full h-full opacity-45" />
       </div>
 
