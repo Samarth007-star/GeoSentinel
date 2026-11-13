@@ -449,8 +449,8 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
 
       {/* 2. HERO — 3D INTELLIGENCE STAGE */}
       <div className="relative z-10 w-full bg-transparent text-white overflow-x-clip border-b border-white/10">
-        {/* Sticky Full-Viewport 3D Hologram Canvas anchored to the 1st-level stage */}
-        <div className="sticky top-[68px] h-[calc(100vh-68px)] min-h-[540px] w-full pointer-events-none z-0 overflow-hidden">
+        {/* Sticky Full-Viewport 3D Hologram Canvas anchored to the 1st-level stage (Desktop) */}
+        <div className="hidden md:block md:sticky md:top-[68px] md:h-[calc(100vh-68px)] md:min-h-[540px] w-full pointer-events-none z-0 overflow-hidden">
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
@@ -462,7 +462,7 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
         </div>
 
         {/* Viewport 1: Hero Editorial Stage ("Intelligence in living motion") */}
-        <section className="relative z-10 -mt-[calc(100vh-68px)] min-h-[calc(100vh-68px)] w-full max-w-7xl 2xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 sm:py-14 flex flex-col justify-between">
+        <section className="relative z-10 md:-mt-[calc(100vh-68px)] md:min-h-[calc(100vh-68px)] w-full max-w-7xl 2xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8 sm:py-14 flex flex-col justify-between">
           <div className="max-w-xl animate-blur-sharp">
             {/* Eyebrow */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-red-500/35 text-[10px] tracking-[0.22em] uppercase text-red-400 mb-4">
@@ -504,8 +504,13 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
             </div>
           </div>
 
+          {/* Mobile-only 3D Hologram Stage: Dedicated breathing room, centered, never covered by text */}
+          <div className="block md:hidden h-[260px] sm:h-[320px] w-full my-4 relative overflow-hidden pointer-events-none">
+            <ParticlePresenceCanvas activeShape={activeShape} />
+          </div>
+
           {/* Bottom Split: Experience Hint + Main Description & CTAs */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end pt-16 sm:pt-20">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end pt-4 md:pt-16 sm:pt-20">
             <div className="md:col-span-5 lg:col-span-5">
               <p className="text-[11px] sm:text-xs tracking-[0.16em] uppercase text-zinc-400 leading-relaxed max-w-md">
                 Explore the intelligence field. Discover how global signals connect, evolve, and shape strategic risks.

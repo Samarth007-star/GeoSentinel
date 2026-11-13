@@ -22,7 +22,8 @@ export const WelcomeSplash3D: React.FC<WelcomeSplash3DProps> = ({ onComplete }) 
 
   useEffect(() => {
     const start = performance.now();
-    const totalMs = 2600;
+    const isMobile = window.innerWidth < 768;
+    const totalMs = isMobile ? 1200 : 2200;
     let rafId = 0;
 
     const tickProgress = (now: number) => {
@@ -45,8 +46,8 @@ export const WelcomeSplash3D: React.FC<WelcomeSplash3DProps> = ({ onComplete }) 
 
     rafId = window.requestAnimationFrame(tickProgress);
 
-    const tExit = window.setTimeout(() => setExiting(true), 2750);
-    const tDone = window.setTimeout(() => onCompleteRef.current(), 3300);
+    const tExit = window.setTimeout(() => setExiting(true), isMobile ? 1300 : 2300);
+    const tDone = window.setTimeout(() => onCompleteRef.current(), isMobile ? 1650 : 2800);
 
     return () => {
       window.cancelAnimationFrame(rafId);
@@ -62,17 +63,19 @@ export const WelcomeSplash3D: React.FC<WelcomeSplash3DProps> = ({ onComplete }) 
     if (!ctx) return;
 
     let animId = 0;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const isMobile = window.innerWidth < 768;
+    const dpr = isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.35);
 
     const resize = () => {
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
+      canvas.width = Math.round(window.innerWidth * dpr);
+      canvas.height = Math.round(window.innerHeight * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
 
     // High-speed diagonal warp streaks matching the 00:00 preloader aesthetic
-    const streaks = Array.from({ length: 130 }, (_, i) => {
+    const streakCount = isMobile ? 42 : 130;
+    const streaks = Array.from({ length: streakCount }, (_, i) => {
       const isCrimson = i % 5 === 0;
       const isSoftRed = i % 9 === 0;
       return {
@@ -91,8 +94,9 @@ export const WelcomeSplash3D: React.FC<WelcomeSplash3DProps> = ({ onComplete }) 
     });
 
     // Subtle coalescing 3D ring dots in center
-    const ringDots = Array.from({ length: 180 }, (_, i) => ({
-      angle: (i / 180) * Math.PI * 2,
+    const ringDotCount = isMobile ? 55 : 180;
+    const ringDots = Array.from({ length: ringDotCount }, (_, i) => ({
+      angle: (i / ringDotCount) * Math.PI * 2,
       radiusOffset: (Math.random() - 0.5) * 18,
       speed: 0.008 + Math.random() * 0.006,
       size: 0.9 + Math.random() * 1.4,
