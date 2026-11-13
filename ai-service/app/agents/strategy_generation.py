@@ -238,8 +238,57 @@ class StrategyGenerationAgent:
                 )
             ]
 
-        # TOPIC 1: South China Sea / Semiconductor / Global Supply Chains (Q2)
-        elif any(k in q_lower for k in ["south china sea", "semiconductor", "taiwan", "microchip", "electronics"]):
+        # DOMAIN: AI Compute, Semiconductors & Tech Hardware (Nvidia, Chips, GPUs)
+        elif any(k in q_lower for k in ["nvidia", "chip", "chips", "gpu", "gpus", "semiconductor", "semiconductors", "ai hardware", "microchip"]):
+            return [
+                StrategyOption(
+                    option_id=f"opt_{uuid.uuid4().hex[:8]}",
+                    title="Indigenous Semiconductor Ecosystem Protection & Fab Incentive Alignment",
+                    objective="Protect domestic semiconductor startups under the India Semiconductor Mission while taking advantage of affordable foreign compute.",
+                    causal_mechanism="Provide dedicated design-linked subsidies and public procurement preferences for homegrown chip architectures alongside open imports.",
+                    prerequisites=[
+                        "India Semiconductor Mission (ISM) policy coordination.",
+                        "Ministry of Electronics and Information Technology (MeitY) guidelines."
+                    ],
+                    benefits=[
+                        "Prevents total reliance on a single foreign hardware vendor.",
+                        "Supports homegrown intellectual property and semiconductor talent."
+                    ],
+                    tradeoffs=[
+                        "Fiscal outlay required for domestic fab and design subsidies.",
+                        "Domestic chips may take longer to match global top-tier performance."
+                    ],
+                    time_horizon="90 to 365 days",
+                    evidence_basis=ev_refs[:2],
+                    risk_review=pending_review,
+                    fallback_option="Mandate joint-venture technology transfers for foreign hardware suppliers selling at scale."
+                ),
+                StrategyOption(
+                    option_id=f"opt_{uuid.uuid4().hex[:8]}",
+                    title="Open-Standard AI Framework Adoption & Clean Energy Grid Integration",
+                    objective="Prevent proprietary software ecosystem lock-in and manage data center power consumption.",
+                    causal_mechanism="Encourage public universities and startups to train models on open-source frameworks while connecting large AI clusters to dedicated solar and renewable grids.",
+                    prerequisites=[
+                        "National AI Mission software development standards.",
+                        "State electricity board green energy allocation agreements."
+                    ],
+                    benefits=[
+                        "Ensures Indian software models can run across multiple chip brands without costly rewrites.",
+                        "Mitigates carbon footprint and grid instability from high-density computing."
+                    ],
+                    tradeoffs=[
+                        "Initial developer training required to move beyond proprietary ecosystems.",
+                        "Capital cost for dedicated renewable transmission lines to data center zones."
+                    ],
+                    time_horizon="30 to 180 days",
+                    evidence_basis=ev_refs[:1],
+                    risk_review=pending_review,
+                    fallback_option="Implement peak-hour compute load-shedding and power tariffs for non-critical training runs."
+                )
+            ]
+
+        # TOPIC 1: South China Sea / Maritime Chokepoints / East Asia Shipping (Q2)
+        elif any(k in q_lower for k in ["south china sea", "taiwan strait", "east asia shipping"]):
             return [
                 StrategyOption(
                     option_id=f"opt_{uuid.uuid4().hex[:8]}",

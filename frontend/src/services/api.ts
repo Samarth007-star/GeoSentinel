@@ -7,9 +7,12 @@ export async function executeAnalysis(
   geographies: string[] = ['IND', 'IRN', 'USA'],
   timeHorizon: string = '30d'
 ): Promise<AnalysisResult> {
+  const storedName =
+    typeof window !== 'undefined' ? window.localStorage.getItem('geosentinel_user_name') : null;
   const payload = {
     session_id: `ses_${Date.now()}`,
     question,
+    user_name: (storedName && storedName.trim()) || 'Admin',
     time_horizon: timeHorizon,
     geographies,
     include_categories: []

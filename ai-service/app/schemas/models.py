@@ -8,6 +8,8 @@ from datetime import datetime
 # ==========================================
 
 class IntentCategory(str, Enum):
+    CONVERSATIONAL = "conversational"
+    SIMPLE_FACTUAL = "simple_factual"
     SITUATIONAL_SUMMARY = "situational_summary"
     EVENT_LOOKUP = "event_lookup"
     IMPACT_ANALYSIS = "impact_analysis"
@@ -56,6 +58,7 @@ class ConnectorStatus(str, Enum):
 class QuestionIntakeRequest(BaseModel):
     session_id: str
     question: str
+    user_name: Optional[str] = None
     time_horizon: Optional[str] = "30d"
     geographies: Optional[List[str]] = Field(default_factory=list)
     include_categories: Optional[List[str]] = Field(default_factory=list)
@@ -68,6 +71,25 @@ class IntentOutput(BaseModel):
     requires_scenario: bool = False
     requires_strategy: bool = True
     intent_rationale: str
+
+class QueryAnalysisProfile(BaseModel):
+    original_question: str
+    cleaned_question: str
+    query_type: str
+    intent_category: IntentCategory
+    is_conversational: bool = False
+    requires_live_search: bool = True
+    requires_strategies: bool = True
+    needs_good_bad_effects: bool = False
+    greeting_stripped: bool = False
+    extracted_user_name: Optional[str] = None
+    search_keywords: str = ""
+    complexity: str = "analytical"
+    confidence: float = 0.92
+    key_signals: List[str] = Field(default_factory=list)
+    entities: List["ExtractedEntity"] = Field(default_factory=list)
+    target_geographies: List[str] = Field(default_factory=list)
+    intent_rationale: str = ""
 
 class ExtractedEntity(BaseModel):
     name: str
@@ -238,6 +260,7 @@ class GeoSentinelAnswer(BaseModel):
     scenarios: List[GeoForkScenario] = Field(default_factory=list)
     confidence_rationale: str
     limitations: List[str]
+    chat_output: Optional[Dict[str, Any]] = None
 
 class PipelineExecutionResult(BaseModel):
     question_id: str

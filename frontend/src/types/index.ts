@@ -65,6 +65,28 @@ export interface GeoForkScenario {
   monitoring_indicators: string[];
 }
 
+export interface ChatStrategyItem {
+  name: string;
+  what_to_do?: string;
+  why_will_work?: string;
+  good_effect: string;
+  bad_effect: string;
+  when_to_do?: string;
+  cost_effort?: string;
+  success_chance?: string;
+}
+
+export interface ChatDynamicSection {
+  emoji: string;
+  title: string;
+  type: 'text' | 'bullets' | 'badge' | 'strategies' | 'best_strategy';
+  content?: string;
+  strategy_name?: string;
+  items?: string[];
+  level?: 'Low' | 'Medium' | 'High' | 'Critical';
+  strategies?: ChatStrategyItem[];
+}
+
 export interface GeoSentinelAnswer {
   current_situation: CurrentSituation;
   relevant_evidence: EvidenceItem[];
@@ -73,6 +95,14 @@ export interface GeoSentinelAnswer {
   scenarios?: GeoForkScenario[];
   confidence_rationale: string;
   limitations: string[];
+  chat_output?: {
+    intent?: string;
+    sections?: ChatDynamicSection[];
+    risk?: string;
+    why_will_happen?: string[];
+    risk_level?: 'Low' | 'Medium' | 'High' | 'Critical';
+    strategies?: string[];
+  };
 }
 
 export interface AnalysisResult {

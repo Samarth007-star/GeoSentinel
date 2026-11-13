@@ -184,8 +184,38 @@ class ImpactAnalysisAgent:
                 evidence_citations=energy_ev[:2]
             ))
 
-        # DOMAIN 6: South China Sea / Semiconductor / Global Supply Chains
-        elif any(k in q_lower for k in ["south china sea", "semiconductor", "taiwan", "microchip", "electronics"]):
+        # DOMAIN: AI Compute, Semiconductors & Tech Hardware (Nvidia, Chips, GPUs)
+        elif any(k in q_lower for k in ["nvidia", "chip", "chips", "gpu", "gpus", "semiconductor", "semiconductors", "ai hardware", "microchip"]):
+            nodes_ai = [
+                ImpactPathwayNode(node_id="n1_ai", label="Global tech firm accelerates low-cost AI compute hardware availability", node_type="event", evidence_ref=gov_ev[0] if gov_ev else None),
+                ImpactPathwayNode(node_id="n2_ai", label="Rapid domestic expansion of private and sovereign AI data centers", node_type="infrastructure"),
+                ImpactPathwayNode(node_id="n3_ai", label="Intensified competition for domestic fab startups and high power grid loads", node_type="market_exposure"),
+                ImpactPathwayNode(node_id="n4_ai", label="High technological productivity balanced against foreign proprietary lock-in", node_type="outcome")
+            ]
+            pathways.append(GeoCausalPathway(
+                pathway_id=f"path_{uuid.uuid4().hex[:8]}",
+                sector="Technology, AI Computing & Semiconductors",
+                title="Low-Cost AI Compute Proliferation to Domestic Tech Acceleration and Ecosystem Dependency",
+                direct_impact="Availability of affordable AI hardware rapidly reduces computation costs for domestic tech startups, universities, and research labs.",
+                indirect_impact="Rising demand for data center power strains local electrical utilities while increasing dependency on foreign proprietary hardware architectures.",
+                second_order_effects=[
+                    "Price competition challenging early-stage domestic semiconductor design initiatives.",
+                    "Surge in demand for specialized optical networking and cooling infrastructure."
+                ],
+                affected_geographies=geos,
+                affected_populations=[
+                    "Domestic artificial intelligence startups and software engineers",
+                    "Regional electrical grid operators and cloud infrastructure providers",
+                    "Higher education institutions and scientific researchers"
+                ],
+                time_horizon="30 to 180 days",
+                nodes=nodes_ai,
+                uncertainty_level="MEDIUM",
+                evidence_citations=gov_ev[:2]
+            ))
+
+        # DOMAIN 6: South China Sea / Maritime Chokepoints / East Asia Shipping
+        elif any(k in q_lower for k in ["south china sea", "taiwan strait", "east asia shipping"]):
             nodes_p1 = [
                 ImpactPathwayNode(node_id="n1_scs", label="Maritime exclusion zones in Taiwan Strait and South China Sea chokepoints", node_type="event", evidence_ref=conflict_ev[0] if conflict_ev else None),
                 ImpactPathwayNode(node_id="n2_scs", label="Commercial vessel rerouting around Sunda/Lombok Straits extending voyage lead times", node_type="infrastructure"),
