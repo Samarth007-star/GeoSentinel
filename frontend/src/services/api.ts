@@ -1,6 +1,7 @@
 import { AnalysisResult, ConnectorInfo } from '../types';
 
-const API_BASE = '/api/v1';
+const RAW_BASE = (import.meta as unknown as { env?: Record<string, string> }).env?.VITE_API_BASE_URL?.replace(/\/+$/, '');
+const API_BASE = RAW_BASE ? (RAW_BASE.endsWith('/api/v1') ? RAW_BASE : `${RAW_BASE}/api/v1`) : '/api/v1';
 
 export async function executeAnalysis(
   question: string,
