@@ -19,6 +19,8 @@ export const CrimsonAuroraStream: React.FC<CrimsonAuroraStreamProps> = ({ classN
     let width = 0;
     let height = 0;
 
+    let maxScroll = 1;
+
     const resize = () => {
       const parent = canvas.parentElement;
       width = parent ? parent.clientWidth : window.innerWidth;
@@ -27,6 +29,7 @@ export const CrimsonAuroraStream: React.FC<CrimsonAuroraStreamProps> = ({ classN
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     };
     resize();
     window.addEventListener('resize', resize);
@@ -39,6 +42,7 @@ export const CrimsonAuroraStream: React.FC<CrimsonAuroraStreamProps> = ({ classN
 
     const onScroll = () => {
       scrollY = window.scrollY;
+      maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
 
@@ -141,8 +145,7 @@ export const CrimsonAuroraStream: React.FC<CrimsonAuroraStreamProps> = ({ classN
       isMobile = width < 768;
       const scaleFactor = Math.min(1.3, Math.max(0.65, width / 1280));
 
-      // Accurate document scroll progress: 0.0 (top) -> 1.0 (bottom)
-      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      // Accurate document scroll progress: 0.0 (top) -> 1.0 (bottom) using cached maxScroll
       const scrollProgress = Math.min(1, Math.max(0, smoothScrollY / maxScroll));
 
       // Global screen sweep: navigates across the full screen from Right -> Left -> Right -> Center

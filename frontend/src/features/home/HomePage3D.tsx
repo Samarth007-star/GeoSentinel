@@ -92,10 +92,13 @@ const RevealOnScroll: React.FC<RevealOnScrollProps> = ({
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          setVisible(entry.isIntersecting);
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.unobserve(entry.target);
+          }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
+      { threshold: 0.05, rootMargin: '0px 0px -20px 0px' }
     );
     observer.observe(node);
     return () => observer.disconnect();
@@ -105,10 +108,10 @@ const RevealOnScroll: React.FC<RevealOnScrollProps> = ({
     <div
       ref={ref}
       style={{ transitionDelay: `${visible ? delayMs : 0}ms` }}
-      className={`transition-all duration-700 ease-out will-change-transform ${
+      className={`transition-all duration-600 ease-out will-change-[opacity,transform] ${
         visible
-          ? 'opacity-100 translate-y-0 scale-100 blur-0'
-          : 'opacity-0 translate-y-12 scale-[0.94] blur-[10px]'
+          ? 'opacity-100 translate-y-0 scale-100'
+          : 'opacity-0 translate-y-6 scale-[0.98]'
       } ${className}`}
     >
       {children}
@@ -128,12 +131,24 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
   onLaunchWorkspace,
   isAuthOpen = false
 }) => {
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const progressBarRef = useRef<HTMLDivElement | null>(null);
   const [activeShape, setActiveShape] = useState(0);
   const [activeSection, setActiveSection] = useState('concept');
   const [selectedModeIdx, setSelectedModeIdx] = useState(0);
   const [signalVolume, setSignalVolume] = useState(24000);
   const [systemHealth, setSystemHealth] = useState<'Connected' | 'Degraded' | 'Offline'>('Connected');
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth >= 768 : true
+  );
+
+  useEffect(() => {
+    const onResize = () => {
+      const desktop = window.innerWidth >= 768;
+      setIsDesktop((prev) => (prev !== desktop ? desktop : prev));
+    };
+    window.addEventListener('resize', onResize, { passive: true });
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   // Verify dynamic health state on mount
   useEffect(() => {
@@ -154,24 +169,38 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
       setActiveShape((prev) => (prev + 1) % 3);
     }, 4500);
     return () => window.clearInterval(timer);
-  }, [activeShape]);
+  }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0;
-      setScrollProgress(pct);
+    let ticking = false;
+    let lastSection = 'concept';
 
-      for (let i = NAV_SECTIONS.length - 1; i >= 0; i--) {
-        const el = document.getElementById(NAV_SECTIONS[i].id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 160) {
-            setActiveSection(NAV_SECTIONS[i].id);
-            break;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollTop = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0;
+          if (progressBarRef.current) {
+            progressBarRef.current.style.width = `${pct}%`;
           }
-        }
+
+          for (let i = NAV_SECTIONS.length - 1; i >= 0; i--) {
+            const el = document.getElementById(NAV_SECTIONS[i].id);
+            if (el) {
+              const rect = el.getBoundingClientRect();
+              if (rect.top <= 160) {
+                if (lastSection !== NAV_SECTIONS[i].id) {
+                  lastSection = NAV_SECTIONS[i].id;
+                  setActiveSection(NAV_SECTIONS[i].id);
+                }
+                break;
+              }
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
@@ -441,25 +470,28 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
         {/* Scroll Progress Bar */}
         <div className="h-[2px] w-full bg-white/10 overflow-hidden">
           <div
-            style={{ width: `${scrollProgress}%` }}
-            className="h-full bg-gradient-to-r from-white via-[#DC2626] to-[#EF4444] transition-[width] duration-150 ease-out"
+            ref={progressBarRef}
+            style={{ width: '0%' }}
+            className="h-full bg-gradient-to-r from-white via-[#DC2626] to-[#EF4444] transition-[width] duration-75 ease-out"
           />
         </div>
       </header>
 
       {/* 2. HERO — 3D INTELLIGENCE STAGE */}
       <div className="relative z-10 w-full bg-transparent text-white overflow-x-clip border-b border-white/10">
-        {/* Sticky Full-Viewport 3D Hologram Canvas anchored to the 1st-level stage (Desktop) */}
-        <div className="hidden md:block md:sticky md:top-[68px] md:h-[calc(100vh-68px)] md:min-h-[540px] w-full pointer-events-none z-0 overflow-hidden">
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                'radial-gradient(circle at 50% 48%, rgba(220, 38, 38, 0.16) 0%, rgba(255, 255, 255, 0.03) 34%, transparent 68%)'
-            }}
-          />
-          <ParticlePresenceCanvas activeShape={activeShape} />
-        </div>
+        {/* Sticky Full-Viewport 3D Hologram Canvas anchored to the 1st-level stage (Desktop only) */}
+        {isDesktop && (
+          <div className="sticky top-[68px] h-[calc(100vh-68px)] min-h-[540px] w-full pointer-events-none z-0 overflow-hidden">
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  'radial-gradient(circle at 50% 48%, rgba(220, 38, 38, 0.16) 0%, rgba(255, 255, 255, 0.03) 34%, transparent 68%)'
+              }}
+            />
+            <ParticlePresenceCanvas activeShape={activeShape} />
+          </div>
+        )}
 
         {/* Viewport 1: Hero Editorial Stage ("Intelligence in living motion") */}
         <section className="relative z-10 md:-mt-[calc(100vh-68px)] md:min-h-[calc(100vh-68px)] w-full max-w-7xl 2xl:max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8 sm:py-14 flex flex-col justify-between">
@@ -504,10 +536,12 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
             </div>
           </div>
 
-          {/* Mobile-only 3D Hologram Stage: Dedicated breathing room, centered, never covered by text */}
-          <div className="block md:hidden h-[260px] sm:h-[320px] w-full my-4 relative overflow-hidden pointer-events-none">
-            <ParticlePresenceCanvas activeShape={activeShape} />
-          </div>
+          {/* Mobile-only 3D Hologram Stage: Mounted strictly on mobile */}
+          {!isDesktop && (
+            <div className="h-[270px] sm:h-[320px] w-full my-4 relative overflow-hidden pointer-events-none">
+              <ParticlePresenceCanvas activeShape={activeShape} />
+            </div>
+          )}
 
           {/* Bottom Split: Experience Hint + Main Description & CTAs */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end pt-4 md:pt-16 sm:pt-20">
