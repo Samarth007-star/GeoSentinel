@@ -81,8 +81,18 @@ export const GeoGlobe3D: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const sphereDots = generateFibonacciSphere(260);
+    const DOTS_COUNT = 240;
+    const sphereDots = generateFibonacciSphere(DOTS_COUNT);
     const nodeVectors = GLOBE_NODES.map((n) => latLonToVec3(n.lat, n.lon));
+
+    const dotProjX = new Float32Array(DOTS_COUNT);
+    const dotProjY = new Float32Array(DOTS_COUNT);
+    const dotProjZ = new Float32Array(DOTS_COUNT);
+    const dotAlpha = new Float32Array(DOTS_COUNT);
+    const dotSize = new Float32Array(DOTS_COUNT);
+
+    let cachedAuraGrad: CanvasGradient | null = null;
+    let cachedSphereGrad: CanvasGradient | null = null;
 
     let width = container.clientWidth || 380;
     let height = container.clientHeight || 380;
@@ -101,12 +111,33 @@ export const GeoGlobe3D: React.FC = () => {
       width = Math.max(260, rect.width);
       height = Math.max(260, rect.height);
       const isMobile = width < 768;
-      const dpr = isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.35);
+      const dpr = isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.25);
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const cx = width / 2;
+      const cy = height / 2;
+      const radius = Math.min(width, height) * 0.34;
+
+      cachedAuraGrad = ctx.createRadialGradient(cx, cy, radius * 0.15, cx, cy, radius * 1.48);
+      cachedAuraGrad.addColorStop(0, 'rgba(220, 38, 38, 0.28)');
+      cachedAuraGrad.addColorStop(0.55, 'rgba(185, 28, 28, 0.12)');
+      cachedAuraGrad.addColorStop(1, 'rgba(9, 9, 11, 0)');
+
+      cachedSphereGrad = ctx.createRadialGradient(
+        cx - radius * 0.32,
+        cy - radius * 0.32,
+        radius * 0.1,
+        cx,
+        cy,
+        radius
+      );
+      cachedSphereGrad.addColorStop(0, 'rgba(39, 39, 42, 0.92)');
+      cachedSphereGrad.addColorStop(0.62, 'rgba(9, 9, 11, 0.96)');
+      cachedSphereGrad.addColorStop(1, 'rgba(220, 38, 38, 0.25)');
     };
 
     resize();
@@ -118,7 +149,7 @@ export const GeoGlobe3D: React.FC = () => {
       (entries) => {
         entries.forEach((entry) => {
           isVisible = entry.isIntersecting;
-          if (isVisible && !animId) {
+          if (isVisible && !animId && !document.hidden) {
             animId = requestAnimationFrame(drawFrame);
           }
         });
@@ -126,6 +157,18 @@ export const GeoGlobe3D: React.FC = () => {
       { threshold: 0.05 }
     );
     observer.observe(container);
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        if (animId) {
+          cancelAnimationFrame(animId);
+          animId = 0;
+        }
+      } else if (isVisible && !animId) {
+        animId = requestAnimationFrame(drawFrame);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
 
     const onPointerDown = (e: PointerEvent) => {
       isDragging = true;
@@ -172,7 +215,7 @@ export const GeoGlobe3D: React.FC = () => {
     };
 
     const drawFrame = () => {
-      if (!isVisible) {
+      if (!isVisible || document.hidden) {
         animId = 0;
         return;
       }
@@ -189,32 +232,21 @@ export const GeoGlobe3D: React.FC = () => {
       const cy = height / 2;
       const radius = Math.min(width, height) * 0.34;
 
-      // Ambient crimson & white radial glow behind 3D sphere
-      const aura = ctx.createRadialGradient(cx, cy, radius * 0.15, cx, cy, radius * 1.48);
-      aura.addColorStop(0, 'rgba(220, 38, 38, 0.28)');
-      aura.addColorStop(0.55, 'rgba(185, 28, 28, 0.12)');
-      aura.addColorStop(1, 'rgba(9, 9, 11, 0)');
-      ctx.fillStyle = aura;
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius * 1.5, 0, Math.PI * 2);
-      ctx.fill();
+      // Ambient crimson & white radial glow behind 3D sphere (using cached gradient)
+      if (cachedAuraGrad) {
+        ctx.fillStyle = cachedAuraGrad;
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius * 1.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
 
-      // Deep pitch-black & crimson glass sphere core
-      const sphereGrad = ctx.createRadialGradient(
-        cx - radius * 0.32,
-        cy - radius * 0.32,
-        radius * 0.1,
-        cx,
-        cy,
-        radius
-      );
-      sphereGrad.addColorStop(0, 'rgba(39, 39, 42, 0.92)');
-      sphereGrad.addColorStop(0.62, 'rgba(9, 9, 11, 0.96)');
-      sphereGrad.addColorStop(1, 'rgba(220, 38, 38, 0.25)');
-      ctx.fillStyle = sphereGrad;
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      ctx.fill();
+      // Deep pitch-black & crimson glass sphere core (using cached gradient)
+      if (cachedSphereGrad) {
+        ctx.fillStyle = cachedSphereGrad;
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
 
       ctx.strokeStyle = 'rgba(239, 68, 68, 0.45)';
       ctx.lineWidth = 1.25;
@@ -250,19 +282,35 @@ export const GeoGlobe3D: React.FC = () => {
         ctx.stroke();
       }
 
-      // 3D Back & Front Fibonacci surface dots
-      const projectedDots = sphereDots
-        .map((pt) => project(rotatePoint(pt, rotX, rotY), cx, cy, radius))
-        .sort((a, b) => a.z - b.z);
+      // 3D Back & Front Fibonacci surface dots (ZERO-ALLOCATION in-place projection)
+      for (let i = 0; i < DOTS_COUNT; i++) {
+        const rotated = rotatePoint(sphereDots[i], rotX, rotY);
+        const p = project(rotated, cx, cy, radius);
+        dotProjX[i] = p.x;
+        dotProjY[i] = p.y;
+        dotProjZ[i] = p.z;
+        const depth = (p.z + 1) * 0.5;
+        dotAlpha[i] = 0.16 + depth * 0.72;
+        dotSize[i] = 1.0 + depth * 1.45;
+      }
 
-      for (const d of projectedDots) {
-        const depth = (d.z + 1) * 0.5;
-        const alpha = 0.16 + depth * 0.72;
-        const dotSize = 1.0 + depth * 1.45;
-        ctx.fillStyle = d.z > 0.25 ? `rgba(255, 255, 255, ${alpha})` : `rgba(239, 68, 68, ${alpha * 0.55})`;
-        ctx.beginPath();
-        ctx.arc(d.x, d.y, dotSize, 0, Math.PI * 2);
-        ctx.fill();
+      // Back dots pass (z <= 0.25)
+      for (let i = 0; i < DOTS_COUNT; i++) {
+        if (dotProjZ[i] <= 0.25) {
+          ctx.fillStyle = `rgba(239, 68, 68, ${dotAlpha[i] * 0.55})`;
+          ctx.beginPath();
+          ctx.arc(dotProjX[i], dotProjY[i], dotSize[i], 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      // Front dots pass (z > 0.25)
+      for (let i = 0; i < DOTS_COUNT; i++) {
+        if (dotProjZ[i] > 0.25) {
+          ctx.fillStyle = `rgba(255, 255, 255, ${dotAlpha[i]})`;
+          ctx.beginPath();
+          ctx.arc(dotProjX[i], dotProjY[i], dotSize[i], 0, Math.PI * 2);
+          ctx.fill();
+        }
       }
 
       // Tilted 3D Orbital Satellite Rings
@@ -401,6 +449,7 @@ export const GeoGlobe3D: React.FC = () => {
     animId = requestAnimationFrame(drawFrame);
 
     return () => {
+      document.removeEventListener('visibilitychange', handleVisibility);
       observer.disconnect();
       cancelAnimationFrame(animId);
       ro.disconnect();

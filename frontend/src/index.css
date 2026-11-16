@@ -281,16 +281,14 @@ body {
 @keyframes blurSharpIn {
   0% {
     opacity: 0;
-    filter: blur(14px);
-    transform: translateY(18px) scale(0.98);
+    transform: translateY(14px) scale(0.98);
   }
   100% {
     opacity: 1;
-    filter: blur(0px);
     transform: translateY(0) scale(1);
   }
 }
 
 .animate-blur-sharp {
-  animation: blurSharpIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: blurSharpIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
