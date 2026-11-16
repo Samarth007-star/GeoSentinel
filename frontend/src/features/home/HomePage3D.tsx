@@ -13,22 +13,25 @@ import {
   Globe,
   LogIn,
   UserPlus,
+  User,
+  LogOut,
   ChevronDown,
   CheckCircle2,
   AlertTriangle,
-  Cpu,
-  Activity,
-  Lock,
-  Database
+  Cpu
 } from 'lucide-react';
 import { GeoGlobe3D } from './GeoGlobe3D';
 import { ParticlePresenceCanvas } from './ParticlePresenceCanvas';
 import { CrimsonAuroraStream } from './CrimsonAuroraStream';
+import { Footer3D } from './Footer3D';
 
 interface HomePage3DProps {
   onOpenAuth: (mode: 'login' | 'register') => void;
   onLaunchWorkspace: (prefillQuery?: string) => void;
   isAuthOpen?: boolean;
+  isAuthenticated?: boolean;
+  userName?: string;
+  onLogout?: () => void;
 }
 
 interface TiltCardProps {
@@ -38,34 +41,40 @@ interface TiltCardProps {
 }
 
 const Interactive3DCard: React.FC<TiltCardProps> = ({ children, className = '', onClick }) => {
-  const [tilt, setTilt] = useState({ rx: 0, ry: 0, glowX: 50, glowY: 50 });
+  const cardRef = useRef<HTMLDivElement | null>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width;
     const py = (e.clientY - rect.top) / rect.height;
-    setTilt({
-      rx: (0.5 - py) * 10,
-      ry: (px - 0.5) * 12,
-      glowX: px * 100,
-      glowY: py * 100
-    });
+    const rx = (0.5 - py) * 10;
+    const ry = (px - 0.5) * 12;
+    const glowX = px * 100;
+    const glowY = py * 100;
+    el.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+    el.style.backgroundImage = `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(220, 38, 38, 0.08), transparent 60%)`;
   };
 
   const handleMouseLeave = () => {
-    setTilt({ rx: 0, ry: 0, glowX: 50, glowY: 50 });
+    const el = cardRef.current;
+    if (!el) return;
+    el.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)';
+    el.style.backgroundImage = 'radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.08), transparent 60%)';
   };
 
   return (
     <div
+      ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onClick={onClick}
       style={{
-        transform: `perspective(1000px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) translateZ(0)`,
-        backgroundImage: `radial-gradient(circle at ${tilt.glowX}% ${tilt.glowY}%, rgba(220, 38, 38, 0.08), transparent 60%)`
+        transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)',
+        backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.08), transparent 60%)'
       }}
-      className={`transition-transform duration-200 ease-out preserve-3d ${className}`}
+      className={`transition-transform duration-200 ease-out preserve-3d will-change-transform ${className}`}
     >
       {children}
     </div>
@@ -108,7 +117,7 @@ const RevealOnScroll: React.FC<RevealOnScrollProps> = ({
     <div
       ref={ref}
       style={{ transitionDelay: `${visible ? delayMs : 0}ms` }}
-      className={`transition-all duration-600 ease-out will-change-[opacity,transform] ${
+      className={`transition-opacity transition-transform duration-500 ease-out will-change-[opacity,transform] ${
         visible
           ? 'opacity-100 translate-y-0 scale-100'
           : 'opacity-0 translate-y-6 scale-[0.98]'
@@ -129,9 +138,13 @@ const NAV_SECTIONS = [
 export const HomePage3D: React.FC<HomePage3DProps> = ({
   onOpenAuth,
   onLaunchWorkspace,
-  isAuthOpen = false
+  isAuthOpen = false,
+  isAuthenticated = false,
+  userName = 'Admin',
+  onLogout
 }) => {
   const progressBarRef = useRef<HTMLDivElement | null>(null);
+  const shapeTimerRef = useRef<number | null>(null);
   const [activeShape, setActiveShape] = useState(0);
   const [activeSection, setActiveSection] = useState('concept');
   const [selectedModeIdx, setSelectedModeIdx] = useState(0);
@@ -163,17 +176,30 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
       });
   }, []);
 
-  // Auto-cycle 3D structure (~3s hold + ~1.55s spread & combine): Brain (0) -> World (1) -> War Symbols (2)
+  // Auto-cycle 3D structure in arranged sequence: Brain (0) -> World (1) -> War Symbols (2)
   useEffect(() => {
-    const timer = window.setInterval(() => {
+    shapeTimerRef.current = window.setInterval(() => {
       setActiveShape((prev) => (prev + 1) % 3);
     }, 4500);
-    return () => window.clearInterval(timer);
+    return () => {
+      if (shapeTimerRef.current) {
+        window.clearInterval(shapeTimerRef.current);
+      }
+    };
   }, []);
+
+  const handleSelectShape = (stage: number) => {
+    setActiveShape(stage);
+    if (shapeTimerRef.current) {
+      window.clearInterval(shapeTimerRef.current);
+    }
+    shapeTimerRef.current = window.setInterval(() => {
+      setActiveShape((prev) => (prev + 1) % 3);
+    }, 4500);
+  };
 
   useEffect(() => {
     let ticking = false;
-    let lastSection = 'concept';
 
     const handleScroll = () => {
       if (!ticking) {
@@ -184,20 +210,6 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
           if (progressBarRef.current) {
             progressBarRef.current.style.width = `${pct}%`;
           }
-
-          for (let i = NAV_SECTIONS.length - 1; i >= 0; i--) {
-            const el = document.getElementById(NAV_SECTIONS[i].id);
-            if (el) {
-              const rect = el.getBoundingClientRect();
-              if (rect.top <= 160) {
-                if (lastSection !== NAV_SECTIONS[i].id) {
-                  lastSection = NAV_SECTIONS[i].id;
-                  setActiveSection(NAV_SECTIONS[i].id);
-                }
-                break;
-              }
-            }
-          }
           ticking = false;
         });
         ticking = true;
@@ -206,7 +218,28 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
 
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    // Efficient IntersectionObserver for section spy (no getBoundingClientRect inside scroll loop)
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-15% 0px -65% 0px', threshold: 0 }
+    );
+
+    NAV_SECTIONS.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) sectionObserver.observe(el);
+    });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      sectionObserver.disconnect();
+    };
   }, []);
 
   const scrollToSection = (sectionId: string) => {
@@ -366,8 +399,8 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
 
   return (
     <div
-      className={`min-h-screen w-full flex flex-col bg-[#050507] text-white relative overflow-x-clip transition-all duration-500 ease-out ${
-        isAuthOpen ? 'scale-[0.985] blur-[2px] brightness-95' : 'scale-100 blur-0 brightness-100'
+      className={`min-h-screen w-full flex flex-col bg-[#050507] text-white relative overflow-x-clip transition-[opacity,transform] duration-300 ease-out ${
+        isAuthOpen ? 'scale-[0.99] opacity-90' : 'scale-100 opacity-100'
       }`}
     >
       {/* Full-Screen Continuous Flowing Crimson Aurora Waterflow Stream edge-to-edge */}
@@ -445,25 +478,54 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
             <span className="text-white font-medium">{systemHealth}</span>
           </div>
 
-          {/* Action Buttons: Login & Register */}
+          {/* Action Buttons: Login & Register or Active User Session */}
           <div className="flex items-center gap-2 sm:gap-2.5">
-            <button
-              type="button"
-              onClick={() => onOpenAuth('login')}
-              className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl bg-white/5 border border-white/15 hover:border-red-500/70 hover:bg-white/10 text-white text-xs font-bold transition-all hover:-translate-y-0.5 cursor-pointer"
-            >
-              <LogIn className="w-3.5 h-3.5 text-red-400" />
-              <span>Login</span>
-            </button>
+            {isAuthenticated ? (
+              <>
+                <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/15 text-xs text-zinc-300">
+                  <User className="w-3.5 h-3.5 text-red-400" />
+                  <span className="font-semibold text-white">{userName}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => onLaunchWorkspace()}
+                  className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-[#991B1B] via-[#DC2626] to-[#EF4444] hover:from-[#B91C1C] hover:to-[#DC2626] text-white text-xs font-bold shadow-[0_6px_18px_rgba(220,38,38,0.35)] transition-all hover:-translate-y-0.5 active:scale-95 cursor-pointer"
+                >
+                  <span>Open Workspace</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+                {onLogout && (
+                  <button
+                    type="button"
+                    onClick={onLogout}
+                    className="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-zinc-400 hover:text-white transition-all cursor-pointer"
+                    title="Sign Out"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={() => onOpenAuth('login')}
+                  className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl bg-white/5 border border-white/15 hover:border-red-500/70 hover:bg-white/10 text-white text-xs font-bold transition-all hover:-translate-y-0.5 cursor-pointer"
+                >
+                  <LogIn className="w-3.5 h-3.5 text-red-400" />
+                  <span>Login</span>
+                </button>
 
-            <button
-              type="button"
-              onClick={() => onOpenAuth('register')}
-              className="inline-flex items-center gap-1.5 px-3.5 sm:px-5 py-2 rounded-xl bg-gradient-to-r from-[#991B1B] via-[#DC2626] to-[#EF4444] hover:from-[#B91C1C] hover:to-[#DC2626] text-white text-xs font-bold shadow-[0_6px_18px_rgba(220,38,38,0.35)] transition-all hover:-translate-y-0.5 active:scale-95 cursor-pointer"
-            >
-              <UserPlus className="w-3.5 h-3.5" />
-              <span>Register</span>
-            </button>
+                <button
+                  type="button"
+                  onClick={() => onOpenAuth('register')}
+                  className="inline-flex items-center gap-1.5 px-3.5 sm:px-5 py-2 rounded-xl bg-gradient-to-r from-[#991B1B] via-[#DC2626] to-[#EF4444] hover:from-[#B91C1C] hover:to-[#DC2626] text-white text-xs font-bold shadow-[0_6px_18px_rgba(220,38,38,0.35)] transition-all hover:-translate-y-0.5 active:scale-95 cursor-pointer"
+                >
+                  <UserPlus className="w-3.5 h-3.5" />
+                  <span>Register</span>
+                </button>
+              </>
+            )}
           </div>
         </div>
 
@@ -522,7 +584,7 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
                   <button
                     key={item.label}
                     type="button"
-                    onClick={() => setActiveShape(item.stage)}
+                    onClick={() => handleSelectShape(item.stage)}
                     className={`px-3 py-1.5 rounded-full text-[11px] font-bold tracking-wider uppercase border transition-all cursor-pointer ${
                       isSelected
                         ? 'bg-red-600/90 border-red-400 text-white shadow-[0_0_16px_rgba(220,38,38,0.45)]'
@@ -558,11 +620,11 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
               <div className="flex flex-wrap items-center gap-3">
                 <button
                   type="button"
-                  onClick={() => onOpenAuth('login')}
+                  onClick={() => onLaunchWorkspace()}
                   className="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-[#991B1B] via-[#DC2626] to-[#EF4444] hover:from-[#B91C1C] hover:to-[#DC2626] text-white font-bold text-sm sm:text-base shadow-[0_12px_32px_rgba(220,38,38,0.42)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95 cursor-pointer"
                 >
                   <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 transition-transform" />
-                  <span>Try Now</span>
+                  <span>{isAuthenticated ? 'Open Workspace' : 'Get Started'}</span>
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
                 <button
@@ -647,28 +709,6 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
                 <p>
                   <strong className="text-white">GeoSentinel</strong> connects these signals through an evidence-first, multi-agent intelligence framework. It analyzes user intent, retrieves relevant information, evaluates direct and indirect impacts, explores possible scenarios, and produces explainable strategic recommendations.
                 </p>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-1">
-                <button
-                  type="button"
-                  onClick={() => onOpenAuth('login')}
-                  className="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-[#991B1B] via-[#DC2626] to-[#EF4444] hover:from-[#B91C1C] hover:to-[#DC2626] text-white font-bold text-sm sm:text-base shadow-[0_12px_32px_rgba(220,38,38,0.42)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95 cursor-pointer"
-                >
-                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 transition-transform" />
-                  <span>Try Now</span>
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => scrollToSection('how-it-works')}
-                  className="inline-flex items-center gap-1.5 px-4 py-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 hover:border-red-500/60 text-white font-bold text-xs sm:text-sm transition-all hover:-translate-y-0.5 cursor-pointer"
-                >
-                  <span>Explore Architecture</span>
-                  <ChevronDown className="w-4 h-4 text-red-400" />
-                </button>
               </div>
 
               {/* Architecture Highlights: 12 Stages, Configured Connectors, Dynamic Understanding, Red-Team Review */}
@@ -1295,15 +1335,6 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
                     Different Questions. Different Intelligence.
                   </h2>
                 </div>
-
-                <button
-                  type="button"
-                  onClick={() => onOpenAuth('login')}
-                  className="self-start sm:self-auto inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-[#991B1B] via-[#DC2626] to-[#EF4444] text-white text-xs font-bold shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5 shrink-0 cursor-pointer"
-                >
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>Try Now</span>
-                </button>
               </div>
 
               {/* 3 Intelligence Mode Cards */}
@@ -1440,10 +1471,10 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
                   <div className="pt-2 flex items-center gap-3">
                     <button
                       type="button"
-                      onClick={() => onOpenAuth('login')}
+                      onClick={() => onLaunchWorkspace()}
                       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#991B1B] via-[#DC2626] to-[#EF4444] text-white text-xs font-bold shadow-lg hover:shadow-red-600/30 transition-all cursor-pointer"
                     >
-                      <span>Open Workspace</span>
+                      <span>{isAuthenticated ? 'Open Workspace' : 'Log In & Open Workspace'}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -1536,139 +1567,25 @@ export const HomePage3D: React.FC<HomePage3DProps> = ({
                 <div className="flex flex-wrap items-center gap-3">
                   <button
                     type="button"
-                    onClick={() => onOpenAuth('login')}
+                    onClick={() => onLaunchWorkspace()}
                     className="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-[#DC2626] to-[#B91C1C] hover:from-[#EF4444] hover:to-[#DC2626] text-white font-extrabold text-sm shadow-xl transition-all duration-300 hover:-translate-y-0.5 active:scale-95 shrink-0 cursor-pointer"
                   >
                     <Sparkles className="w-4 h-4" />
-                    <span>Try Now</span>
+                    <span>{isAuthenticated ? 'Open Workspace' : 'Log In & Launch Project'}</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => scrollToSection('concept')}
-                    className="inline-flex items-center gap-1.5 px-5 py-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-white text-xs font-bold transition-all hover:-translate-y-0.5 cursor-pointer"
-                  >
-                    <span>Explore the Architecture</span>
                   </button>
                 </div>
               </div>
             </div>
           </RevealOnScroll>
         </section>
-
-        {/* 14. FOOTER */}
-        <footer className="border-t border-white/10 pt-12 pb-8 text-zinc-400 text-xs">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10">
-            {/* Brand column */}
-            <div className="md:col-span-5 space-y-3">
-              <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#09090B] via-[#991B1B] to-[#DC2626] border border-white/15 flex items-center justify-center text-white">
-                  <Globe className="w-3.5 h-3.5" />
-                </div>
-                <span className="font-display font-bold text-base text-white tracking-tight">
-                  GeoSentinel
-                </span>
-              </div>
-              <p className="text-[11px] text-zinc-400 leading-relaxed max-w-sm">
-                Global Event Intelligence Platform. Connecting geopolitical events, economic indicators, and sourced evidence for explainable strategic decision-making.
-              </p>
-              <div className="text-[11px] text-zinc-500 font-mono">
-                12-Stage Intelligence Pipeline • Zero-Paid-API Compliant
-              </div>
-            </div>
-
-            {/* Navigation column */}
-            <div className="md:col-span-3 space-y-2.5">
-              <div className="text-white font-bold text-xs uppercase tracking-wider">Navigation</div>
-              <ul className="space-y-1.5 text-zinc-400">
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => scrollToSection('concept')}
-                    className="hover:text-white transition-colors cursor-pointer"
-                  >
-                    Project Concept
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => scrollToSection('how-it-works')}
-                    className="hover:text-white transition-colors cursor-pointer"
-                  >
-                    How It Works
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => scrollToSection('signals')}
-                    className="hover:text-white transition-colors cursor-pointer"
-                  >
-                    Live Signals
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => scrollToSection('capabilities')}
-                    className="hover:text-white transition-colors cursor-pointer"
-                  >
-                    Capabilities
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={() => onLaunchWorkspace()}
-                    className="hover:text-white transition-colors cursor-pointer text-red-400 font-medium"
-                  >
-                    Workspace
-                  </button>
-                </li>
-              </ul>
-            </div>
-
-            {/* Trust & Documentation column */}
-            <div className="md:col-span-4 space-y-2.5">
-              <div className="text-white font-bold text-xs uppercase tracking-wider">
-                Trust &amp; Documentation
-              </div>
-              <ul className="space-y-1.5 text-zinc-400">
-                <li className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer">
-                  <Database className="w-3.5 h-3.5 text-red-400" />
-                  <span>Data Sources (Open Public Connectors)</span>
-                </li>
-                <li className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer">
-                  <ShieldCheck className="w-3.5 h-3.5 text-red-400" />
-                  <span>Evidence &amp; Verification Policy</span>
-                </li>
-                <li className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer">
-                  <Activity className="w-3.5 h-3.5 text-red-400" />
-                  <span>Research &amp; Evaluation (ForecastLab)</span>
-                </li>
-                <li className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer">
-                  <Cpu className="w-3.5 h-3.5 text-red-400" />
-                  <span>System Architecture (12-Stage Pipeline)</span>
-                </li>
-                <li className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer">
-                  <Lock className="w-3.5 h-3.5 text-red-400" />
-                  <span>Privacy &amp; Security</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Footer Statement */}
-          <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-zinc-500 text-[11px]">
-            <p>
-              Built for transparent, evidence-grounded strategic intelligence. GeoSentinel supports human decision-making; it does not replace it.
-            </p>
-            <p>© 2026 GeoSentinel. All rights reserved.</p>
-          </div>
-        </footer>
       </main>
+
+      {/* 14. 3D CINEMATIC FOOTER MATCHING REFERENCE DESIGN */}
+      <Footer3D
+        onLaunchWorkspace={onLaunchWorkspace}
+        scrollToSection={scrollToSection}
+      />
     </div>
   );
 };

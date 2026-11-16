@@ -49,7 +49,27 @@ function buildChatTitle(msgs: ChatMessage[]): string {
 }
 
 export const App: React.FC = () => {
-  const [showWelcome, setShowWelcome] = useState<boolean>(true);
+  const [showWelcome, setShowWelcome] = useState<boolean>(() => {
+    try {
+      if (typeof window === 'undefined') return false;
+      // On mobile devices, enter immediately for instant first paint (<1.5s) without blocking splash
+      if (window.innerWidth < 768) return false;
+      // On desktop, only show once per session
+      return !sessionStorage.getItem('geosentinel_splash_seen');
+    } catch {
+      return false;
+    }
+  });
+
+  const handleWelcomeComplete = useCallback(() => {
+    setShowWelcome(false);
+    try {
+      sessionStorage.setItem('geosentinel_splash_seen', 'true');
+    } catch {
+      // ignore storage errors
+    }
+  }, []);
+
   const [showAuthTransition, setShowAuthTransition] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<'home' | 'workspace'>('home');
   const [activeNav, setActiveNav] = useState<string>('dashboard');
@@ -61,6 +81,14 @@ export const App: React.FC = () => {
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('geosentinel_is_authenticated') === 'true';
+    } catch {
+      return false;
+    }
+  });
+  const [pendingWorkspaceQuery, setPendingWorkspaceQuery] = useState<string | null>(null);
   const [userName, setUserName] = useState<string>(() => {
     try {
       return localStorage.getItem('geosentinel_user_name') || 'Admin';
@@ -158,6 +186,13 @@ export const App: React.FC = () => {
   };
 
   const enterWorkspace = (prefillQuery?: string) => {
+    if (!isAuthenticated) {
+      if (prefillQuery) {
+        setPendingWorkspaceQuery(prefillQuery);
+      }
+      openAuthModal('login');
+      return;
+    }
     if (prefillQuery) {
       activeSessionIdRef.current = null;
       setActiveSessionId(null);
@@ -181,8 +216,10 @@ export const App: React.FC = () => {
   };
 
   const handleLogout = () => {
+    setIsAuthenticated(false);
     setUserName('Admin');
     try {
+      localStorage.removeItem('geosentinel_is_authenticated');
       localStorage.removeItem('geosentinel_user_name');
     } catch {
       // ignore storage failures
@@ -199,15 +236,23 @@ export const App: React.FC = () => {
       initialMode={authMode}
       onClose={() => setIsAuthOpen(false)}
       onSuccess={(signedInName) => {
-        if (signedInName) {
-          setUserName(signedInName);
-          try {
-            localStorage.setItem('geosentinel_user_name', signedInName);
-          } catch {
-            // ignore storage failures
-          }
+        setIsAuthenticated(true);
+        const name = signedInName || 'Admin';
+        setUserName(name);
+        try {
+          localStorage.setItem('geosentinel_is_authenticated', 'true');
+          localStorage.setItem('geosentinel_user_name', name);
+        } catch {
+          // ignore storage failures
         }
         setIsAuthOpen(false);
+        const query = pendingWorkspaceQuery;
+        setPendingWorkspaceQuery(null);
+        if (query) {
+          activeSessionIdRef.current = null;
+          setActiveSessionId(null);
+          setSelectedQuery(query);
+        }
         setActiveNav('dashboard');
         setCurrentPage('workspace');
         setShowAuthTransition(true);
@@ -218,16 +263,15 @@ export const App: React.FC = () => {
   if (currentPage === 'home') {
     return (
       <>
-        {showWelcome && <WelcomeSplash3D onComplete={() => setShowWelcome(false)} />}
-        <div
-          className={`w-full min-h-screen transition-all duration-700 ease-out ${
-            showWelcome ? 'opacity-0 scale-[0.985]' : 'opacity-100 scale-100'
-          }`}
-        >
+        {showWelcome && <WelcomeSplash3D onComplete={handleWelcomeComplete} />}
+        <div className="w-full min-h-screen">
           <HomePage3D
             onOpenAuth={(mode) => openAuthModal(mode)}
             onLaunchWorkspace={(prefillQuery) => enterWorkspace(prefillQuery)}
             isAuthOpen={isAuthOpen}
+            isAuthenticated={isAuthenticated}
+            userName={userName}
+            onLogout={handleLogout}
           />
         </div>
         {authModalElement}
